@@ -40,3 +40,7 @@ To set up the Custom Form Generator on your local machine, follow these steps:
 2. View the list of submitted forms.
 3. Review and approve forms.
 
+
+## Bonus Features
+
+- Real-Time Preview: Live preview window shows the form being created in real-time.
