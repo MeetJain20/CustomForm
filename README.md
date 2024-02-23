@@ -17,6 +17,7 @@ The Custom Form Generator is a web application designed to streamline the proces
 - Frontend: HTML, CSS, JavaScript, Bootstrap
 - Backend: Node.js, Express.js
 - Database: MongoDB
+- Hosting: AWS
 <!-- - Other: Socket.IO for real-time updates -->
 
 <!-- ## Setup
