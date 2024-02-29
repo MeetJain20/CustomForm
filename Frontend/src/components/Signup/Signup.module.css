@@ -1,0 +1,26 @@
+
+/* .h-custom {
+  height: 100%;
+  margin-top: 6.5rem;
+} */
+/* .footer {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+} */
+.signvectorimg {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+/* input[type="file"] {
+  display: none;
+} */
+@media (max-width: 450px) {
+  .h-custom {
+    height: 100%;
+  }
+}

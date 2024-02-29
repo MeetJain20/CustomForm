@@ -1,0 +1,16 @@
+.vectorimage {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  vertical-align: middle;
+  transform: translateY(5%);
+  /* margin: auto; */
+}
+.h_custom {
+  height: 100%;
+}
+@media (max-width: 450px) {
+  .h_custom {
+    height: 100%;
+  }
+}
