@@ -27,6 +27,7 @@ const LoginFormEmp = () => {
     }
     return true;
   };
+
   const handleClick = async (e) => {
     e.preventDefault();
     if (email && password) {
@@ -47,88 +48,97 @@ const LoginFormEmp = () => {
           );
           if (!response) {
             setError("Invalid Credentials Try Again");
+            // toast.error("Login Failed");
+
             setisError(true);
           } else {
+            // toast.success("Login Successful");
             navigate("/dashboard");
-            auth.login(response.user.id, "employee",response.token);
+            auth.login(response.user.id, "employee", response.token);
             setEmail("");
             setPassword("");
           }
         } else {
           setError("Password Must be atleast 6 characters long");
+          // toast.error("Login Failed");
           setisError(true);
         }
       } else {
         setError("Invalid email");
+        // toast.error("Login Failed");
         setisError(true);
       }
     } else if (email === "" || password === "") {
       setError("Please fill in all fields");
+      // toast.error("Login Failed");
       setisError(true);
     }
   };
   return (
-    <MDBCol col="4" md="6" className={classes.logindiv}>
-      <div className="d-flex flex-row align-items-center justify-content-center">
-        <p className="lead fw-normal mb-0 me-3">Sign In As Employee</p>
-      </div>
+    <>
+      <MDBCol col="4" md="6" className={classes.logindiv}>
+        <div className="d-flex flex-row align-items-center justify-content-center">
+          <p className="lead fw-normal mb-0 me-3">Sign In As Employee</p>
+        </div>
 
-      <div className={`d-flex align-items-center my-4`}>
-        <p className="text-center fw-bold mx-3 mb-0"></p>
-      </div>
+        <div className={`d-flex align-items-center my-4`}>
+          <p className="text-center fw-bold mx-3 mb-0"></p>
+        </div>
 
-      <MDBInput
-        wrapperClass="mb-4"
-        placeholder="Email"
-        id="formControllemail"
-        type="email"
-        size="lg"
-        onChange={(e) => {
-          setEmail(e.target.value);
-          setError("");
-        }}
-      />
-      <MDBInput
-        wrapperClass="mb-4"
-        placeholder="Password"
-        id="formControllpassword"
-        type="password"
-        size="lg"
-        onChange={(e) => {
-          setPassword(e.target.value);
-          setError("");
-        }}
-      />
-      <div className="container my-3">
-        {isError && (
-          <span className="loginError" style={{ color: "red" }}>
-            {error}
-          </span>
-        )}
-      </div>
-
-      <div className="text-center text-md-start mt-4 pt-2">
-        <button
-          className={`mb-3 px-5 btn btn-outline-info`}
+        <MDBInput
+          wrapperClass="mb-4"
+          placeholder="Email"
+          id="formControllemail"
+          type="email"
           size="lg"
-          onClick={handleClick}
-        >
-          Login
-        </button>
-        <p className="fw-bold regheree">
-          Don't have an account?{" "}
-          <Link
-            to="/signup?role=employee"// Pass role as a query parameter
-            className="link-info"
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setError("");
+          }}
+        />
+        <MDBInput
+          wrapperClass="mb-4"
+          placeholder="Password"
+          id="formControllpassword"
+          type="password"
+          size="lg"
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setError("");
+          }}
+        />
+        <div className="container my-3">
+          {isError && (
+            <span className="loginError" style={{ color: "red" }}>
+              {error}
+            </span>
+          )}
+        </div>
+
+        <div className="text-center text-md-start mt-4 pt-2">
+          <button
+            className={`mb-3 px-5 btn btn-outline-info`}
+            size="lg"
+            onClick={handleClick}
           >
-            Register
+            Login
+          </button>
+          <p className="fw-bold regheree">
+            Don't have an account?{" "}
+            <Link
+              to="/signup?role=employee" // Pass role as a query parameter
+              className="link-info"
+            >
+              Register
+            </Link>
+          </p>
+          <Link to="/termsandcondition">
+            <p className={`${classes.termscondition}`}>Terms And Conditions*</p>
           </Link>
-        </p>
-        <Link to="/termsandcondition">
-          <p className={`${classes.termscondition}`}>Terms And Conditions*</p>
-        </Link>
-      </div>
-    </MDBCol>
+          {/* <ToastifyNotification /> */}
+        </div>
+      </MDBCol>
+    </>
   );
 };
 

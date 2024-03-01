@@ -27,6 +27,7 @@ const LoginFormAdm = () => {
     }
     return true;
   };
+
   const handleClick = async (e) => {
     e.preventDefault();
     if (email && password) {
@@ -42,7 +43,7 @@ const LoginFormAdm = () => {
               role: "admin",
             }),
             {
-              "Content-Type": "application/json",
+              "Content-Type": "application/json"
             }
           );
           if (!response) {

@@ -11,7 +11,7 @@ const check_Authentication = (req, res, next) => {
  
   const tokenHeader = req.headers.authorization;
  
-  if (!tokenHeader) {
+  if (!tokenHeader  || !tokenHeader.startsWith("Bearer ")) {
     return res.status(403).json({
       error: "Not able to identify the token or token not provided",
     });
@@ -26,7 +26,7 @@ const check_Authentication = (req, res, next) => {
   }
  
   jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
-    if (decoded && decoded.role === "User") {
+    if (decoded && decoded.role === "employee") {
       next();
     } else {
       return catchError(err, res);

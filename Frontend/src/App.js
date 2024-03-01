@@ -1,11 +1,9 @@
 import "./App.css";
-import DashBoard from "./components/DashBoard/DashBoard";
 // import Navbar from "./components/Navbar/Navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useCallback, useState, useEffect } from "react";
 import { AuthContext } from "./context/authcontext";
-import Login from "./components/Login/Login";
-import SignUp from "./components/Signup/Signup";
+import { SignUp, Login, DashBoard } from "./components/index";
 import Cookies from "js-cookie";
 
 function App() {
@@ -25,6 +23,7 @@ function App() {
   const logout = useCallback(() => {
     setIsLoggedIn(false);
     setuserId(null);
+    Cookies.remove('token');
   }, []);
 
   useEffect(() => {

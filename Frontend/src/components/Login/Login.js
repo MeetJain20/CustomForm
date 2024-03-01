@@ -8,7 +8,7 @@ import { useLocation } from "react-router-dom";
 const Login = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  let role = params.get("role") || 'employee'; ;
+  let role = params.get("role") || "employee";
 
   return (
     <MDBContainer fluid className={`p-3 ${classes.h_custom}`}>
@@ -17,7 +17,6 @@ const Login = () => {
           <img src={img} alt="Loading" className="img-fluid" />
         </MDBCol>
         {role === "admin" ? <LoginFormAdm /> : <LoginFormEmp />}
-        {/* <LoginFormEmp/> */}
       </MDBRow>
     </MDBContainer>
   );

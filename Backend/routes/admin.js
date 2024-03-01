@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const check_Authentication = require("../middlewares/check-auth-adm");
 
 const adminController = require("../controllers/adminController");
 // const singleUpload = require("../middlewares/multer");

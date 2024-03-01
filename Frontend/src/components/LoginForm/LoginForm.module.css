@@ -12,3 +12,7 @@
 .termscondition {
   font-size: 0.75rem;
 }
+
+.toaster{
+  z-index: 999;
+}
