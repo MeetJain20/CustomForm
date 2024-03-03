@@ -1,0 +1,85 @@
+
+.navbarr {
+  min-height: 75px;
+  padding: 10px;
+  border-bottom: 1px solid #f2f2f2;
+  background-color: var(--navbar-blue);
+}
+.navbarcontent{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+.leftnavbar,.rightnavbar{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.rightnavbar{
+  gap:20px;
+  padding-right: 1.5rem;
+}
+.logoutbutton,.profile{
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+}
+.logindropdowm{
+  padding-right: 1.5rem;
+}
+
+
+@media (max-width: 667px) {
+  .leftnavbar {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 0.15rem;
+    font-size: 1rem;
+  }
+  .rightnavbar {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 0.15rem;
+    font-size: 1rem;
+  }
+  .navbarcontent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .nav-item {
+    padding-left: 10px;
+  }
+  .profile {
+    margin-left: 0rem;
+  }
+  .logindropdowm {
+    margin-left: 0rem;
+  }
+}
+@media (max-width: 400px) {
+  .leftnavbar {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 0.15rem;
+  }
+  .rightnavbar {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 0.15rem;
+  }
+  .navbarcontent {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .nav-item {
+    padding-left: 10px;
+  }
+  .profile {
+    margin-left: 0rem;
+  }
+  .logindropdowm {
+    margin-left: 0rem;
+  }
+}

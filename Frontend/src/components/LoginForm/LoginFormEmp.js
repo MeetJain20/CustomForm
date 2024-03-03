@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { MDBCol, MDBInput } from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
 import classes from "./LoginForm.module.css";
+import { MAIN_LINK } from "../../urls/urls";
 
 const LoginFormEmp = () => {
   const auth = useContext(AuthContext);
@@ -35,7 +36,7 @@ const LoginFormEmp = () => {
         if (validatePass(password)) {
           e.preventDefault();
           const response = await sendRequest(
-            "http://localhost:5000/employee/login",
+            `${MAIN_LINK}/employee/login`,
             "POST",
             JSON.stringify({
               email: email,

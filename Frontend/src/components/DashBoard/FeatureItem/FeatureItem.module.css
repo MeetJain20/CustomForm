@@ -1,0 +1,127 @@
+.featurebody,
+.featurebody1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 4rem;
+  margin-top: 2rem;
+  gap: 100px;
+}
+
+.featuredescription {
+  display: flex;
+  flex-direction: column;
+  width: 510px;
+  padding: 20px;
+}
+.featuretitle {
+  font-size: 2.5rem;
+  font-weight: 400;
+  width: 80%;
+  word-wrap: break-word;
+  margin-bottom: 1rem;
+}
+.featuredesc {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  width: 95%;
+}
+.mainfeatureimage {
+  display: flex;
+  align-items: center;
+}
+.featureimage {
+  height: 450px;
+  width: 800px;
+  object-fit: inherit;
+  border-radius: 10px;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
+    rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+}
+
+@media (max-width: 1367px) {
+  .featurebody {
+    gap: 1.5rem;
+  }
+  .featurebody1 {
+    gap: 1.5rem;
+  }
+  .featuredescription {
+    width: 450px;
+    padding: 20px;
+  }
+  .featuretitle {
+    font-size: 2rem;
+  }
+  .featuredesc {
+    font-size: 1rem;
+  }
+  .featureimage {
+    height: 375px;
+    width: 600px;
+  }
+}
+@media (max-width: 1000px) {
+  .featurebody1 {
+    flex-direction: column;
+    gap: 1.5rem;
+    /* align-items: center; */
+  }
+  .featurebody {
+    flex-direction: column-reverse;
+    gap: 1.5rem;
+  }
+  .featuredescription {
+    width: 450px;
+    padding: 20px;
+  }
+  .featuretitle {
+    font-size: 2rem;
+  }
+  .featuredesc {
+    font-size: 1rem;
+  }
+  .featureimage {
+    height: 375px;
+    width: 600px;
+  }
+}
+@media (max-width: 667px) {
+  .featurebody1 {
+    flex-direction: column;
+    gap: 1.5rem;
+    /* align-items: center; */
+  }
+  .featurebody {
+    flex-direction: column-reverse;
+    gap: 1.5rem;
+  }
+  .featuredescription {
+    width: 400px;
+    padding: 20px;
+  }
+  .featuretitle {
+    font-size: 2rem;
+  }
+  .featuredesc {
+    font-size: 1rem;
+  }
+  .featureimage {
+    height: 300px;
+    width: 500px;
+  }
+}
+@media (max-width: 420px) {
+ 
+  .featuretitle {
+    font-size: 1.75rem;
+  }
+  .featuredesc {
+    font-size: 0.9rem;
+  }
+  .featureimage {
+    height: 250px;
+    width: 370px;
+  }
+}

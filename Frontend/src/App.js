@@ -3,7 +3,7 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useCallback, useState, useEffect } from "react";
 import { AuthContext } from "./context/authcontext";
-import { SignUp, Login, DashBoard } from "./components/index";
+import { SignUp, Login, DashBoard, Navbar } from "./components/index";
 import Cookies from "js-cookie";
 
 function App() {
@@ -48,8 +48,8 @@ function App() {
     routes = (
       <Router>
         <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/dashboard" element={<Login />} />
+          <Route path="/" element={<DashBoard />} />
+          {/* <Route path="/dashboard" element={<Login />} /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           {/* <Route path="/login" element={<><Navbar /><Login /></>} /> */}

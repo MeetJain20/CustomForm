@@ -4,6 +4,7 @@ import { useRequest } from "../../hooks/request-hook";
 import { Link, useNavigate } from "react-router-dom";
 import classes from "./SignUpForm.module.css";
 import Select from "react-select";
+import { MAIN_LINK } from "../../urls/urls";
 
 const SignUpFormEmp = () => {
   const { sendRequest } = useRequest();
@@ -44,9 +45,9 @@ const SignUpFormEmp = () => {
     setTeamName(data.label);
   }
 
-  const loginredirectHandler = ()=>{
+  const loginredirectHandler = () => {
     navigate("/login?role=employee");
-  }
+  };
 
   const signupHandler = async (e) => {
     e.preventDefault();
@@ -61,7 +62,7 @@ const SignUpFormEmp = () => {
               e.preventDefault();
 
               const response = await sendRequest(
-                "http://localhost:5000/employee/signupemp",
+                `${MAIN_LINK}/employee/signupemp`,
                 "POST",
                 JSON.stringify({
                   empName: empName,
@@ -114,7 +115,7 @@ const SignUpFormEmp = () => {
     const fetchItems = async () => {
       try {
         const responseData = await sendRequest(
-          "http://localhost:5000/employee/getteamnames",
+          `${MAIN_LINK}/employee/getteamnames`,
           "GET",
           null,
           {
@@ -228,7 +229,7 @@ const SignUpFormEmp = () => {
           size="lg"
           onClick={loginredirectHandler}
         >
-          Login
+          Have an account
         </button>
       </div>
       <Link to="/termsandcondition">

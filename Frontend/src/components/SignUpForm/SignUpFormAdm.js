@@ -4,6 +4,7 @@ import { useRequest } from "../../hooks/request-hook";
 import { Link, useNavigate } from "react-router-dom";
 import classes from "./SignUpForm.module.css";
 import Select from "react-select";
+import { MAIN_LINK } from "../../urls/urls";
 
 const SignUpFormAdm = () => {
   const { sendRequest } = useRequest();
@@ -63,7 +64,7 @@ const SignUpFormAdm = () => {
               e.preventDefault();
 
               const response = await sendRequest(
-                "http://localhost:5000/admin/signupadm",
+                `${MAIN_LINK}/admin/signupadm`,
                 "POST",
                 JSON.stringify({
                   empName: empName,
@@ -117,7 +118,7 @@ const SignUpFormAdm = () => {
     const fetchItems = async () => {
       try {
         const responseData = await sendRequest(
-          "http://localhost:5000/employee/getteamnames",
+          `${MAIN_LINK}/employee/getteamnames`,
           "GET",
           null,
           {
@@ -252,7 +253,7 @@ const SignUpFormAdm = () => {
           size="lg"
           onClick={loginredirectHandler}
         >
-          Login
+          Have an account
         </button>
       </div>
       <Link to="/termsandcondition">
