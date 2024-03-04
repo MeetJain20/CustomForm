@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { useRequest } from "../../hooks/request-hook";
-import { AuthContext } from "../../context/authcontext";
+import { useRequest } from "../../../../hooks/request-hook";
+import { AuthContext } from "../../../../context/authcontext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { MDBCol, MDBInput } from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
 import classes from "./LoginForm.module.css";
-import { MAIN_LINK } from "../../urls/urls";
+import { MAIN_LINK } from "../../../../urls/urls";
 
 const LoginFormAdm = () => {
   const auth = useContext(AuthContext);
@@ -51,7 +51,7 @@ const LoginFormAdm = () => {
             setError("Invalid Credentials Try Again");
             setisError(true);
           } else {
-            navigate("/dashboard");
+            navigate("/landingpage");
             auth.login(response.user.id, "admin", response.token);
             setEmail("");
             setPassword("");

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { useRequest } from "../../hooks/request-hook";
-import { AuthContext } from "../../context/authcontext";
+import { useRequest } from "../../../../hooks/request-hook";
+import { AuthContext } from "../../../../context/authcontext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { MDBCol, MDBInput } from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
 import classes from "./LoginForm.module.css";
-import { MAIN_LINK } from "../../urls/urls";
+import { MAIN_LINK } from "../../../../urls/urls";
 
 const LoginFormEmp = () => {
   const auth = useContext(AuthContext);
@@ -54,7 +54,7 @@ const LoginFormEmp = () => {
             setisError(true);
           } else {
             // toast.success("Login Successful");
-            navigate("/dashboard");
+            navigate("/landingpage");
             auth.login(response.user.id, "employee", response.token);
             setEmail("");
             setPassword("");

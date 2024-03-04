@@ -1,8 +1,7 @@
 import img from "../../assets/loginvector.png";
 import classes from "./Login.module.css";
 import { MDBContainer, MDBCol, MDBRow } from "mdb-react-ui-kit";
-import LoginFormAdm from "../LoginForm/LoginFormAdm";
-import LoginFormEmp from "../LoginForm/LoginFormEmp";
+import { LoginFormAdm, LoginFormEmp } from "./components/index";
 import { useLocation } from "react-router-dom";
 import { Navbar } from "../index.js";
 
@@ -13,7 +12,7 @@ const Login = () => {
 
   return (
     <>
-    <Navbar/>
+      <Navbar />
       <MDBContainer fluid className={`my-4 p-3 ${classes.h_custom}`}>
         <MDBRow className={`${classes.vectorimage}`}>
           <MDBCol col="10" md="6">
@@ -21,7 +20,8 @@ const Login = () => {
           </MDBCol>
           {role === "admin" ? <LoginFormAdm /> : <LoginFormEmp />}
         </MDBRow>
-      </MDBContainer></>
+      </MDBContainer>
+    </>
   );
 };
 

@@ -2,15 +2,15 @@ import React, { useContext } from "react";
 import { AuthContext } from "../../context/authcontext";
 import { Link, useNavigate } from "react-router-dom";
 import { Navbar, Footer } from "../index";
-import classes from "./DashBoard.module.css";
+import classes from "./LandingPage.module.css";
 import {
   mainbodyimage,
   approveresponse,
   sendformforresponse,
   formcreation,
 } from "../../assets/index";
-import FeatureItem from "./FeatureItem/FeatureItem";
-const DashBoard = () => {
+import FeatureItem from "./components/FeatureItem/FeatureItem";
+const LandingPage = () => {
 
   const features = [
     {
@@ -36,7 +36,7 @@ const DashBoard = () => {
   return (
     <>
       <Navbar />
-      <div className={classes.dashboardcontainer}>
+      <div className={classes.landingpagecontainer}>
         <div className={classes.mainbody}>
           <div className={classes.mainbodydescription}>
             <div className={classes.bodytitle}>
@@ -116,4 +116,4 @@ const DashBoard = () => {
   );
 };
 
-export default DashBoard;
+export default LandingPage;

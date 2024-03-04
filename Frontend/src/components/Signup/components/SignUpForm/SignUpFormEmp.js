@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { MDBCol, MDBInput, MDBCheckbox } from "mdb-react-ui-kit";
-import { useRequest } from "../../hooks/request-hook";
+import { useRequest } from "../../../../hooks/request-hook";
 import { Link, useNavigate } from "react-router-dom";
 import classes from "./SignUpForm.module.css";
 import Select from "react-select";
-import { MAIN_LINK } from "../../urls/urls";
+import { MAIN_LINK } from "../../../../urls/urls";
 
-const SignUpFormAdm = () => {
+const SignUpFormEmp = () => {
   const { sendRequest } = useRequest();
   const navigate = useNavigate();
-  const [hasteam, setHasteam] = useState(false);
   const [empName, setEmpName] = useState("");
   const [mobile, setMobile] = useState(0);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [teamName, setTeamName] = useState("");
-  const [teamName1, setTeamName1] = useState("");
   const [isError, setisError] = useState(false);
   const [error, setError] = useState("");
   const [isChecked, setIsChecked] = useState(false);
@@ -44,17 +42,17 @@ const SignUpFormAdm = () => {
   const [optionList, setOptionList] = useState([]);
   function handleSelect(data) {
     setSelectedOptions(data);
-    setTeamName1(data.label);
+    setTeamName(data.label);
   }
 
-  const loginredirectHandler = ()=>{
-    navigate("/login?role=admin");
-  }
+  const loginredirectHandler = () => {
+    navigate("/login?role=employee");
+  };
 
   const signupHandler = async (e) => {
     e.preventDefault();
-
-    if (empName && email && password && mobile && (teamName || teamName1)) {
+    console.log("jain", selectedOptions.label);
+    if (empName && email && password && mobile && teamName) {
       if (isChecked) {
         if (validateEmail(email)) {
           if (validatePass(password)) {
@@ -64,25 +62,24 @@ const SignUpFormAdm = () => {
               e.preventDefault();
 
               const response = await sendRequest(
-                `${MAIN_LINK}/admin/signupadm`,
+                `${MAIN_LINK}/employee/signupemp`,
                 "POST",
                 JSON.stringify({
                   empName: empName,
                   mobile: mobile,
-                  teamName: teamName === "" ? teamName1 : teamName,
+                  teamName: teamName,
                   email: email,
                   password: password,
                 }),
                 { "Content-Type": "application/json" }
               );
               console.log(response, "checking response at signup");
-              navigate("/login?role=admin");
+              navigate("/login?role=employee");
               setEmpName("");
               setEmail("");
               setPassword("");
               setMobile(0);
               setTeamName("");
-              setTeamName1("");
             } else {
               setError("Invalid Mobile Number");
               setisError(true);
@@ -125,20 +122,15 @@ const SignUpFormAdm = () => {
             "Content-Type": "application/json",
           }
         );
-        if (responseData) {
-          setHasteam(true);
-          const updatedOptionList = [];
-          responseData.forEach((item) => {
-            const newTeamname = {
-              value: item.trim().replace(/\s/g, "").toLowerCase(),
-              label: item.charAt(0).toUpperCase() + item.slice(1),
-            };
-            updatedOptionList.push(newTeamname);
-          });
-          setOptionList(updatedOptionList);
-        } else {
-          setHasteam(false);
-        }
+        const updatedOptionList = [];
+        responseData.forEach((item) => {
+          const newTeamname = {
+            value: item.trim().replace(/\s/g, "").toLowerCase(),
+            label: item.charAt(0).toUpperCase() + item.slice(1),
+          };
+          updatedOptionList.push(newTeamname);
+        });
+        setOptionList(updatedOptionList);
       } catch (err) {
         console.log(err);
       }
@@ -149,7 +141,7 @@ const SignUpFormAdm = () => {
   return (
     <MDBCol col="4" md="6" className={classes.signupdiv}>
       <div className="d-flex flex-row align-items-center justify-content-center">
-        <p className="lead fw-normal mb-0 me-3">Sign Up as Admin</p>
+        <p className="lead fw-normal mb-0 me-3">Sign Up as Employee</p>
       </div>
 
       <div className="divider d-flex align-items-center my-4">
@@ -178,30 +170,14 @@ const SignUpFormAdm = () => {
           setError("");
         }}
       />
-      {hasteam && (
-        <Select
-          options={optionList}
-          placeholder="Select Existing Team"
-          value={selectedOptions}
-          onChange={handleSelect}
-          isSearchable={true}
-          className="my-4"
-        />
-      )}
-      {!teamName1 && <MDBInput
-        wrapperClass="mb-4"
-        placeholder="Enter New Team"
-        id="formControlLg"
-        type="text"
-        size="lg"
-        onChange={(e) => {
-          setTeamName(e.target.value);
-          setError("");
-          if (e.target.value === "") {
-            setHasteam(true);
-          } else setHasteam(false);
-        }}
-      />}
+      <Select
+        options={optionList}
+        placeholder="Select Team"
+        value={selectedOptions}
+        onChange={handleSelect}
+        isSearchable={true}
+        className="my-4"
+      />
       <MDBInput
         wrapperClass="mb-4"
         placeholder="Email"
@@ -263,4 +239,4 @@ const SignUpFormAdm = () => {
   );
 };
 
-export default SignUpFormAdm;
+export default SignUpFormEmp;

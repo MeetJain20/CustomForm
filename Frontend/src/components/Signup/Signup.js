@@ -2,9 +2,8 @@ import React from "react";
 import { MDBContainer, MDBCol, MDBRow } from "mdb-react-ui-kit";
 import classes from "./Signup.module.css";
 import img from "../../assets/signupvector.jpg";
-import SignUpFormAdm from "../SignUpForm/SignUpFormAdm";
+import { SignUpFormAdm, SignUpFormEmp } from "./components/index";
 import { useLocation } from "react-router-dom";
-import SignUpFormEmp from "../SignUpForm/SignUpFormEmp";
 import { Navbar } from "../index.js";
 
 const SignUp = () => {
