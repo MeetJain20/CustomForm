@@ -2,7 +2,6 @@
 .navbarr {
   min-height: 75px;
   padding: 10px;
-  border-bottom: 1px solid #f2f2f2;
   background-color: var(--navbar-blue);
 }
 .navbarcontent{
@@ -23,7 +22,7 @@
 }
 .logoutbutton,.profile{
   font-size: 1.5rem;
-  color: white;
+  color: var(--white-color);
   cursor: pointer;
 }
 .logindropdowm{

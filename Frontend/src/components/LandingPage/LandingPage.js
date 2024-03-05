@@ -11,7 +11,7 @@ import {
 } from "../../assets/index";
 import FeatureItem from "./components/FeatureItem/FeatureItem";
 const LandingPage = () => {
-
+  const navigate = useNavigate();
   const features = [
     {
       title: "Create an online form as easily as creating a document",
@@ -33,6 +33,17 @@ const LandingPage = () => {
     },
   ];
 
+  const gotoformHandler = ()=>{
+    if(localStorage.getItem('role') === "admin")
+    {
+      navigate('/admindashboard');
+    }
+    else if(localStorage.getItem('role') === "employee")
+    {
+      navigate('employeedashboard');
+    }
+  }
+
   return (
     <>
       <Navbar />
@@ -47,21 +58,21 @@ const LandingPage = () => {
               responses in real-time.
             </div>
             <div className={classes.bodyformslink}>
-              <button className={classes.gotoformsbutton}>Go To Forms</button>
+              <button className={classes.gotoformsbutton} onClick={gotoformHandler}>Go To Forms</button>
             </div>
             <div className={classes.gotosignup}>
               <div className={classes.donthavetext}>Don't Have an account?</div>
               <div className={classes.listofsignup}>
-                <div class="dropdown">
+                <div className="dropdown">
                   <div
-                    class={`${classes.dropdownbutton} dropdown-toggle`}
+                    className={`${classes.dropdownbutton} dropdown-toggle`}
                     type="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
                     Sign Up for free
                   </div>
-                  <ul class={`${classes.dropdownmenu} dropdown-menu`}>
+                  <ul className={`${classes.dropdownmenu} dropdown-menu`}>
                     <li>
                       <Link
                         to={`/signup?role=admin`}
@@ -93,22 +104,20 @@ const LandingPage = () => {
         </div>
         <div className={classes.featurescontainer}>
           <div className={classes.featuresheading}>Features</div>
-         {
-  features.map((feature, index) => {
-    const isOddIndex = index % 2 !== 0;
-    const sideProp = isOddIndex ? 'switch' : null;
+          {features.map((feature, index) => {
+            const isOddIndex = index % 2 !== 0;
+            const sideProp = isOddIndex ? "switch" : null;
 
-    return (
-      <FeatureItem
-        key={index}
-        title={feature.title}
-        description={feature.description}
-        image={feature.image}
-        side={sideProp} // Pass the side prop
-      />
-    );
-  })
-}
+            return (
+              <FeatureItem
+                key={index}
+                title={feature.title}
+                description={feature.description}
+                image={feature.image}
+                side={sideProp} // Pass the side prop
+              />
+            );
+          })}
         </div>
       </div>
       <Footer />

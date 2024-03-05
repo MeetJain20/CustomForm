@@ -1,0 +1,21 @@
+.cardcontainer{
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+.cardcontainer:hover{
+    box-shadow: var(--newform-hover);
+}
+
+.formcardimage{
+    height: 175px;
+    width: 175px;
+    margin:0 auto;
+}
+
+.formcardbody{
+    padding:5px;
+    align-items: center;
+    text-align: center;
+}

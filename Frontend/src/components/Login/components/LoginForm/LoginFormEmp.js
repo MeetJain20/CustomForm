@@ -54,7 +54,7 @@ const LoginFormEmp = () => {
             setisError(true);
           } else {
             // toast.success("Login Successful");
-            navigate("/landingpage");
+            navigate("/employeedashboard");
             auth.login(response.user.id, "employee", response.token);
             setEmail("");
             setPassword("");

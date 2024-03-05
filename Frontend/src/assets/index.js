@@ -1,5 +1,6 @@
 import mainbodyimage from "./mainimagebody.jpg";
 import formcreation from "./formcreation.jpg";
+import form from "./form.png";
 import sendformforresponse from "./sendformforresponse.jpg";
 import approveresponse from "./approveresponse.jpg";
 import loginvector from "./loginvector.png";
@@ -14,4 +15,5 @@ export {
   formcreation,
   sendformforresponse,
   approveresponse,
+  form
 };

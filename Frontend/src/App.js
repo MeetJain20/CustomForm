@@ -3,8 +3,12 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useCallback, useState, useEffect } from "react";
 import { AuthContext } from "./context/authcontext";
-import { SignUp, Login, LandingPage, Navbar } from "./components/index";
+import { SignUp, Login, LandingPage } from "./components/index";
 import Cookies from "js-cookie";
+import {
+  AdminDashboard,
+  EmployeeDashboard,
+} from "./components/DashBoard/index";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,7 +27,7 @@ function App() {
   const logout = useCallback(() => {
     setIsLoggedIn(false);
     setuserId(null);
-    Cookies.remove('token');
+    Cookies.remove("token");
   }, []);
 
   useEffect(() => {
@@ -41,6 +45,8 @@ function App() {
           {/* {localStorage.getItem("role") == "customer" ? (<Route path="/" element={<Homepage />} />) : (<Route path="/" element={<Homepagem />} />)}  */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/landingpage" element={<LandingPage />} />
+          <Route path="/admindashboard" element={<AdminDashboard />} />
+          <Route path="/employeedashboard" element={<EmployeeDashboard />} />
         </Routes>
       </Router>
     );

@@ -51,7 +51,7 @@ const LoginFormAdm = () => {
             setError("Invalid Credentials Try Again");
             setisError(true);
           } else {
-            navigate("/landingpage");
+            navigate("/admindashboard");
             auth.login(response.user.id, "admin", response.token);
             setEmail("");
             setPassword("");
