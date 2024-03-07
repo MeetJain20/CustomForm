@@ -1,0 +1,30 @@
+.newfieldcontainer {
+  display: flex;
+  flex-direction: column;
+  min-width: 45%;
+  background-color: var(--white-color);
+  border-radius: 7px;
+  padding: 30px 30px;
+  box-shadow: var(--search-boxshadow);
+  position: relative;
+}
+
+.newfieldcontainer:focus-within {
+  border-left: 5px solid var(--navbar-blue);
+}
+
+.saveandcopydiv {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-weight: 500;
+  position: absolute;
+  top: 0;
+  left: 101.5%;
+  background-color: var(--white-color);
+  border-radius: 7px;
+  padding: 10px 10px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: var(--search-boxshadow);
+}

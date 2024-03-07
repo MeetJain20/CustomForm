@@ -1,0 +1,48 @@
+.createformcontainer {
+  margin-top: 5rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+  background-color: var(--light-cyan);
+}
+
+.customcontainer {
+  display: flex;
+  justify-content: center;
+}
+
+.createformheader {
+  display: flex;
+  flex-direction: column;
+  width: 45%;
+  background-color: var(--white-color);
+  padding: 30px 30px;
+  border-radius: 10px 10px 5px 5px;
+  border-top: 10px solid var(--navbar-blue);
+  box-shadow: var(--search-boxshadow);
+}
+
+.createformheadertitle {
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  border: none;
+}
+
+.createformheaderdesc {
+    font-size: 1rem;
+    font-weight: 350;
+    border: none;
+}
+
+.createformheaderdesc:focus,.createformheadertitle:focus{
+    outline:none;
+    border-bottom: 2px solid var(--dark-divider);
+}
+
+.createformbody{
+    display: flex;
+    justify-content: center;
+}

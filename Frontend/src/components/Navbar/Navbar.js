@@ -11,6 +11,10 @@ import { CgProfile } from "react-icons/cg";
 const Navbar = () => {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const role = localStorage.getItem("role");
+  const destination = role === "admin" ? "/admindashboard" : "/employeedashboard";
+  
   const [selectedOptions, setSelectedOptions] = useState();
   const optionList = [
     { value: "employee", label: "Employee" },
@@ -67,7 +71,7 @@ const Navbar = () => {
               <Link className="nav-link active" aria-current="page" to="/">
                 Home
               </Link>
-              <Link className="nav-link active" aria-current="page" to="/forms">
+              <Link className="nav-link active" aria-current="page" to={destination}>
                 Forms
               </Link>
             </div>

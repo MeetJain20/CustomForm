@@ -3,11 +3,11 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useCallback, useState, useEffect } from "react";
 import { AuthContext } from "./context/authcontext";
-import { SignUp, Login, LandingPage } from "./components/index";
+import { SignUp, Login, LandingPage,MakeForm } from "./components/index";
 import Cookies from "js-cookie";
 import {
   AdminDashboard,
-  EmployeeDashboard,
+  EmployeeDashboard
 } from "./components/DashBoard/index";
 
 function App() {
@@ -44,7 +44,9 @@ function App() {
         <Routes>
           {/* {localStorage.getItem("role") == "customer" ? (<Route path="/" element={<Homepage />} />) : (<Route path="/" element={<Homepagem />} />)}  */}
           <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LandingPage />} />
           <Route path="/landingpage" element={<LandingPage />} />
+          <Route path="/createform" element={<MakeForm />} />
           <Route path="/admindashboard" element={<AdminDashboard />} />
           <Route path="/employeedashboard" element={<EmployeeDashboard />} />
         </Routes>

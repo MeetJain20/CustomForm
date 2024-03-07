@@ -40,7 +40,7 @@ const LandingPage = () => {
     }
     else if(localStorage.getItem('role') === "employee")
     {
-      navigate('employeedashboard');
+      navigate('/employeedashboard');
     }
   }
 
@@ -51,7 +51,7 @@ const LandingPage = () => {
         <div className={classes.mainbody}>
           <div className={classes.mainbodydescription}>
             <div className={classes.bodytitle}>
-              Get insights quickly, with Google Forms
+              Get insights quickly, with Dbox Forms
             </div>
             <div className={classes.bodydesc}>
               Easily create and share online forms and surveys, and analyze
@@ -60,7 +60,7 @@ const LandingPage = () => {
             <div className={classes.bodyformslink}>
               <button className={classes.gotoformsbutton} onClick={gotoformHandler}>Go To Forms</button>
             </div>
-            <div className={classes.gotosignup}>
+            {!localStorage.getItem("userid") && <div className={classes.gotosignup}>
               <div className={classes.donthavetext}>Don't Have an account?</div>
               <div className={classes.listofsignup}>
                 <div className="dropdown">
@@ -92,7 +92,7 @@ const LandingPage = () => {
                   </ul>
                 </div>
               </div>
-            </div>
+            </div>}
           </div>
           <div className={classes.mainbodyimage}>
             <img

@@ -14,12 +14,11 @@
 }
 
 .addformbutton{
+    /* display: flex; */
     align-items: center;
-    padding: 30px 20px;
+    padding: 6.5rem 50px;
     text-align: center;
-    padding-top: 6.2rem;
     border-right: 2px solid var(--divider-color);
-    
 }
 
 .newformbutton{
@@ -38,5 +37,3 @@
     background-color: var(--border-color);
     box-shadow: var(--newform-hover);
 }
-
-
