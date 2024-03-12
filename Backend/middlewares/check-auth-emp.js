@@ -25,7 +25,7 @@ const check_Authentication = (req, res, next) => {
     });
   }
  
-  jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+  jwt.verify(token, process.env.SUPERSECRET_KEY, (err, decoded) => {
     if (decoded && decoded.role === "employee") {
       next();
     } else {
@@ -34,4 +34,4 @@ const check_Authentication = (req, res, next) => {
   });
 };
  
-module.exports = { check_Authentication };
+module.exports = check_Authentication;

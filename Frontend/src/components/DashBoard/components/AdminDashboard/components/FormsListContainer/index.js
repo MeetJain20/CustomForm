@@ -5,10 +5,14 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { IoSearchOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import debounce from "lodash.debounce";
+import { form as formimg } from "../../../../../../assets/index";
 
 const FormsListContainer = ({ forms, formtitle }) => {
+  // console.log("meet",forms)
   const dispatch = useDispatch();
-  const [searchvalue,setSearchValue] = useState(useSelector((state) => state.searchtext.searchText));
+  const [searchvalue, setSearchValue] = useState(
+    useSelector((state) => state.searchtext.searchText)
+  );
 
   const [showAllForms, setShowAllForms] = useState(false);
   const showallformsHandler = () => {
@@ -21,14 +25,14 @@ const FormsListContainer = ({ forms, formtitle }) => {
     setSearchValue(newSearchValue);
     debouncedDispatch(newSearchValue);
   };
-  
+
   const debouncedDispatch = debounce((value) => {
     dispatch({
       type: "SEARCH_TEXT",
       payload: value,
     });
   }, 500);
-   
+
   return (
     <div className={`${showAllForms ? classes.showAllForms : ""}`}>
       <div className={classes.createneworupdateformcontainer}>
@@ -74,12 +78,22 @@ const FormsListContainer = ({ forms, formtitle }) => {
             <div className={classes.allformlist}>
               {showAllForms
                 ? forms.map((form, index) => (
-                    <FormCard key={index} img={form.img} title={form.title} />
+                    <FormCard
+                      key={index}
+                      formid={form._id}
+                      img={formimg}
+                      title={form.formtitle}
+                    />
                   ))
                 : forms
                     .slice(0, 6)
                     .map((form, index) => (
-                      <FormCard key={index} img={form.img} title={form.title} />
+                      <FormCard
+                        key={index}
+                      formid={form._id}
+                        img={formimg}
+                        title={form.formtitle}
+                      />
                     ))}
             </div>
           ) : (

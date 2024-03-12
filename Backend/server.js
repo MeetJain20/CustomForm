@@ -3,13 +3,16 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const adminRoutes = require("./routes/admin");
+const formRoutes = require("./routes/form");
 const employeeRoutes = require("./routes/employee");
 var fs = require("fs");
+const cors = require("cors");
 var path = require("path");
 require("dotenv").config({
   path: "./.env",
 });
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 app.use(cookieParser());
 
@@ -20,12 +23,12 @@ app.use((req, res, next) => {
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
   );
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
-
   next();
 }); //cors error
 
 app.use("/admin", adminRoutes);
 app.use("/employee", employeeRoutes);
+app.use("/form", formRoutes);
 // app.use("/merchant", merchantRoutes);
 // app.use("/item", itemRoutes);
 // app.use("/gold", goldRoutes);

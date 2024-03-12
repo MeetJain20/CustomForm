@@ -7,17 +7,17 @@ import { useSelector } from "react-redux";
 
 const TemplateForms = () => {
   const forms = [
-    { img: form, title: "Template Title" },
-    { img: form, title: "Template Title" },
-    { img: form, title: "Template Title" },
-    { img: form, title: "Template Title" },
-    { img: form, title: "Template Title" },
-    { img: form, title: "Template Title" },
-    { img: form, title: "Template Title" },
+    { img: form, formtitle: "Template Title" },
+    { img: form, formtitle: "Template Title" },
+    { img: form, formtitle: "Template Title" },
+    { img: form, formtitle: "Template Title" },
+    { img: form, formtitle: "Template Title" },
+    { img: form, formtitle: "Template Title" },
+    { img: form, formtitle: "Template Title" },
   ];
   const searchvalue = useSelector((state) => state.searchtext.searchText);
   const filteredForms = forms.filter((form) =>
-    form.title
+    form.formtitle
       .toLowerCase()
       .replace(/\s/g, "")
       .includes(searchvalue.toLowerCase().replace(/\s/g, ""))

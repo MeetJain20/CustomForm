@@ -9,10 +9,10 @@ import {
   TimeTypeFields,
 } from "./components";
 
-const FieldTypeAttributes = ({ type }) => {
+const FieldTypeAttributes = ({ type, fieldData }) => {
+  // console.log("meet",type);
   // State to hold the active type
   const [activeType, setActiveType] = useState(null);
-
   // Effect to update the active type when the prop value changes
   useEffect(() => {
     setActiveType(type);
@@ -20,13 +20,13 @@ const FieldTypeAttributes = ({ type }) => {
 
   return (
     <div>
-      {activeType === "shortanswer" && <ShortAnswerFields />}
-      {activeType === "longanswer" && <LongAnswerFields />}
-      {activeType === "multiplechoice" && <MultipleChoiceFields />}
-      {activeType === "checkboxtype" && <CheckboxTypeFields />}
-      {activeType === "dropdown" && <DropdownFields />}
-      {activeType === "datetype" && <DateTypeFields />}
-      {activeType === "timetype" && <TimeTypeFields />}
+      {activeType === "shortanswer" && <ShortAnswerFields fieldData={fieldData} />}
+      {activeType === "longanswer" && <LongAnswerFields fieldData={fieldData} />}
+      {activeType === "multiplechoice" && <MultipleChoiceFields fieldData={fieldData} />}
+      {activeType === "checkboxtype" && <CheckboxTypeFields fieldData={fieldData} />}
+      {activeType === "dropdown" && <DropdownFields fieldData={fieldData} />}
+      {activeType === "datetype" && <DateTypeFields fieldData={fieldData} />}
+      {activeType === "timetype" && <TimeTypeFields fieldData={fieldData} />}
     </div>
   );
 };

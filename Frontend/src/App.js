@@ -46,7 +46,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LandingPage />} />
           <Route path="/landingpage" element={<LandingPage />} />
-          <Route path="/createform" element={<MakeForm />} />
+          <Route path="/createform/:formid" element={<MakeForm />} />
           <Route path="/admindashboard" element={<AdminDashboard />} />
           <Route path="/employeedashboard" element={<EmployeeDashboard />} />
         </Routes>

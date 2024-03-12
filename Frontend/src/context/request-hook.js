@@ -11,7 +11,7 @@ export const useRequest = () => {
                 const response = await fetch(url, { method, body, headers });
                 const responseData = await response.json();
                 if (!response.ok) {
-                    console.log(responseData);
+                    // console.log(responseData);
                     setisError(responseData);
                     setExists(true);
                     throw new Error(responseData.message);

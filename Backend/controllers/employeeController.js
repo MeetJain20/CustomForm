@@ -133,7 +133,6 @@ const login = async (req, res, next) => {
       return next(error);
     }
     delete existingUser.password;
-
     let token;
     try {
       token = jwt.sign(
@@ -142,7 +141,7 @@ const login = async (req, res, next) => {
           email: existingUser.email,
           role: existingUser.role,
         },
-        "SUPERSECRET_KEY",
+        process.env.SUPERSECRET_KEY,
         { expiresIn: "1d" }
       );
       // lo;

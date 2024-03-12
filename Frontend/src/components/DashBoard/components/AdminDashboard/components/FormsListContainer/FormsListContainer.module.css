@@ -83,7 +83,7 @@
     minmax(200px, 1fr)
   ); /* Adjust columns automatically */
   gap: 2rem;
-  /* opacity:0.75;
+  /* opaci
     transition: all 2s ease; */
 }
 

@@ -1,9 +1,15 @@
 import React from "react";
 import classes from "./FormCard.module.css";
+import { useNavigate } from "react-router-dom";
 
-const FormCard = ({img, title}) => {
+const FormCard = ({formid, img, title}) => {
+const navigate = useNavigate();
+  const gotoformHandler = ()=>{
+    navigate(`/createform/${formid}`);
+  }
+
   return (
-    <div className={`card ${classes.cardcontainer}`} style={{ width: "200px" }}>
+    <div className={`card ${classes.cardcontainer}`} style={{ width: "200px" }} onClick={gotoformHandler}>
       <img
         src={img}
         className={`${classes.formcardimage} card-img-top`}

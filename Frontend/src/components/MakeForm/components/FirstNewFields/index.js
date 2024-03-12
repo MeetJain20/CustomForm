@@ -1,17 +1,20 @@
-
 import React, { useState, useRef } from "react";
-import classes from "./NewFields.module.css";
+import classes from "./FirstNewFields.module.css";
 import Select from "react-select";
-import FieldTypeAttributes from "../FieldTypeAttributes";
-import { RiDeleteBin6Line } from "react-icons/ri";
+import { useDispatch, useSelector } from "react-redux";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { MdOutlineContentCopy } from "react-icons/md";
-import useOutsideClick from "../../../../hooks/useOutsideClick";
-import { useDispatch } from "react-redux";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { v4 as uuidv4 } from "uuid";
 
-const NewFields = ({ fieldData }) => {
+const FirstNewFields = () => {
+    // console.log("In firstnewfields")
   const dispatch = useDispatch();
+  const formFields = useSelector((state) => state.formData.fields);
   const [currentdiv, setCurrentDiv] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState();
+  const containerRef = useRef(null);
+
   const optionList = [
     { value: "shortanswer", label: "Short Answer" },
     { value: "longanswer", label: "Long Answer" },
@@ -21,38 +24,21 @@ const NewFields = ({ fieldData }) => {
     { value: "datetype", label: "Date" },
     { value: "timetype", label: "Time" },
   ];
-  const [selectedOptions, setSelectedOptions] = useState({value: fieldData.type.replace(/\s+/g, "").toLowerCase(), label: fieldData.type});
 
-  const handleSelect = (data) => {
-    setSelectedOptions(data);
-    // Dispatch action to update field type in Redux store
-    dispatch({
-      type: "UPDATE_FIELD_TYPE",
-      payload: { fieldId: fieldData.fieldid, type: data.label },
-    });
-  };
-
-  const addfieldHandler = () => {
-    dispatch({
-      type: "ADD_FIELD",
-      payload: true,
-    });
-  };
-
-  const containerRef = useRef(null);
   const insideClickHandler = () => {
     setCurrentDiv(true);
   };
-  useOutsideClick(containerRef, () => {
-    setCurrentDiv(false);
-  });
-  // useState(() => {
-  //   if (fieldData.type) {
-  //     const transformedType = fieldData.type.replace(/\s+/g, "").toLowerCase();
-  //     setSelectedOptions({ value: transformedType, label: fieldData.type });
-  //   }
-  // }, [fieldData]);
 
+  const handleSelect = (data) => {
+    setSelectedOptions(data);
+   
+      // Generate unique fieldId using uuidv4
+      const newFieldId = uuidv4();
+      dispatch({
+        type: "ADD_FIELD",
+        payload: { id: newFieldId, type: data.label },
+      });
+  };
 
   return (
     <div
@@ -77,18 +63,13 @@ const NewFields = ({ fieldData }) => {
           isClearable={false} // Disable clear button
         />
       </div>
-    
-        <FieldTypeAttributes
-          type={(fieldData.type.replace(/\s+/g, "").toLowerCase() || selectedOptions.value).replace(/\s+/g, "").toLowerCase()}
-          fieldData={fieldData}
-        />
-  
+      {selectedOptions && (
         <div
           className={`${classes.saveandcopydiv} ${
             currentdiv ? classes.showSaveAndCopy : ""
           }`}
         >
-          <div className={classes.addfieldbutton} onClick={addfieldHandler}>
+          <div className={classes.addfieldbutton}>
             <IoMdAddCircleOutline />
           </div>
           <div className={classes.copyfieldbutton}>
@@ -98,13 +79,9 @@ const NewFields = ({ fieldData }) => {
             <RiDeleteBin6Line />
           </div>
         </div>
- 
+      )}
     </div>
   );
 };
 
-NewFields.defaultProps = {
-  fieldData: {} // Default empty object when no fieldData is provided
-};
-
-export default NewFields;
+export default FirstNewFields;

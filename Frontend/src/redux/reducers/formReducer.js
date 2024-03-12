@@ -1,32 +1,38 @@
 const initialState = {
-  formtitle: "Untitled Form",
-  formdesc: "Form Desc",
   fields: [],
 };
 
 const formReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "UPDATE_TITLE":
+    case "UPDATE_FIELDS_FROM_BACKEND":
       return {
         ...state,
-        formtitle: action.payload,
-      };
-    case "UPDATE_DESC":
-      return {
-        ...state,
-        formdesc: action.payload,
-      };
-    case "UPDATE_IMAGE_URL":
-      return {
-        ...state,
-        imageUrl: action.payload, // Update the imageUrl field
+        fields: action.payload, // Update fields array with data received from backend
       };
     case "ADD_FIELD":
       return {
         ...state,
-        fields: [...state.fields, action.payload],
+        fields: [
+          ...state.fields,
+          { fieldid: action.payload.id, type: action.payload.type },
+        ],
       };
-    // Add more cases for other pages if needed
+    case "UPDATE_FIELD_TYPE":
+      return {
+        ...state,
+        fields: state.fields.map((field) =>
+          field.fieldid === action.payload.fieldId
+            ? { ...field, type: action.payload.type }
+            : field
+        ),
+      };
+    case "DELETE_FIELD_ARRAY":
+      return {
+        ...state,
+        fields: state.fields.filter(
+          (field) => field.fieldid !== action.payload.fieldId
+        ),
+      };
     default:
       return state;
   }

@@ -1,0 +1,56 @@
+.multiplefieldcontainer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+.questionfield{
+    padding: 5px;
+    font-size: 1.25rem;
+    border:none;
+    border-bottom: 0px;
+    transition: border-bottom 0.3s ease-in-out;
+}
+
+.questionfield:focus{
+    outline:none;
+    border-bottom: 1px solid var(--dark-divider);
+}
+
+.optionsarray{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.optionContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+}
+.optionField{
+    border:none;
+    padding: 10px;
+    border-bottom: 1px solid var(--divider-color);
+    transition: border-bottom 0.3s ease;
+}
+
+.optionField:focus{
+    outline: none;
+    border-bottom: 1px solid var(--dark-divider);
+}
+
+.deleteOptiondiv{
+    cursor: pointer;
+}
+
+.addOptiondiv{
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+.errorMessage{
+    font-size: 0.75rem;
+    color: red;
+}

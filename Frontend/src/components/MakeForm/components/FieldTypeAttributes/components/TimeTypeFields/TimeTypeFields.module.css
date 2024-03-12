@@ -1,0 +1,32 @@
+.timetypefieldcontainer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+.questionfield{
+    padding: 5px;
+    font-size: 1.25rem;
+    border:none;
+    border-bottom: 0px;
+    transition: border-bottom 0.3s ease-in-out;
+}
+
+.questionfield:focus{
+    outline:none;
+    border-bottom: 1px solid var(--dark-divider);
+}
+
+.timeContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-top: 0.3rem;
+}
+
+.timefield{
+    border:none;
+    border-bottom: 1px solid var(--divider-color);
+}

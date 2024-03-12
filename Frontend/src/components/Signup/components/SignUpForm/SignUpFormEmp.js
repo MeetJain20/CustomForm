@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MDBCol, MDBInput, MDBCheckbox } from "mdb-react-ui-kit";
-import { useRequest } from "../../../../hooks/request-hook";
+import { useRequest } from "../../../../context/request-hook";
 import { Link, useNavigate } from "react-router-dom";
 import classes from "./SignUpForm.module.css";
 import Select from "react-select";

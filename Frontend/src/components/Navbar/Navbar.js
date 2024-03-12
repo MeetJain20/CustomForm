@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import Select from "react-select";
 import { AuthContext } from "../../context/authcontext";
-import { useRequest } from "../../hooks/request-hook";
+import { useRequest } from "../../context/request-hook";
 import classes from "./Navbar.module.css";
 import { LuLogOut } from "react-icons/lu";
 import { CgProfile } from "react-icons/cg";

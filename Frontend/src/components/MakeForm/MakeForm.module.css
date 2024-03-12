@@ -16,7 +16,8 @@
 .createformheader {
   display: flex;
   flex-direction: column;
-  width: 45%;
+  min-width: 45%;
+  /* width: 45%; */
   background-color: var(--white-color);
   padding: 30px 30px;
   border-radius: 10px 10px 5px 5px;
@@ -44,5 +45,9 @@
 
 .createformbody{
     display: flex;
-    justify-content: center;
+    min-width: 45%;
+    flex-direction: column;
+    gap: 20px;
+    align-self: center;
 }
+
