@@ -8,6 +8,7 @@ const formSchema = new Schema({
   formdesc: { type: String, required: true },
   fields: [{ type: Object, required: true }],
   isComplete: {type: Boolean, required: true},
+  isTemplate: {type: Boolean, required: true}
 });
 
 module.exports = mongoose.model("FormModel", formSchema);

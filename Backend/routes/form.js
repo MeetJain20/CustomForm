@@ -20,6 +20,11 @@ router.get(
   formController.getcompletedforms
 );
 router.put(
+  "/updateformstatus",
+  check_Authentication,
+  formController.updateformstatus
+);
+router.put(
   "/updateformtitle",
   check_Authentication,
   formController.updateformtitle

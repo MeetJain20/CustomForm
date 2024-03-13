@@ -30,3 +30,17 @@
     border:none;
     border-bottom: 1px solid var(--divider-color);
 }
+
+.functionalities{
+    display: flex;
+    flex-direction: row;
+    margin-top: 1rem;
+    gap: 15px;
+}
+
+.copyfieldbutton,.deletefieldbutton,
+.savechangebutton{
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+}

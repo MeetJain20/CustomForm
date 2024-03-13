@@ -19,10 +19,10 @@ const FirstNewFields = () => {
     { value: "shortanswer", label: "Short Answer" },
     { value: "longanswer", label: "Long Answer" },
     { value: "multiplechoice", label: "Multiple Choice" },
-    { value: "checkboxtype", label: "Checkbox" },
+    { value: "checkboxtype", label: "Checkbox Type" },
     { value: "dropdown", label: "Dropdown" },
-    { value: "datetype", label: "Date" },
-    { value: "timetype", label: "Time" },
+    { value: "datetype", label: "Date Type" },
+    { value: "timetype", label: "Time Type" },
   ];
 
   const insideClickHandler = () => {

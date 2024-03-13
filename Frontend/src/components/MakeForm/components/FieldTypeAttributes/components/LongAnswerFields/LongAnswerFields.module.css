@@ -13,7 +13,7 @@
     transition: border-bottom 0.3s ease-in-out;
 }
 .answerfield{
-    padding: 5px;
+    padding: 10px;
     border: none;
     border: 1px solid var(--dark-divider);
     cursor:auto;

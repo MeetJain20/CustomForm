@@ -32,6 +32,7 @@ const getcompletedforms = async (req, res, next) => {
   }
 };
 
+
 const createforms = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -40,13 +41,13 @@ const createforms = async (req, res, next) => {
     );
   }
   const { adminId } = req.body;
-
   const formData = new FormModel({
     adminId: adminId,
     formtitle: "Untitled Form",
     formdesc: "Description Here",
     fields: [],
     isComplete: false,
+    isTemplate: false,
   });
   try {
     const newform = await formData.save();
@@ -59,6 +60,26 @@ const createforms = async (req, res, next) => {
   res.json({ form: formData.toObject({ getters: true }) });
 };
 
+
+const updateformstatus = async (req, res, next) => {
+  try {
+    const { formid } = req.body;
+    const formstatus = await FormModel.findByIdAndUpdate(
+      formid,
+      { isComplete: true },
+      { new: true }
+    );
+    if (!formstatus) {
+      throw new HttpError("Form not found", 404);
+    }
+    res.json(formstatus);
+  } catch (error) {
+    console.error("Error Saving form : ", error);
+    const statusCode = error.statusCode || 500;
+    const message = error.message || "Failed to Save the form";
+    res.status(statusCode).json({ message });
+  }
+};
 const updateformtitle = async (req, res, next) => {
   try {
     const { formid, formtitle } = req.body;
@@ -103,25 +124,22 @@ const updateformfields = async (req, res, next) => {
   try {
     const { formid, fielddata } = req.body;
     const form = await FormModel.findById(formid);
-
-    // Check if field with the same fieldId exists and its type is the same
+  
+    // Check if field with the same fieldId exists
     const existingFieldIndex = form.fields.findIndex(
-      (field) => field.fieldId === fielddata.fieldId
+      (field) => field.fieldid === fielddata.fieldid
     );
-    if (
-      existingFieldIndex !== -1 &&
-      form.fields[existingFieldIndex].type === fielddata.type
-    ) {
+    if (existingFieldIndex !== -1) {
       // Update the existing field
       form.fields[existingFieldIndex] = fielddata;
     } else {
       // Push the new field
       form.fields.push(fielddata);
     }
-
+  
     // Save the updated form
     const updatedForm = await form.save();
-
+  
     if (!updatedForm) {
       throw new HttpError("Form not found", 404);
     }
@@ -132,6 +150,7 @@ const updateformfields = async (req, res, next) => {
     const message = error.message || "Failed to update form fields";
     res.status(statusCode).json({ message });
   }
+  
 };
 
 const copyfield = async (req, res, next) => {
@@ -196,6 +215,7 @@ exports.getcurrentform = getcurrentform;
 exports.getcompletedforms = getcompletedforms;
 exports.updateformtitle = updateformtitle;
 exports.updateformdesc = updateformdesc;
+exports.updateformstatus = updateformstatus;
 exports.updateformfields = updateformfields;
 exports.copyfield = copyfield;
 exports.deletefield = deletefield;

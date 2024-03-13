@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <div className={classes.footerbody}>
       <footer className={classes.footer}>
-        <p>&copy;2023 Darwinbox | All Rights Reserved</p>
+        <p>&copy;2024 Darwinbox | All Rights Reserved</p>
       </footer>
     </div>
   );

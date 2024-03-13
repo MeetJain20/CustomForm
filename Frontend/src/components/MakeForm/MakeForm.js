@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Navbar, Footer } from "../index";
 import classes from "./MakeForm.module.css";
 import NewFields from "./components/NewFields";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useRequest } from "../../context/request-hook";
 import { MAIN_LINK } from "../../urls/urls";
 import Cookies from "js-cookie";
@@ -12,6 +12,7 @@ import FirstNewFields from "./components/FirstNewFields";
 
 const MakeForm = () => {
   const { formid } = useParams();
+  const navigate = useNavigate();
   const { sendRequest } = useRequest();
   const savefield = useSelector((state) => state.funcfield.saveChanges);
   const copyfield = useSelector((state) => state.funcfield.copyField);
@@ -78,6 +79,27 @@ const MakeForm = () => {
     debouncedFormDescHandler(formdesc);
   }, [formdesc]);
 
+  // Save Form
+
+  const saveFormHandler = async() => {
+    try {
+      const responseData = await sendRequest(
+        `${MAIN_LINK}/form/updateformstatus`,
+        "PUT",
+        JSON.stringify({
+          formid: formid,
+        }),
+        {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        }
+      );
+      navigate('/admindashboard')
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   // Get FormData
 
   useEffect(() => {
@@ -141,6 +163,14 @@ const MakeForm = () => {
           ) : (
             <FirstNewFields />
           )}
+        </div>
+        <div className={classes.submitformbuttoncontainer}>
+          <button
+            className={classes.submitformbutton}
+            onClick={saveFormHandler}
+          >
+            Save Form
+          </button>
         </div>
       </div>
       <Footer />
