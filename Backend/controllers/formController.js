@@ -4,7 +4,7 @@ const FormModel = require("../models/FormModel");
 const EmployeeModel = require("../models/EmployeeModel");
 
 const nodemailer = require("nodemailer");
- 
+
 const sendMail = async (recipients) => {
   try {
     let config = {
@@ -36,16 +36,15 @@ const sendMail = async (recipients) => {
 
     let message = {
       from: process.env.SENDER_MAIL,
-      to: recipients.join(', '),
+      to: recipients.join(", "),
       subject: "DARWINBOX Forms Team",
-      html: htmlContent
+      html: htmlContent,
     };
 
     const info = await transporter.sendMail(message);
-    console.log("Mail sent:", info);
+    // console.log("Mail sent:", info);
 
     return "Mail sent successfully";
-
   } catch (error) {
     console.error("Error sending email:", error);
     throw new Error("Error sending email");
@@ -152,7 +151,7 @@ const createforms = async (req, res, next) => {
 const updateformstatus = async (req, res, next) => {
   try {
     const { formid } = req.body;
-    
+
     // Get the adminId from the FormModel
     const form = await FormModel.findById(formid);
     if (!form) {
@@ -162,17 +161,10 @@ const updateformstatus = async (req, res, next) => {
 
     // Find all employees with the adminId in their adminId array
     const employees = await EmployeeModel.find({ adminId });
-    console.log(employees);
     // Extract email addresses from the employees
-    const recipients = employees.map(employee => employee.email);
-console.log(recipients);
+    const recipients = employees.map((employee) => employee.email);
     // Send email to all recipients
-    sendMail(recipients).then((result) => {
-      res.send(result);
-    }).catch((error) => {
-      console.error("Error sending email:", error);
-      res.status(500).send("Error sending email");
-    });
+    sendMail(recipients);
     // Update form status
     const formstatus = await FormModel.findByIdAndUpdate(
       formid,
@@ -187,7 +179,6 @@ console.log(recipients);
     const message = error.message || "Failed to Save the form";
     res.status(statusCode).json({ message });
   }
-
 };
 
 const updatetemplatestatus = async (req, res, next) => {
