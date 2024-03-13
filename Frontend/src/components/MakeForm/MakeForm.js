@@ -81,7 +81,7 @@ const MakeForm = () => {
 
   // Save Form
 
-  const saveFormHandler = async() => {
+  const saveFormHandler = async () => {
     try {
       const responseData = await sendRequest(
         `${MAIN_LINK}/form/updateformstatus`,
@@ -94,7 +94,28 @@ const MakeForm = () => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
-      navigate('/admindashboard')
+      navigate("/admindashboard");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // Save Form as a Template
+
+  const saveFormTemplateHandler = async () => {
+    try {
+      const responseData = await sendRequest(
+        `${MAIN_LINK}/form/updatetemplatestatus`,
+        "PUT",
+        JSON.stringify({
+          formid: formid,
+        }),
+        {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        }
+      );
+      navigate("/admindashboard");
     } catch (err) {
       console.log(err);
     }
@@ -165,6 +186,12 @@ const MakeForm = () => {
           )}
         </div>
         <div className={classes.submitformbuttoncontainer}>
+          <button
+            className={classes.submitformbutton}
+            onClick={saveFormTemplateHandler}
+          >
+            Save Form as a Template
+          </button>
           <button
             className={classes.submitformbutton}
             onClick={saveFormHandler}

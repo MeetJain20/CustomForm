@@ -1,6 +1,90 @@
 const { validationResult } = require("express-validator");
 const HttpError = require("../models/http-error");
 const FormModel = require("../models/FormModel");
+const EmployeeModel = require("../models/EmployeeModel");
+
+const nodemailer = require("nodemailer");
+ 
+const sendMail = async (recipients) => {
+  try {
+    let config = {
+      service: "gmail",
+      auth: {
+        user: process.env.SENDER_MAIL,
+        pass: process.env.SENDER_PASSWORD,
+      },
+    };
+
+    const transporter = nodemailer.createTransport(config);
+
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Form Assigned</title>
+      </head>
+      <body>
+        <div style="background-color: #f0f0f0; padding: 20px;">
+          <h2 style="color: #333;">Please fill this form as soon as possible</h2>
+          <p style="color: #666;">Best regards,<br>Darwinbox Team</p>
+        </div>
+      </body>
+      </html>
+    `;
+
+    let message = {
+      from: process.env.SENDER_MAIL,
+      to: recipients.join(', '),
+      subject: "DARWINBOX Forms Team",
+      html: htmlContent
+    };
+
+    const info = await transporter.sendMail(message);
+    console.log("Mail sent:", info);
+
+    return "Mail sent successfully";
+
+  } catch (error) {
+    console.error("Error sending email:", error);
+    throw new Error("Error sending email");
+  }
+};
+
+// GET Request
+
+const getactiveforms = async (req, res, next) => {
+  const activeForms = await FormModel.find({ isComplete: false });
+
+  if (activeForms) {
+    res.json(activeForms);
+  } else {
+    res.json(null);
+  }
+};
+
+const gettemplateforms = async (req, res, next) => {
+  const templateForms = await FormModel.find({ isTemplate: true });
+
+  if (templateForms) {
+    res.json(templateForms);
+  } else {
+    res.json(null);
+  }
+};
+
+const getcompletedforms = async (req, res, next) => {
+  const completedForms = await FormModel.find({ isComplete: true });
+
+  if (completedForms) {
+    res.json(completedForms);
+  } else {
+    res.json(null);
+  }
+};
+
+// POST Request
 
 const getcurrentform = async (req, res, next) => {
   const { formid } = req.body;
@@ -13,25 +97,28 @@ const getcurrentform = async (req, res, next) => {
   }
 };
 
-const getactiveforms = async (req, res, next) => {
-  const activeForms = await FormModel.find({ isComplete: false });
+const copyfield = async (req, res, next) => {
+  try {
+    const { formid, fielddata } = req.body;
+    const form = await FormModel.findById(formid);
 
-  if (activeForms) {
-    res.json(activeForms);
-  } else {
-    res.json(null);
+    // Push the new field data to the form fields array
+    form.fields.push(fielddata);
+
+    // Save the updated form
+    const updatedForm = await form.save();
+
+    if (!updatedForm) {
+      throw new HttpError("Form not found", 404);
+    }
+    res.json(updatedForm);
+  } catch (error) {
+    console.error("Error copying form field:", error);
+    const statusCode = error.statusCode || 500;
+    const message = error.message || "Failed to copy form field";
+    res.status(statusCode).json({ message });
   }
 };
-const getcompletedforms = async (req, res, next) => {
-  const completedForms = await FormModel.find({ isComplete: true });
-
-  if (completedForms) {
-    res.json(completedForms);
-  } else {
-    res.json(null);
-  }
-};
-
 
 const createforms = async (req, res, next) => {
   const errors = validationResult(req);
@@ -43,8 +130,8 @@ const createforms = async (req, res, next) => {
   const { adminId } = req.body;
   const formData = new FormModel({
     adminId: adminId,
-    formtitle: "Untitled Form",
-    formdesc: "Description Here",
+    formtitle: "Form Title",
+    formdesc: "Form Description",
     fields: [],
     isComplete: false,
     isTemplate: false,
@@ -60,18 +147,39 @@ const createforms = async (req, res, next) => {
   res.json({ form: formData.toObject({ getters: true }) });
 };
 
+// PUT Request
 
 const updateformstatus = async (req, res, next) => {
   try {
     const { formid } = req.body;
+    
+    // Get the adminId from the FormModel
+    const form = await FormModel.findById(formid);
+    if (!form) {
+      throw new HttpError("Form not found", 404);
+    }
+    const adminId = form.adminId;
+
+    // Find all employees with the adminId in their adminId array
+    const employees = await EmployeeModel.find({ adminId });
+    console.log(employees);
+    // Extract email addresses from the employees
+    const recipients = employees.map(employee => employee.email);
+console.log(recipients);
+    // Send email to all recipients
+    sendMail(recipients).then((result) => {
+      res.send(result);
+    }).catch((error) => {
+      console.error("Error sending email:", error);
+      res.status(500).send("Error sending email");
+    });
+    // Update form status
     const formstatus = await FormModel.findByIdAndUpdate(
       formid,
       { isComplete: true },
       { new: true }
     );
-    if (!formstatus) {
-      throw new HttpError("Form not found", 404);
-    }
+
     res.json(formstatus);
   } catch (error) {
     console.error("Error Saving form : ", error);
@@ -79,7 +187,29 @@ const updateformstatus = async (req, res, next) => {
     const message = error.message || "Failed to Save the form";
     res.status(statusCode).json({ message });
   }
+
 };
+
+const updatetemplatestatus = async (req, res, next) => {
+  try {
+    const { formid } = req.body;
+    const formstatus = await FormModel.findByIdAndUpdate(
+      formid,
+      { isTemplate: true },
+      { new: true }
+    );
+    if (!formstatus) {
+      throw new HttpError("Form not found", 404);
+    }
+    res.json(formstatus);
+  } catch (error) {
+    console.error("Error Saving form as Template: ", error);
+    const statusCode = error.statusCode || 500;
+    const message = error.message || "Failed to Save the form as Template";
+    res.status(statusCode).json({ message });
+  }
+};
+
 const updateformtitle = async (req, res, next) => {
   try {
     const { formid, formtitle } = req.body;
@@ -124,7 +254,7 @@ const updateformfields = async (req, res, next) => {
   try {
     const { formid, fielddata } = req.body;
     const form = await FormModel.findById(formid);
-  
+
     // Check if field with the same fieldId exists
     const existingFieldIndex = form.fields.findIndex(
       (field) => field.fieldid === fielddata.fieldid
@@ -136,10 +266,10 @@ const updateformfields = async (req, res, next) => {
       // Push the new field
       form.fields.push(fielddata);
     }
-  
+
     // Save the updated form
     const updatedForm = await form.save();
-  
+
     if (!updatedForm) {
       throw new HttpError("Form not found", 404);
     }
@@ -150,31 +280,9 @@ const updateformfields = async (req, res, next) => {
     const message = error.message || "Failed to update form fields";
     res.status(statusCode).json({ message });
   }
-  
 };
 
-const copyfield = async (req, res, next) => {
-  try {
-    const { formid, fielddata } = req.body;
-    const form = await FormModel.findById(formid);
-
-    // Push the new field data to the form fields array
-    form.fields.push(fielddata);
-
-    // Save the updated form
-    const updatedForm = await form.save();
-
-    if (!updatedForm) {
-      throw new HttpError("Form not found", 404);
-    }
-    res.json(updatedForm);
-  } catch (error) {
-    console.error("Error copying form field:", error);
-    const statusCode = error.statusCode || 500;
-    const message = error.message || "Failed to copy form field";
-    res.status(statusCode).json({ message });
-  }
-};
+// DELETE Request
 
 const deletefield = async (req, res, next) => {
   const { formid, fieldid } = req.body;
@@ -211,13 +319,15 @@ const deletefield = async (req, res, next) => {
 };
 
 exports.getactiveforms = getactiveforms;
-exports.getcurrentform = getcurrentform;
 exports.getcompletedforms = getcompletedforms;
+exports.gettemplateforms = gettemplateforms;
+exports.getcurrentform = getcurrentform;
+exports.createforms = createforms;
+exports.copyfield = copyfield;
 exports.updateformtitle = updateformtitle;
 exports.updateformdesc = updateformdesc;
 exports.updateformstatus = updateformstatus;
+exports.updatetemplatestatus = updatetemplatestatus;
 exports.updateformfields = updateformfields;
-exports.copyfield = copyfield;
 exports.deletefield = deletefield;
-exports.createforms = createforms;
 // exports.login = login;

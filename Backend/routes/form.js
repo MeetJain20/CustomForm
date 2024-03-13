@@ -9,20 +9,32 @@ router.get(
   check_Authentication,
   formController.getactiveforms
 );
-router.post(
-  "/getcurrentform",
-  check_Authentication,
-  formController.getcurrentform
-);
 router.get(
   "/getcompletedforms",
   check_Authentication,
   formController.getcompletedforms
 );
+router.get(
+  "/gettemplateforms",
+  check_Authentication,
+  formController.gettemplateforms
+);
+router.post(
+  "/getcurrentform",
+  check_Authentication,
+  formController.getcurrentform
+);
+router.post("/createforms", check_Authentication, formController.createforms);
+router.post("/copyfield", check_Authentication, formController.copyfield);
 router.put(
   "/updateformstatus",
   check_Authentication,
   formController.updateformstatus
+);
+router.put(
+  "/updatetemplatestatus",
+  check_Authentication,
+  formController.updatetemplatestatus
 );
 router.put(
   "/updateformtitle",
@@ -39,8 +51,6 @@ router.put(
   check_Authentication,
   formController.updateformfields
 );
-router.post("/copyfield", check_Authentication, formController.copyfield);
 router.delete("/deletefield", check_Authentication, formController.deletefield);
-router.post("/createforms", check_Authentication, formController.createforms);
 
 module.exports = router;
