@@ -60,6 +60,8 @@ function App() {
           {/* <Route path="/landingpage" element={<Login />} /> */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/admindashboard" element={<Login />} />
+          <Route path="/employeedashboard" element={<Login />} />
           {/* <Route path="/login" element={<><Navbar /><Login /></>} /> */}
         </Routes>
       </Router>
