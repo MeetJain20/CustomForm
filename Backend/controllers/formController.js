@@ -62,8 +62,6 @@ const gettemplateforms = async (req, res, next) => {
   }
 };
 
-// POST Request
-
 const getactiveforms = async (req, res, next) => {
   const {adminid} = req.params;
 
@@ -88,6 +86,9 @@ const getcompletedforms = async (req, res, next) => {
     res.json(null);
   }
 };
+
+// POST Request
+
 
 const getcurrentform = async (req, res, next) => {
   const { formid } = req.body;
@@ -149,6 +150,46 @@ const createforms = async (req, res, next) => {
   }
   res.json({ form: formData.toObject({ getters: true }) });
 };
+
+const createFromTemplate = async (req, res, next) => {
+  const { formid,adminId } = req.body;
+
+  try {
+    // Find the template form by ID
+    const templateForm = await FormModel.findById(formid);
+
+    if (!templateForm) {
+      throw new HttpError("Template form not found", 404);
+    }
+
+    // Create a new form using template form data
+    const newForm = new FormModel({
+      adminId: adminId,
+      formtitle: templateForm.formtitle,
+      formdesc: templateForm.formdesc,
+      fields: templateForm.fields,
+      isComplete: false,
+      isTemplate: false,
+    });
+
+    // Save the new form
+    const savedForm = await newForm.save();
+
+    if (!savedForm) {
+      throw new HttpError("Failed to create form from template", 500);
+    }
+
+    res.status(201).json(savedForm);
+  } catch (error) {
+    console.error("Error creating form from template:", error);
+    const statusCode = error.statusCode || 500;
+    const message = error.message || "Failed to create form from template";
+    res.status(statusCode).json({ message });
+  }
+};
+
+exports.createFromTemplate = createFromTemplate;
+
 
 // PUT Request
 
@@ -338,6 +379,7 @@ exports.getcompletedforms = getcompletedforms;
 exports.gettemplateforms = gettemplateforms;
 exports.getcurrentform = getcurrentform;
 exports.createforms = createforms;
+exports.createFromTemplate = createFromTemplate;
 exports.copyfield = copyfield;
 exports.updateformtitle = updateformtitle;
 exports.updateformdesc = updateformdesc;

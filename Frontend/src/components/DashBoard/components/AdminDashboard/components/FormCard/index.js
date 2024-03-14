@@ -11,7 +11,7 @@ const navigate = useNavigate();
     }
     else if(formtitle === 'Template Forms')
     {
-      navigate(`/createform/${formid}`);
+      navigate(`/displayform/${formid}`);
     }
     else if(formtitle === 'My Forms')
     {

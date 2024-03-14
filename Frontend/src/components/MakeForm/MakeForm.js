@@ -20,6 +20,7 @@ const MakeForm = () => {
   const [formtitle, setFormtitle] = useState("");
   const [formdesc, setFormdesc] = useState("");
   const [isSaved, setIsSaved] = useState("");
+  const [isTemplate, setIsTemplate] = useState("");
   const fields = useSelector((state) => state.formData.fields);
   const dispatch = useDispatch();
 
@@ -147,6 +148,7 @@ const MakeForm = () => {
             type: "UPDATE_FIELDS_FROM_BACKEND",
             payload: responseData[0].fields,
           });
+          setIsTemplate(responseData[0].isTemplate);
           setIsSaved(responseData[0].isComplete);
         }
       } catch (err) {
@@ -188,12 +190,12 @@ const MakeForm = () => {
           )}
         </div>
         <div className={classes.submitformbuttoncontainer}>
-          <button
+        {localStorage.getItem('role') === "admin" && !isTemplate && <button
             className={classes.submitformbutton}
             onClick={saveFormTemplateHandler}
           >
             Save Form as a Template
-          </button>
+          </button>}
          {localStorage.getItem('role') === "admin" && !isSaved && <button
             className={classes.submitformbutton}
             onClick={saveFormHandler}

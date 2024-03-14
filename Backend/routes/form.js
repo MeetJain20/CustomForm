@@ -25,6 +25,7 @@ router.post(
   formController.getcurrentform
 );
 router.post("/createforms", check_Authentication, formController.createforms);
+router.post("/createFromTemplate", check_Authentication, formController.createFromTemplate);
 router.post("/copyfield", check_Authentication, formController.copyfield);
 router.put(
   "/updateformstatus",
