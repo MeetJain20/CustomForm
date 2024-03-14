@@ -11,11 +11,6 @@ const DateTypeFields = ({fieldData}) => {
     question: fieldData.question || "",
   });
 
-  const handleQuestionChange = (e) => {
-    setFieldState({ ...fieldState, question: e.target.value });
-  };
-
-
   return (<>
     <div className={classes.datetypefieldcontainer}>
       <input
@@ -23,7 +18,7 @@ const DateTypeFields = ({fieldData}) => {
         className={classes.questionfield}
         placeholder="Question"
         value={fieldState.question}
-        onChange={handleQuestionChange}
+        
       />
       <div className={classes.dateContainer}>
         <input

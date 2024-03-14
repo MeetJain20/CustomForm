@@ -1,0 +1,18 @@
+.dropdownfieldcontainer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.questionfield{
+    padding: 5px;
+    font-size: 1.25rem;
+    border:none;
+}
+
+.questionfield:focus{
+    outline:none;
+}
+
+
+

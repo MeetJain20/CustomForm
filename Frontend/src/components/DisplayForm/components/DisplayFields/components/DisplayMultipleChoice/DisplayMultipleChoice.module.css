@@ -1,0 +1,38 @@
+.displaymultiplefieldcontainer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.questionfield{
+    padding: 5px;
+    font-size: 1.25rem;
+    border:none;
+}
+
+.questionfield:focus{
+    outline:none;
+}
+
+.optionsarray{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.optionContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+}
+
+.optionField{
+    border:none;
+    padding: 10px;
+    /* border-bottom: 1px solid var(--divider-color); */
+}
+
+.optionField:focus{
+    outline: none;
+}

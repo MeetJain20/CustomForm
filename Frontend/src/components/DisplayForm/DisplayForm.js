@@ -1,105 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Navbar, Footer } from "../index";
-import classes from "./MakeForm.module.css";
-import NewFields from "./components/NewFields";
+import classes from "./DisplayForm.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRequest } from "../../context/request-hook";
 import { MAIN_LINK } from "../../urls/urls";
 import Cookies from "js-cookie";
-import debounce from "lodash.debounce";
-import FirstNewFields from "./components/FirstNewFields";
+import DisplayFields from "./components/DisplayFields";
 
-const MakeForm = () => {
+const DisplayForm = () => {
   const { formid } = useParams();
   const navigate = useNavigate();
   const { sendRequest } = useRequest();
-  const savefield = useSelector((state) => state.funcfield.saveChanges);
-  const copyfield = useSelector((state) => state.funcfield.copyField);
-  const deletefield = useSelector((state) => state.funcfield.deleteField);
   const [formtitle, setFormtitle] = useState("");
   const [formdesc, setFormdesc] = useState("");
   const [isSaved, setIsSaved] = useState("");
   const fields = useSelector((state) => state.formData.fields);
   const dispatch = useDispatch();
-
-  const formtitleHandler = async (e) => {
-    e.preventDefault();
-    setFormtitle(e.target.value);
-  };
-
-  const debouncedFormtitleHandler = debounce(async (value) => {
-    try {
-      const responseData = await sendRequest(
-        `${MAIN_LINK}/form/updateformtitle`,
-        "PUT",
-        JSON.stringify({
-          formid: formid,
-          formtitle: value,
-        }),
-        {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${Cookies.get("token")}`,
-        }
-      );
-      // setFormtitle(responseData.formtitle);
-    } catch (err) {
-      console.log(err);
-    }
-  }, 500);
-
-  useEffect(() => {
-    debouncedFormtitleHandler(formtitle);
-  }, [formtitle]);
-
-  const formdescHandler = async (e) => {
-    e.preventDefault();
-    setFormdesc(e.target.value);
-  };
-
-  const debouncedFormDescHandler = debounce(async (value) => {
-    try {
-      const responseData = await sendRequest(
-        `${MAIN_LINK}/form/updateformdesc`,
-        "PUT",
-        JSON.stringify({
-          formid: formid,
-          formdesc: value,
-        }),
-        {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${Cookies.get("token")}`,
-        }
-      );
-    } catch (err) {
-      console.log(err);
-    }
-  }, 500);
-
-  useEffect(() => {
-    debouncedFormDescHandler(formdesc);
-  }, [formdesc]);
-
-  // Save Form
-
-  const saveFormHandler = async () => {
-    try {
-      const responseData = await sendRequest(
-        `${MAIN_LINK}/form/updateformstatus`,
-        "PUT",
-        JSON.stringify({
-          formid: formid,
-        }),
-        {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${Cookies.get("token")}`,
-        }
-      );
-      navigate("/admindashboard");
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   // Save Form as a Template
 
@@ -117,6 +34,27 @@ const MakeForm = () => {
         }
       );
       navigate("/admindashboard");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // Edit Form
+
+  const editFormHandler = async () => {
+    try {
+      const responseData = await sendRequest(
+        `${MAIN_LINK}/form/updateeditstatus`,
+        "PUT",
+        JSON.stringify({
+          formid: formid,
+        }),
+        {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        }
+      );
+      navigate(`/createform/${formid}`);
     } catch (err) {
       console.log(err);
     }
@@ -154,38 +92,36 @@ const MakeForm = () => {
       }
     };
     fetchItems();
-  }, [sendRequest, copyfield, deletefield, savefield]);
+  }, [sendRequest]);
   // console.log(fields);
   return (
     <>
       <Navbar />
-      <div className={classes.createformcontainer}>
+      <div className={classes.displayformcontainer}>
         <div className={classes.customcontainer}>
-          <div className={classes.createformheader}>
+          <div className={classes.displayformheader}>
             <input
               type="text"
               value={formtitle}
-              className={classes.createformheadertitle}
-              onChange={formtitleHandler}
+              className={classes.displayformheadertitle}
+              readOnly
             />
             <input
               type="text"
               value={formdesc}
-              className={classes.createformheaderdesc}
-              onChange={formdescHandler}
+              className={classes.displayformheaderdesc}
+              readOnly
             />
           </div>
         </div>
-        <div className={classes.createformbody}>
-          {fields.length > 0 ? (
-            <>
-              {fields.map((fieldData, index) => (
-                <NewFields key={index} fieldData={fieldData} />
-              ))}
-            </>
-          ) : (
-            <FirstNewFields />
-          )}
+        <div className={classes.displayformbody}>
+          {fields.map((fieldData, index) => (
+            <DisplayFields
+              key={index}
+              activeType={fieldData.type}
+              fieldData={fieldData}
+            />
+          ))}
         </div>
         <div className={classes.submitformbuttoncontainer}>
           <button
@@ -194,12 +130,12 @@ const MakeForm = () => {
           >
             Save Form as a Template
           </button>
-         {localStorage.getItem('role') === "admin" && !isSaved && <button
+          <button
             className={classes.submitformbutton}
-            onClick={saveFormHandler}
+            onClick={editFormHandler}
           >
-            Save Form
-          </button>}
+            Edit Form
+          </button>
         </div>
       </div>
       <Footer />
@@ -207,4 +143,4 @@ const MakeForm = () => {
   );
 };
 
-export default MakeForm;
+export default DisplayForm;

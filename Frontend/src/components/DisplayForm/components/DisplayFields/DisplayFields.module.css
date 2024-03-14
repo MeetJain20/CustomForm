@@ -1,0 +1,11 @@
+.displayfieldcontainer {
+    display: flex;
+    flex-direction: column;
+    min-width: 45%;
+    background-color: var(--white-color);
+    border-radius: 7px;
+    padding: 30px 30px;
+    box-shadow: var(--search-boxshadow);
+    position: relative;
+    transition: border-left 0.2s ease-in-out; /* Add transition to the border */
+  }

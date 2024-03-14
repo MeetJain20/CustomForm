@@ -52,16 +52,6 @@ const sendMail = async (recipients) => {
 
 // GET Request
 
-const getactiveforms = async (req, res, next) => {
-  const activeForms = await FormModel.find({ isComplete: false });
-
-  if (activeForms) {
-    res.json(activeForms);
-  } else {
-    res.json(null);
-  }
-};
-
 const gettemplateforms = async (req, res, next) => {
   const templateForms = await FormModel.find({ isTemplate: true });
 
@@ -72,8 +62,25 @@ const gettemplateforms = async (req, res, next) => {
   }
 };
 
+// POST Request
+
+const getactiveforms = async (req, res, next) => {
+  const {adminid} = req.params;
+
+  const activeForms = await FormModel.find({ adminId:adminid, isComplete: false });
+
+  if (activeForms) {
+    res.json(activeForms);
+  } else {
+    res.json(null);
+  }
+};
+
+
 const getcompletedforms = async (req, res, next) => {
-  const completedForms = await FormModel.find({ isComplete: true });
+  const {adminid} = req.params;
+  
+  const completedForms = await FormModel.find({ adminId:adminid, isComplete: true });
 
   if (completedForms) {
     res.json(completedForms);
@@ -81,8 +88,6 @@ const getcompletedforms = async (req, res, next) => {
     res.json(null);
   }
 };
-
-// POST Request
 
 const getcurrentform = async (req, res, next) => {
   const { formid } = req.body;
@@ -176,6 +181,26 @@ const updateformstatus = async (req, res, next) => {
     console.error("Error Saving form : ", error);
     const statusCode = error.statusCode || 500;
     const message = error.message || "Failed to Save the form";
+    res.status(statusCode).json({ message });
+  }
+};
+
+const updateeditstatus = async (req, res, next) => {
+  try {
+    const { formid } = req.body;
+    const editstatus = await FormModel.findByIdAndUpdate(
+      formid,
+      { isComplete: false },
+      { new: true }
+    );
+    if (!editstatus) {
+      throw new HttpError("Form not found", 404);
+    }
+    res.json(editstatus);
+  } catch (error) {
+    console.error("Error Making it Editable: ", error);
+    const statusCode = error.statusCode || 500;
+    const message = error.message || "Failed to make the form Editable";
     res.status(statusCode).json({ message });
   }
 };
@@ -317,6 +342,7 @@ exports.copyfield = copyfield;
 exports.updateformtitle = updateformtitle;
 exports.updateformdesc = updateformdesc;
 exports.updateformstatus = updateformstatus;
+exports.updateeditstatus = updateeditstatus;
 exports.updatetemplatestatus = updatetemplatestatus;
 exports.updateformfields = updateformfields;
 exports.deletefield = deletefield;

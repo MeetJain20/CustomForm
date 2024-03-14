@@ -19,7 +19,7 @@ const MyForms = () => {
     const fetchItems = async () => {
       try {
         const responseData = await sendRequest(
-          `${MAIN_LINK}/form/getcompletedforms`,
+          `${MAIN_LINK}/form/getcompletedforms/${localStorage.getItem('userid')}`,
           "GET",
           null,
           {

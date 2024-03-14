@@ -82,6 +82,7 @@ const FormsListContainer = ({ forms, formtitle }) => {
                       key={index}
                       formid={form._id}
                       img={formimg}
+                      formtitle={formtitle}
                       title={form.formtitle}
                     />
                   ))
@@ -92,6 +93,7 @@ const FormsListContainer = ({ forms, formtitle }) => {
                         key={index}
                       formid={form._id}
                         img={formimg}
+                      formtitle={formtitle}
                         title={form.formtitle}
                       />
                     ))}

@@ -1,29 +1,26 @@
-.shortanswerfieldcontainer{
+.displayshortanswercontainer{
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-top: 1rem;
 }
 
 .questionfield{
     padding: 5px;
     font-size: 1.25rem;
     border:none;
-    border-bottom: 0px;
-    transition: border-bottom 0.3s ease-in-out;
 }
 
 .answerfield{
     padding: 5px;
     border: none;
     border-bottom: 1px solid var(--divider-color);
-    cursor:auto;
     transition: border-bottom 0.3s ease-in-out;
-
 }
 
-.questionfield:focus,.answerfield:focus{
+.answerfield:focus{
     outline:none;
     border-bottom: 1px solid var(--dark-divider);
-
+}
+.questionfield:focus{
+    outline: none;
 }

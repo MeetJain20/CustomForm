@@ -5,12 +5,12 @@ const check_Authentication = require("../middlewares/check-auth-adm");
 const formController = require("../controllers/formController");
 
 router.get(
-  "/getactiveforms",
+  "/getactiveforms/:adminid",
   check_Authentication,
   formController.getactiveforms
 );
 router.get(
-  "/getcompletedforms",
+  "/getcompletedforms/:adminid",
   check_Authentication,
   formController.getcompletedforms
 );
@@ -30,6 +30,11 @@ router.put(
   "/updateformstatus",
   check_Authentication,
   formController.updateformstatus
+);
+router.put(
+  "/updateeditstatus",
+  check_Authentication,
+  formController.updateeditstatus
 );
 router.put(
   "/updatetemplatestatus",

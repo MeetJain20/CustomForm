@@ -17,7 +17,7 @@ const CurrentForms = () => {
     const fetchItems = async () => {
       try {
         const responseData = await sendRequest(
-          `${MAIN_LINK}/form/getactiveforms`,
+          `${MAIN_LINK}/form/getactiveforms/${localStorage.getItem('userid')}`,
           "GET",
           null,
           {

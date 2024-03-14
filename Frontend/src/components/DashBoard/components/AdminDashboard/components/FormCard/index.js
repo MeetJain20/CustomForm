@@ -2,10 +2,21 @@ import React from "react";
 import classes from "./FormCard.module.css";
 import { useNavigate } from "react-router-dom";
 
-const FormCard = ({formid, img, title}) => {
+const FormCard = ({formid, img, title, formtitle}) => {
 const navigate = useNavigate();
   const gotoformHandler = ()=>{
-    navigate(`/createform/${formid}`);
+    if(formtitle === 'Active Forms')
+    {
+      navigate(`/createform/${formid}`);
+    }
+    else if(formtitle === 'Template Forms')
+    {
+      navigate(`/createform/${formid}`);
+    }
+    else if(formtitle === 'My Forms')
+    {
+      navigate(`/displayform/${formid}`);
+    }
   }
 
   return (

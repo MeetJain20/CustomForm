@@ -1,0 +1,22 @@
+.displaylonganswercontainer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.questionfield{
+    padding: 5px;
+    font-size: 1.25rem;
+    border:none;
+}
+
+.answerfield{
+    padding: 10px;
+    border: 1px solid var(--divider-color);
+    border-radius: 7px;
+}
+
+.questionfield:focus,.answerfield:focus{
+    outline:none;
+    /* border-bottom: 1px solid var(--dark-divider); */
+}
