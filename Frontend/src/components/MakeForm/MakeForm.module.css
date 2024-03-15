@@ -43,12 +43,26 @@
     border-bottom: 2px solid var(--dark-divider);
 }
 
-.createformbody{
+/* .createformbody{
     display: flex;
     min-width: 45%;
     flex-direction: column;
     gap: 20px;
     align-self: center;
+} */
+
+.createformbody {
+  display: flex;
+  justify-content: center;
+}
+
+.createinnerformbody {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+    min-width: 45%;
+    /* width: 45%; */
+  
 }
 
 .submitformbuttoncontainer{

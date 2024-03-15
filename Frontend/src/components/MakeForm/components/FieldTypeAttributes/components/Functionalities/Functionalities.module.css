@@ -1,13 +1,17 @@
-.functionalities{
-    display: flex;
-    flex-direction: row;
-    margin-top: 1rem;
-    gap: 15px;
+.functionalities {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 1rem;
+  gap: 15px;
+  width: 100%;
 }
 
-.copyfieldbutton,.deletefieldbutton,
-.savechangebutton,.addfieldbutton{
-    padding: 10px 15px;
-    border: none;
-    cursor: pointer;
+.copyfieldbutton,
+.deletefieldbutton,
+.savechangebutton,
+.addfieldbutton {
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
 }

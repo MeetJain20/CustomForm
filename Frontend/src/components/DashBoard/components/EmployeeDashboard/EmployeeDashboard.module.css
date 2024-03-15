@@ -1,0 +1,7 @@
+.employeedashboardcontainer{
+    margin-top: 6rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1rem;
+}

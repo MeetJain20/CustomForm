@@ -1,13 +1,16 @@
 import React from 'react'
 import classes from "./EmployeeDashboard.module.css";
+import { Navbar, Footer } from "../../../index";
 
 const EmployeeDashboard = () => {
   return (
-    <div>
-      <div className="container">
+    <>
+    <Navbar/>
+      <div className={classes.employeedashboardcontainer}>
         Employee Dashboard
       </div>
-    </div>
+      <Footer/>
+    </>
   )
 }
 

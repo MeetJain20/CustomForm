@@ -179,30 +179,38 @@ const MakeForm = () => {
           </div>
         </div>
         <div className={classes.createformbody}>
-          {fields.length > 0 ? (
-            <>
-              {fields.map((fieldData, index) => (
-                <NewFields key={index} fieldData={fieldData} />
-              ))}
-            </>
-          ) : (
-            <FirstNewFields />
-          )}
+          <div className={classes.createinnerformbody}>
+            {fields.length > 0 ? (
+              <>
+                {fields.map((fieldData, index) => (
+                  <NewFields key={index} fieldData={fieldData} />
+                ))}
+              </>
+            ) : (
+              <FirstNewFields />
+            )}
+          </div>
         </div>
-        {fields.length>0 && <div className={classes.submitformbuttoncontainer}>
-        {localStorage.getItem('role') === "admin" && !isTemplate && <button
-            className={classes.submitformbutton}
-            onClick={saveFormTemplateHandler}
-          >
-            Save Form as a Template
-          </button>}
-         {localStorage.getItem('role') === "admin" && !isSaved && <button
-            className={classes.submitformbutton}
-            onClick={saveFormHandler}
-          >
-            Save Form
-          </button>}
-        </div>}
+        {fields.length > 0 && (
+          <div className={classes.submitformbuttoncontainer}>
+            {localStorage.getItem("role") === "admin" && !isTemplate && (
+              <button
+                className={classes.submitformbutton}
+                onClick={saveFormTemplateHandler}
+              >
+                Save Form as a Template
+              </button>
+            )}
+            {localStorage.getItem("role") === "admin" && !isSaved && (
+              <button
+                className={classes.submitformbutton}
+                onClick={saveFormHandler}
+              >
+                Save Form
+              </button>
+            )}
+          </div>
+        )}
       </div>
       <Footer />
     </>

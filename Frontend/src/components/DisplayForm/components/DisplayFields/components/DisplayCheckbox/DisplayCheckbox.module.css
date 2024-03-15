@@ -28,6 +28,7 @@
 .optionField{
     border:none;
     padding: 10px;
+    width:100%;
 }
 
 .optionField:focus{

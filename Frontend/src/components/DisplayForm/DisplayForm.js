@@ -64,25 +64,25 @@ const DisplayForm = () => {
 
   // Use Template
 
-  const useTemplateHandler = async()=>{
+  const useTemplateHandler = async () => {
     try {
-        const responseData = await sendRequest(
-          `${MAIN_LINK}/form/createFromTemplate`,
-          "POST",
-          JSON.stringify({
-            formid: formid,
-            adminId: localStorage.getItem('userid')
-          }),
-          {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          }
-        );
-        navigate(`/createform/${responseData._id}`);
-      } catch (err) {
-        console.log(err);
-      }
-  }
+      const responseData = await sendRequest(
+        `${MAIN_LINK}/form/createFromTemplate`,
+        "POST",
+        JSON.stringify({
+          formid: formid,
+          adminId: localStorage.getItem("userid"),
+        }),
+        {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        }
+      );
+      navigate(`/createform/${responseData._id}`);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   // Get FormData
 
@@ -111,7 +111,7 @@ const DisplayForm = () => {
           });
           setAdminid(responseData[0].adminId);
           setIsSaved(responseData[0].isComplete);
-          setIsTemplate(responseData[0].isTemplate)
+          setIsTemplate(responseData[0].isTemplate);
         }
       } catch (err) {
         console.log(err);
@@ -141,32 +141,42 @@ const DisplayForm = () => {
           </div>
         </div>
         <div className={classes.displayformbody}>
-          {fields.map((fieldData, index) => (
-            <DisplayFields
-              key={index}
-              activeType={fieldData.type}
-              fieldData={fieldData}
-            />
-          ))}
+          <div className={classes.displayinnerformbody}>
+            {fields.map((fieldData, index) => (
+              <DisplayFields
+                key={index}
+                activeType={fieldData.type}
+                fieldData={fieldData}
+              />
+            ))}
+          </div>
         </div>
         <div className={classes.submitformbuttoncontainer}>
-        {localStorage.getItem('role') === "admin" && !isTemplate &&  <button
-            className={classes.submitformbutton}
-            onClick={saveFormTemplateHandler}
-          >
-            Save Form as a Template
-          </button>}
-          {localStorage.getItem('role') === "admin" && isSaved && localStorage.getItem('userid') === adminid ? (<button
-            className={classes.submitformbutton}
-            onClick={editFormHandler}
-          >
-             Edit Form
-          </button>):(<button
-            className={classes.submitformbutton}
-            onClick={useTemplateHandler}
-          >
-             Use Template
-          </button>)}
+          {localStorage.getItem("role") === "admin" && !isTemplate && (
+            <button
+              className={classes.submitformbutton}
+              onClick={saveFormTemplateHandler}
+            >
+              Save Form as a Template
+            </button>
+          )}
+          {localStorage.getItem("role") === "admin" &&
+          isSaved &&
+          localStorage.getItem("userid") === adminid ? (
+            <button
+              className={classes.submitformbutton}
+              onClick={editFormHandler}
+            >
+              Edit Form
+            </button>
+          ) : (
+            <button
+              className={classes.submitformbutton}
+              onClick={useTemplateHandler}
+            >
+              Use Template
+            </button>
+          )}
         </div>
       </div>
       <Footer />

@@ -35,6 +35,7 @@
     padding: 10px;
     border-bottom: 1px solid var(--divider-color);
     transition: border-bottom 0.3s ease;
+    width:100%;
 }
 
 .optionField:focus{
