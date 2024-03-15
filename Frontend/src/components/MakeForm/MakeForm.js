@@ -189,7 +189,7 @@ const MakeForm = () => {
             <FirstNewFields />
           )}
         </div>
-        <div className={classes.submitformbuttoncontainer}>
+        {fields.length>0 && <div className={classes.submitformbuttoncontainer}>
         {localStorage.getItem('role') === "admin" && !isTemplate && <button
             className={classes.submitformbutton}
             onClick={saveFormTemplateHandler}
@@ -202,7 +202,7 @@ const MakeForm = () => {
           >
             Save Form
           </button>}
-        </div>
+        </div>}
       </div>
       <Footer />
     </>

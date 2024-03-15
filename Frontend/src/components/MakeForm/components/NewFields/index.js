@@ -32,12 +32,12 @@ const NewFields = ({ fieldData }) => {
     });
   };
 
-  const addfieldHandler = () => {
-    dispatch({
-      type: "ADD_FIELD",
-      payload: true,
-    });
-  };
+  // const addfieldHandler = () => {
+  //   dispatch({
+  //     type: "ADD_FIELD",
+  //     payload: true,
+  //   });
+  // };
 
   const containerRef = useRef(null);
   const insideClickHandler = () => {
@@ -88,9 +88,9 @@ const NewFields = ({ fieldData }) => {
             currentdiv ? classes.showSaveAndCopy : ""
           }`}
         >
-          <div className={classes.addfieldbutton} onClick={addfieldHandler}>
+          {/* <div className={classes.addfieldbutton} onClick={addfieldHandler}>
             <IoMdAddCircleOutline />
-          </div>
+          </div> */}
           <div className={classes.copyfieldbutton}>
             <MdOutlineContentCopy />
           </div>

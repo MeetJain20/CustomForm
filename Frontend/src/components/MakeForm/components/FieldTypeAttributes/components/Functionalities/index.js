@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./Functionalities.module.css";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -11,6 +11,14 @@ const Functionalities = ({ onSave, fieldState }) => {
   const { formid } = useParams();
   const dispatch = useDispatch();
   const { sendRequest } = useRequest();
+  const [newFieldData,setNewFieldData] = useState({
+    fieldid: uuidv4(),
+    type: "Short Answer",
+    question:"",
+    placeholder:"Enter the text you want the user to see here ...",
+  })
+
+  // Save Changes
 
   const updatefieldHandler = async () => {
     // console.log(fieldState);
@@ -38,6 +46,8 @@ const Functionalities = ({ onSave, fieldState }) => {
     }
   };
 
+  // Delete Field
+
   const deletefieldHandler = async () => {
     try {
       const responseData = await sendRequest(
@@ -64,6 +74,8 @@ const Functionalities = ({ onSave, fieldState }) => {
       console.log(err);
     }
   };
+
+  // Copy Field
 
   const copyFieldHandler = async () => {
     let newFieldid;
@@ -93,6 +105,31 @@ const Functionalities = ({ onSave, fieldState }) => {
       console.log(err);
     }
   };
+
+  // Add New Field
+
+  const addnewfieldHandler = async()=>{
+      try {
+        const responseData = await sendRequest(
+          `${MAIN_LINK}/form/addnewfield`,
+          "PUT",
+          JSON.stringify({
+            formid: formid,
+            newFieldData: newFieldData
+          }),
+          {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          }
+        );
+        dispatch({ type: "SAVE_FIELD" });
+  
+        // setFormtitle(responseData.formtitle);
+      } catch (err) {
+        console.log(err);
+      }
+  }
+
   return (
     <div className={classes.functionalities}>
       <button className={classes.copyfieldbutton} onClick={copyFieldHandler}>
@@ -106,6 +143,9 @@ const Functionalities = ({ onSave, fieldState }) => {
       </button>
       <button className={classes.savechangebutton} onClick={updatefieldHandler}>
         Save Changes
+      </button>
+      <button className={classes.addfieldbutton} onClick={addnewfieldHandler}>
+        Add New Field
       </button>
     </div>
   );

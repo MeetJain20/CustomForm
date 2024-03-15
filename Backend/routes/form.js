@@ -32,6 +32,7 @@ router.put(
   check_Authentication,
   formController.updateformstatus
 );
+
 router.put(
   "/updateeditstatus",
   check_Authentication,
@@ -56,6 +57,11 @@ router.put(
   "/updateformfields",
   check_Authentication,
   formController.updateformfields
+);
+router.put(
+  "/addnewfield",
+  check_Authentication,
+  formController.addnewfield
 );
 router.delete("/deletefield", check_Authentication, formController.deletefield);
 

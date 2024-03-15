@@ -63,9 +63,12 @@ const gettemplateforms = async (req, res, next) => {
 };
 
 const getactiveforms = async (req, res, next) => {
-  const {adminid} = req.params;
+  const { adminid } = req.params;
 
-  const activeForms = await FormModel.find({ adminId:adminid, isComplete: false });
+  const activeForms = await FormModel.find({
+    adminId: adminid,
+    isComplete: false,
+  });
 
   if (activeForms) {
     res.json(activeForms);
@@ -74,11 +77,13 @@ const getactiveforms = async (req, res, next) => {
   }
 };
 
-
 const getcompletedforms = async (req, res, next) => {
-  const {adminid} = req.params;
-  
-  const completedForms = await FormModel.find({ adminId:adminid, isComplete: true });
+  const { adminid } = req.params;
+
+  const completedForms = await FormModel.find({
+    adminId: adminid,
+    isComplete: true,
+  });
 
   if (completedForms) {
     res.json(completedForms);
@@ -88,7 +93,6 @@ const getcompletedforms = async (req, res, next) => {
 };
 
 // POST Request
-
 
 const getcurrentform = async (req, res, next) => {
   const { formid } = req.body;
@@ -152,7 +156,7 @@ const createforms = async (req, res, next) => {
 };
 
 const createFromTemplate = async (req, res, next) => {
-  const { formid,adminId } = req.body;
+  const { formid, adminId } = req.body;
 
   try {
     // Find the template form by ID
@@ -189,7 +193,6 @@ const createFromTemplate = async (req, res, next) => {
 };
 
 exports.createFromTemplate = createFromTemplate;
-
 
 // PUT Request
 
@@ -338,6 +341,30 @@ const updateformfields = async (req, res, next) => {
   }
 };
 
+const addnewfield = async (req, res, next) => {
+  const { formid, newFieldData } = req.body;
+  try {
+    const form = await FormModel.findById(formid);
+
+    // Push the new field data
+    form.fields.push(newFieldData);
+
+    // Save the updated form
+    const updatedForm = await form.save();
+
+    if (!updatedForm) {
+      throw new HttpError("Form not found", 404);
+    }
+
+    res.json(updatedForm);
+  } catch (error) {
+    console.error("Error updating form fields:", error);
+    const statusCode = error.statusCode || 500;
+    const message = error.message || "Failed to update form fields";
+    res.status(statusCode).json({ message });
+  }
+};
+
 // DELETE Request
 
 const deletefield = async (req, res, next) => {
@@ -387,5 +414,7 @@ exports.updateformstatus = updateformstatus;
 exports.updateeditstatus = updateeditstatus;
 exports.updatetemplatestatus = updatetemplatestatus;
 exports.updateformfields = updateformfields;
+exports.addnewfield = addnewfield;
 exports.deletefield = deletefield;
+
 // exports.login = login;
