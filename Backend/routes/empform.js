@@ -5,6 +5,11 @@ const check_Authentication = require("../middlewares/check-auth-emp");
 const empformController = require("../controllers/empformController");
 
 router.get(
+  "/getresponses/:formid",
+  check_Authentication,
+  empformController.getresponses
+);
+router.get(
   "/getassignedforms/:empid",
   check_Authentication,
   empformController.getassignedforms

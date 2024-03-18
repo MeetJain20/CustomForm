@@ -53,6 +53,21 @@ const sendMail = async (recipients) => {
 
 // GET Request
 
+const getresponses = async (req, res, next) => {
+  const { formid } = req.params;
+  try {
+    const responses = await ResponseModel.find({formId:formid});
+    if (!responses) {
+      return res.status(404).json({ message: "Form not found" });
+    }
+
+    res.json(responses);
+  } catch (error) {
+    console.error("Error fetching assigned forms:", error);
+    res.status(500).json({ message: "Failed to fetch assigned forms" });
+  }
+};
+
 const getassignedforms = async (req, res, next) => {
   const { empid } = req.params;
   try {
@@ -98,6 +113,7 @@ const saveresponse = async (req, res, next) => {
   }
 };
 
+exports.getresponses = getresponses;
 exports.getassignedforms = getassignedforms;
 exports.saveresponse = saveresponse;
 

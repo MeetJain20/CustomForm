@@ -18,7 +18,7 @@ const[selectedOption,setSelectedOption] = useState(null);
     setSelectedOption(selectedOption);
     setResponseData((prevState) => ({
       ...prevState,
-      response: selectedOption.label,
+      response: selectedOption,
     }));
   };
 
@@ -32,7 +32,7 @@ const[selectedOption,setSelectedOption] = useState(null);
     } catch (err) {
       console.log(err);
     }
-  }, 500);
+  }, 300);
 
   useEffect(() => {
     debouncedResponseHandler(responseData);

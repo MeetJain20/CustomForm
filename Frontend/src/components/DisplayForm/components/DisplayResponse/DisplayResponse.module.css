@@ -1,0 +1,35 @@
+.responsecontainer{
+    margin-top: 6rem;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+}
+
+.responseTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+   
+  .responseTable th,
+  .responseTable td {
+    border: 1px solid #ddd;
+    padding: 0.8rem;
+    text-align: left;
+    font-size: 1rem;
+    overflow: hidden;    
+    white-space: nowrap;
+    text-overflow: ellipsis; 
+    max-width: 15rem;        
+  }
+  
+   
+  .responseTable th {
+    padding: 1rem;
+    background-color: #f2f2f2;
+  }
+   
+  .responseTable tbody tr:hover {
+    background-color: #f5f5f5;
+  }

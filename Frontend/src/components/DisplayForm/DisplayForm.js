@@ -18,6 +18,8 @@ const DisplayForm = () => {
   const [adminid, setAdminid] = useState("");
   const [isSaved, setIsSaved] = useState("");
   const [isTemplate, setIsTemplate] = useState("");
+  const [totalResponse, setTotalResponse] = useState(0);
+  const [totalResponseData, setTotalResponseData] = useState([]);
   const fields = useSelector((state) => state.formData.fields);
   const dispatch = useDispatch();
 
@@ -121,35 +123,77 @@ const DisplayForm = () => {
     fetchItems();
   }, [sendRequest]);
 
-  // Submit Form Response
-
-  const submitResponseHandler = async()=>{
-    try {
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
         const responseData = await sendRequest(
-          `${MAIN_LINK}/empform/saveresponse`,
-          "POST",
-          JSON.stringify({
-            formId: formid,
-            adminId:adminid,
-            employeeId: localStorage.getItem('userid'),
-            responses: fieldResponse
-          }),
+          `${MAIN_LINK}/empform/getresponses/${formid}`,
+          "GET",
+          null,
           {
             "Content-Type": "application/json",
             Authorization: `Bearer ${Cookies.get("token")}`,
           }
         );
-        // console.log("Response Saved");
-        navigate('/employeedashboard');
+        // console.log(responseData);
+        if (responseData) {
+            setTotalResponseData(responseData);
+          setTotalResponse(responseData.length);
+        }
       } catch (err) {
-        console.log("Error Saving Response: ", err);
+        console.log(err);
       }
-  }
+    };
+    fetchItems();
+  }, [sendRequest]);
+
+  // Submit Form Response
+
+  const submitResponseHandler = async () => {
+    try {
+      const responseData = await sendRequest(
+        `${MAIN_LINK}/empform/saveresponse`,
+        "POST",
+        JSON.stringify({
+          formId: formid,
+          adminId: adminid,
+          employeeId: localStorage.getItem("userid"),
+          responses: fieldResponse,
+        }),
+        {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        }
+      );
+      // console.log("Response Saved");
+      navigate("/employeedashboard");
+    } catch (err) {
+      console.log("Error Saving Response: ", err);
+    }
+  };
+
+  // View Form Responses
+
+  const viewResponseHandler = () => {
+    navigate(`/viewresponse/${formid}`, { state: { totalResponseData } });
+  };
 
   return (
     <>
       <Navbar />
       <div className={classes.displayformcontainer}>
+        {localStorage.getItem("role") === "admin" && (
+          <div className={classes.viewresponsediv}>
+            <button
+              className={classes.viewresponsebutton}
+              onClick={viewResponseHandler}
+            >
+              {totalResponse === 0
+                ? "No Response Yet"
+                : `View ${totalResponse} Response`}
+            </button>
+          </div>
+        )}
         <div className={classes.customcontainer}>
           <div className={classes.displayformheader}>
             <input
@@ -195,14 +239,21 @@ const DisplayForm = () => {
             >
               Edit Form
             </button>
-          ) : localStorage.getItem('role') === 'admin' ?(
+          ) : localStorage.getItem("role") === "admin" ? (
             <button
               className={classes.submitformbutton}
               onClick={useTemplateHandler}
             >
               Use Template
             </button>
-          ):<button className={classes.submitformbutton} onClick={submitResponseHandler}>Submit</button>}
+          ) : (
+            <button
+              className={classes.submitformbutton}
+              onClick={submitResponseHandler}
+            >
+              Submit
+            </button>
+          )}
         </div>
       </div>
       <Footer />

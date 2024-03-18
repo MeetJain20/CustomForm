@@ -31,7 +31,7 @@ const DisplayDate = ({ fieldData }) => {
     } catch (err) {
       console.log(err);
     }
-  }, 500);
+  }, 300);
 
   useEffect(() => {
     debouncedResponseHandler(responseData);

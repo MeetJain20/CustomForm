@@ -29,12 +29,12 @@ const DisplayLongAnswer = ({ fieldData }) => {
     } catch (err) {
       console.log(err);
     }
-  }, 500);
+  }, 300);
 
   useEffect(() => {
     debouncedResponseHandler(responseData);
   }, [responseData]);
-  
+
   return (
     <>
       <div className={classes.displaylonganswercontainer}>

@@ -9,7 +9,7 @@ import { MdOutlineContentCopy } from "react-icons/md";
 import useOutsideClick from "../../../../hooks/useOutsideClick";
 import { useDispatch } from "react-redux";
 
-const NewFields = ({ fieldData }) => {
+const NewFields = ({ fieldData={} }) => {
   const dispatch = useDispatch();
   const [currentdiv, setCurrentDiv] = useState(false);
   const optionList = [
@@ -103,8 +103,5 @@ const NewFields = ({ fieldData }) => {
   );
 };
 
-NewFields.defaultProps = {
-  fieldData: {} // Default empty object when no fieldData is provided
-};
 
 export default NewFields;

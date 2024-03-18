@@ -11,6 +11,19 @@
     background-color: var(--light-cyan);
   }
   
+  .viewresponsediv{
+    display: flex;
+    justify-content: center;
+  }
+  .viewresponsebutton{
+    padding: 10px 20px;
+    border: none;
+    background-color: var(--navbar-blue);
+    color: var(--white-color);
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
   .customcontainer {
     display: flex;
     justify-content: center;

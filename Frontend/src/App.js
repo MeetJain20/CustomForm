@@ -9,6 +9,7 @@ import {
   AdminDashboard,
   EmployeeDashboard
 } from "./components/DashBoard/index";
+import DisplayResponse from "./components/DisplayForm/components/DisplayResponse";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -50,6 +51,8 @@ function App() {
           <Route path="/displayform/:formid" element={<DisplayForm />} />
           <Route path="/admindashboard" element={<AdminDashboard />} />
           <Route path="/employeedashboard" element={<EmployeeDashboard />} />
+          <Route path="/viewresponse/:formid" element={<DisplayResponse />} />
+
         </Routes>
       </Router>
     );
