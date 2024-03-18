@@ -1,14 +1,10 @@
-.displayformcontainer {
-    margin-top: 5rem;
+.displaypreviewformcontainer {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 10px;
     gap: 20px;
-
     overflow-x: hidden;
-
-    background-color: var(--light-cyan);
   }
   
   .customcontainer {
@@ -67,21 +63,7 @@
     
   }
   
-  
-  .submitformbuttoncontainer{
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-  }
-  
-  .submitformbutton{
-    padding: 12px 30px;
-    background-color: var(--navbar-blue);
-    border: none;
-    color: var(--white-color);
-    border-radius: 5px;
-    margin-bottom: 1.5rem;
-  }
+
 
 
   

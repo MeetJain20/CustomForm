@@ -12,6 +12,7 @@ const DisplayForm = () => {
   const { formid } = useParams();
   const navigate = useNavigate();
   const { sendRequest } = useRequest();
+  const fieldResponse = useSelector((state) => state.response.fieldResponse);
   const [formtitle, setFormtitle] = useState("");
   const [formdesc, setFormdesc] = useState("");
   const [adminid, setAdminid] = useState("");
@@ -119,7 +120,32 @@ const DisplayForm = () => {
     };
     fetchItems();
   }, [sendRequest]);
-  // console.log(fields);
+
+  // Submit Form Response
+
+  const submitResponseHandler = async()=>{
+    try {
+        const responseData = await sendRequest(
+          `${MAIN_LINK}/empform/saveresponse`,
+          "POST",
+          JSON.stringify({
+            formId: formid,
+            adminId:adminid,
+            employeeId: localStorage.getItem('userid'),
+            responses: fieldResponse
+          }),
+          {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          }
+        );
+        // console.log("Response Saved");
+        navigate('/employeedashboard');
+      } catch (err) {
+        console.log("Error Saving Response: ", err);
+      }
+  }
+
   return (
     <>
       <Navbar />
@@ -169,14 +195,14 @@ const DisplayForm = () => {
             >
               Edit Form
             </button>
-          ) : (
+          ) : localStorage.getItem('role') === 'admin' ?(
             <button
               className={classes.submitformbutton}
               onClick={useTemplateHandler}
             >
               Use Template
             </button>
-          )}
+          ):<button className={classes.submitformbutton} onClick={submitResponseHandler}>Submit</button>}
         </div>
       </div>
       <Footer />

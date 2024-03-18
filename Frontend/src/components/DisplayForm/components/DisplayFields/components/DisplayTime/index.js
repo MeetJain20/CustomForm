@@ -1,10 +1,45 @@
-import React,{useState} from "react";
+import React, { useEffect, useState } from "react";
 import { BiTime } from "react-icons/bi";
 import classes from "./DisplayTime.module.css";
+import { useDispatch } from "react-redux";
+import debounce from "lodash.debounce";
 
-const DisplayTime = ({fieldData}) => {
+const DisplayTime = ({ fieldData }) => {
 
-  return (<>
+  const dispatch = useDispatch();
+
+  const [responseData, setResponseData] = useState({
+    fieldid: fieldData.fieldid,
+    question: fieldData.question,
+    response: "",
+  });
+
+  const responseHandler = (e) => {
+    e.preventDefault();
+    setResponseData((prevState) => ({
+      ...prevState,
+      response: e.target.value,
+    }));
+    // console.log(responseData);
+  };
+
+  const debouncedResponseHandler = debounce(async (responseData) => {
+    try {
+      // Dispatch action to update response array
+      dispatch({
+        type: "UPDATE_RESPONSE",
+        payload: { responseData },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }, 500);
+
+  useEffect(() => {
+    debouncedResponseHandler(responseData);
+  }, [responseData]);
+
+  return (
     <div className={classes.displaytimecontainer}>
       <input
         type="text"
@@ -17,12 +52,14 @@ const DisplayTime = ({fieldData}) => {
         <input
           type="time"
           className={classes.timefield}
-          disabled={localStorage.getItem('role')==='admin'?true:false}
+          disabled={localStorage.getItem("role") === "admin" ? true : false}
+          onChange={responseHandler}
         />
-        <BiTime className={classes.timeIcon} />
+        {localStorage.getItem("role") === "admin" && (
+          <BiTime className={classes.timeIcon} />
+        )}
       </div>
     </div>
-    </>
   );
 };
 

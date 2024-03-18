@@ -26,3 +26,6 @@
     border:none;
     border-bottom: 1px solid var(--divider-color);
 }
+.timefield:focus{
+    outline:none;
+}

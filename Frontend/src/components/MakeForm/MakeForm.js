@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Navbar, Footer } from "../index";
+import { Navbar, Footer, DisplayForm } from "../index";
 import classes from "./MakeForm.module.css";
 import NewFields from "./components/NewFields";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,6 +9,9 @@ import { MAIN_LINK } from "../../urls/urls";
 import Cookies from "js-cookie";
 import debounce from "lodash.debounce";
 import FirstNewFields from "./components/FirstNewFields";
+import DisplayPreviewForm from "../DisplayForm/components/DisplayPreviewForm";
+import { FaRegEye } from "react-icons/fa";
+
 
 const MakeForm = () => {
   const { formid } = useParams();
@@ -47,7 +50,7 @@ const MakeForm = () => {
     } catch (err) {
       console.log(err);
     }
-  }, 500);
+  }, 300);
 
   useEffect(() => {
     debouncedFormtitleHandler(formtitle);
@@ -75,7 +78,7 @@ const MakeForm = () => {
     } catch (err) {
       console.log(err);
     }
-  }, 500);
+  }, 300);
 
   useEffect(() => {
     debouncedFormDescHandler(formdesc);
@@ -157,7 +160,16 @@ const MakeForm = () => {
     };
     fetchItems();
   }, [sendRequest, copyfield, deletefield, savefield]);
-  // console.log(fields);
+
+  const handleScroll = (e) => {
+    const element = e.target;
+    // Check if the scroll position is at the bottom
+    if (element.scrollHeight - element.scrollTop === element.clientHeight) {
+      // Prevent the event from bubbling up to the outer page
+      e.stopPropagation();
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -191,6 +203,7 @@ const MakeForm = () => {
             )}
           </div>
         </div>
+       
         {fields.length > 0 && (
           <div className={classes.submitformbuttoncontainer}>
             {localStorage.getItem("role") === "admin" && !isTemplate && (
@@ -212,6 +225,10 @@ const MakeForm = () => {
           </div>
         )}
       </div>
+      <div className={classes.formpreview} onScroll={handleScroll}>
+        <h5 style={{"textAlign": "center"}}>Form Preview</h5>
+            <DisplayPreviewForm/>
+        </div>
       <Footer />
     </>
   );

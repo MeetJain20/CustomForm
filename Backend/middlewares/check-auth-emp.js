@@ -26,7 +26,7 @@ const check_Authentication = (req, res, next) => {
   }
  
   jwt.verify(token, process.env.SUPERSECRET_KEY, (err, decoded) => {
-    if (decoded && decoded.role === "employee") {
+    if (decoded &&(decoded.role === "employee" || decoded.role === "admin")) {
       next();
     } else {
       return catchError(err, res);

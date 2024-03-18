@@ -40,7 +40,7 @@ const FormsListContainer = ({ forms, formtitle }) => {
           <div className={classes.formlistheader}>
             <div className={classes.formtitle}>{formtitle}</div>
             <div className={classes.rightformlistheader}>
-              {formtitle === "Active Forms" && (
+              {(formtitle === "Active Forms" || formtitle === "Assigned Forms") && (
                 <div className={classes.searchcontainer}>
                   <input
                     type="text"

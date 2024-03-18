@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const adminRoutes = require("./routes/admin");
 const formRoutes = require("./routes/form");
+const empformRoutes = require("./routes/empform");
 const employeeRoutes = require("./routes/employee");
 var fs = require("fs");
 const cors = require("cors");
@@ -29,6 +30,7 @@ app.use((req, res, next) => {
 app.use("/admin", adminRoutes);
 app.use("/employee", employeeRoutes);
 app.use("/form", formRoutes);
+app.use("/empform", empformRoutes);
 // app.use("/merchant", merchantRoutes);
 // app.use("/item", itemRoutes);
 // app.use("/gold", goldRoutes);

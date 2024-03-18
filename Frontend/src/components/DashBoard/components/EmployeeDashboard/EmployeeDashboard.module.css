@@ -5,3 +5,10 @@
     flex-direction: row;
     margin-bottom: 1rem;
 }
+
+.allformscontainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
