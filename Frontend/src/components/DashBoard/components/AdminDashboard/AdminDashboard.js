@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { MAIN_LINK } from "../../../../urls/urls";
 import Cookies from "js-cookie";
 import { useRequest } from "../../../../context/request-hook";
+import { toast } from "sonner";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -24,8 +25,10 @@ const AdminDashboard = () => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      toast.success("New form created successfully");
       navigate(`/createform/${response.form.id}`);
     } else {
+      toast.error("Error creating new form");
       navigate("/landingpage");
     }
   };

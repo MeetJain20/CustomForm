@@ -4,6 +4,7 @@ import { RxCross1 } from "react-icons/rx";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import Functionalities from "../Functionalities";
 import useOutsideClick from "../../../../../../hooks/useOutsideClick";
+import { toast } from "sonner";
 
 const CheckboxTypeFields = ({ fieldData }) => {
   const [fieldState, setFieldState] = useState({
@@ -33,6 +34,7 @@ const CheckboxTypeFields = ({ fieldData }) => {
       setFieldState({ ...fieldState, options: newOptions });
       setErrorMessage("");
     } else {
+      toast.warning("Please enter a value for the option")
       setErrorMessage("Please enter a value for the option");
     }
   };
@@ -40,6 +42,7 @@ const CheckboxTypeFields = ({ fieldData }) => {
   const handleDeleteOption = (index) => {
     const newOptions = fieldState.options.filter((_, i) => i !== index);
     setFieldState({ ...fieldState, options: newOptions });
+    setErrorMessage("");
   };
 
   useOutsideClick(containerRef, () => {

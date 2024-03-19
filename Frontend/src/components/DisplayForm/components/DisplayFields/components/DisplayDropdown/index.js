@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const DisplayDropdown = ({ fieldData }) => {
   const dispatch = useDispatch();
-const[selectedOption,setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(null);
   const [responseData, setResponseData] = useState({
     fieldid: fieldData.fieldid,
     question: fieldData.question,
@@ -39,10 +39,13 @@ const[selectedOption,setSelectedOption] = useState(null);
   }, [responseData]);
 
   // Map options to required format
-  const optionList = fieldData.options.map((option) => ({
-    value: option.replace(/\s+/g, "").toLowerCase(),
-    label: option,
-  }));
+  let optionList = [];
+  if (fieldData.options) {
+    optionList = fieldData.options.map((option) => ({
+      value: option.replace(/\s+/g, "").toLowerCase(),
+      label: option,
+    }));
+  }
 
   return (
     <div className={classes.dropdownfieldcontainer}>

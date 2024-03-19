@@ -5,4 +5,5 @@ import LongAnswerFields from "./LongAnswerFields";
 import ShortAnswerFields from "./ShortAnswerFields";
 import TimeTypeFields from "./TimeTypeFields";
 import MultipleChoiceFields from "./MultipleChoiceFields";
-export {DropdownFields,CheckboxTypeFields, DateTypeFields, LongAnswerFields, ShortAnswerFields, TimeTypeFields, MultipleChoiceFields};
+import FileTypeFields from "./FileTypeFields";
+export {DropdownFields,CheckboxTypeFields, DateTypeFields, LongAnswerFields, ShortAnswerFields, TimeTypeFields, MultipleChoiceFields,FileTypeFields};

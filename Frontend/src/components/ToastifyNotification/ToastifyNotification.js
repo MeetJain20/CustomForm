@@ -1,17 +1,20 @@
 import React from "react";
-import { ToastContainer } from "react-toastify";
+// import { Toaster, toast } from 'sonner'
+import { Toaster } from 'sonner'
 
 const ToastifyNotification = () => {
   return (
-    <ToastContainer
-      position="top-center"
-      autoClose={1000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      draggable
-      theme="light"
+    <Toaster
+      position="top-right"
+      duration={2500}
+      richColors
+      closeButton
+      toastOptions={{
+        style: {
+          height: '70px',
+          fontSize:"1.05rem"
+        }
+      }}
     />
   );
 };

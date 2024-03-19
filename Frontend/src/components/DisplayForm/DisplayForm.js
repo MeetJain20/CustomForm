@@ -7,6 +7,7 @@ import { useRequest } from "../../context/request-hook";
 import { MAIN_LINK } from "../../urls/urls";
 import Cookies from "js-cookie";
 import DisplayFields from "./components/DisplayFields";
+import { toast } from "sonner";
 
 const DisplayForm = () => {
   const { formid } = useParams();
@@ -39,8 +40,10 @@ const DisplayForm = () => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      toast.success("Template saved successfully")
       navigate("/admindashboard");
     } catch (err) {
+      toast.error("Error saving template")
       console.log(err);
     }
   };
@@ -60,8 +63,11 @@ const DisplayForm = () => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      toast.info("You can edit this form now");
       navigate(`/createform/${formid}`);
     } catch (err) {
+        toast.error("Error making the form editable");
+
       console.log(err);
     }
   };
@@ -82,8 +88,10 @@ const DisplayForm = () => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      toast.success("Template copied successfully");
       navigate(`/createform/${responseData._id}`);
     } catch (err) {
+        toast.error("Error using template");
       console.log(err);
     }
   };
@@ -171,16 +179,18 @@ const DisplayForm = () => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      toast.success("Response submitted successfully");
       // console.log("Response Saved");
       navigate("/employeedashboard");
     } catch (err) {
+      toast.success("Error submitting your response");
       console.log("Error Saving Response: ", err);
     }
   };
-
   // View Form Responses
 
   const viewResponseHandler = () => {
+    toast.info("See all the responses here");
     navigate(`/viewresponse/${formid}`, { state: { totalResponseData } });
   };
 

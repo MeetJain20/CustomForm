@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import classes from "./SignUpForm.module.css";
 import Select from "react-select";
 import { MAIN_LINK } from "../../../../urls/urls";
+import { toast } from "sonner";
 
 const SignUpFormAdm = () => {
   const { sendRequest } = useRequest();
@@ -75,8 +76,8 @@ const SignUpFormAdm = () => {
                 }),
                 { "Content-Type": "application/json" }
               );
-              console.log(response, "checking response at signup");
               navigate("/login?role=admin");
+              toast.success("Sign Up Successful")
               setEmpName("");
               setEmail("");
               setPassword("");
@@ -84,19 +85,23 @@ const SignUpFormAdm = () => {
               setTeamName("");
               setTeamName1("");
             } else {
+              toast.warning("Invalid Mobile Number");
               setError("Invalid Mobile Number");
               setisError(true);
             }
           } else {
-            setError("Password Must be atleast 6 characters long");
+            toast.warning("Password must be atleast 6 characters");
+            setError("Password must be atleast 6 characters");
             setisError(true);
           }
         } else {
-          setError("Invalid email");
+          toast.error("Invalid Email");
+          setError("Invalid Email");
           setisError(true);
         }
       } else if (!isChecked) {
-        setError("Please Accept Terms and Conditions");
+        toast.warning("Please accept Terms and Conditions");
+        setError("Please accept Terms and Conditions");
         setisError(true);
       }
     } else if (
@@ -106,9 +111,11 @@ const SignUpFormAdm = () => {
       mobile === "" ||
       teamName === ""
     ) {
+      toast.warning("Please fill in all fields");
       setError("Please fill in all fields");
       setisError(true);
     } else if (password.length < 6) {
+      toast.warning("Password must be at least 6 characters");
       setError("Password must be at least 6 characters");
       setisError(true);
     }

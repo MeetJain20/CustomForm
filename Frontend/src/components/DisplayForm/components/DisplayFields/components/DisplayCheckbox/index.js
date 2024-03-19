@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import classes from "./DisplayCheckbox.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import debounce from "lodash.debounce";
 
 const DisplayCheckbox = ({ fieldData }) => {
@@ -55,7 +55,7 @@ const DisplayCheckbox = ({ fieldData }) => {
         readOnly
       />
       <div className={classes.optionsarray}>
-        {fieldData.options.map((option, index) => (
+        {fieldData.options && fieldData.options.map((option, index) => (
           <div key={index} className={classes.optionContainer}>
             <input
               type="checkbox"

@@ -5,11 +5,13 @@ import store from './redux/store';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import ToastifyNotification from './components/ToastifyNotification/ToastifyNotification';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
+    <ToastifyNotification/>
     <App />
     </Provider>
   </React.StrictMode>

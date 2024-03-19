@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import classes from "./SignUpForm.module.css";
 import Select from "react-select";
 import { MAIN_LINK } from "../../../../urls/urls";
-
+import { toast } from "sonner";
 const SignUpFormEmp = () => {
   const { sendRequest } = useRequest();
   const navigate = useNavigate();
@@ -73,7 +73,7 @@ const SignUpFormEmp = () => {
                 }),
                 { "Content-Type": "application/json" }
               );
-              console.log(response, "checking response at signup");
+              toast.success("Sign Up Successful");
               navigate("/login?role=employee");
               setEmpName("");
               setEmail("");
@@ -81,19 +81,23 @@ const SignUpFormEmp = () => {
               setMobile(0);
               setTeamName("");
             } else {
+              toast.warning("Invalid Mobile Number");
               setError("Invalid Mobile Number");
               setisError(true);
             }
           } else {
+            toast.warning("Password must be at least 6 characters");
             setError("Password Must be atleast 6 characters long");
             setisError(true);
           }
         } else {
-          setError("Invalid email");
+          toast.error("Invalid Email");
+          setError("Invalid Email");
           setisError(true);
         }
       } else if (!isChecked) {
-        setError("Please Accept Terms and Conditions");
+        toast.warning("Please accept Terms and Conditions");
+        setError("Please accept Terms and Conditions");
         setisError(true);
       }
     } else if (
@@ -103,9 +107,11 @@ const SignUpFormEmp = () => {
       mobile === "" ||
       teamName === ""
     ) {
+      toast.warning("Please fill in all fields");
       setError("Please fill in all fields");
       setisError(true);
     } else if (password.length < 6) {
+      toast.warning("Password must be at least 6 characters");
       setError("Password must be at least 6 characters");
       setisError(true);
     }

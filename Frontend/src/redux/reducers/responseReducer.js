@@ -31,6 +31,7 @@ const responseReducer = (state = initialState, action) => {
                     ]
                 };
             }
+            
         default:
             return state;
     }

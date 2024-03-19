@@ -7,6 +7,7 @@ import { MDBCol, MDBInput } from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
 import classes from "./LoginForm.module.css";
 import { MAIN_LINK } from "../../../../urls/urls";
+import { toast } from 'sonner';
 
 const LoginFormEmp = () => {
   const auth = useContext(AuthContext);
@@ -47,30 +48,32 @@ const LoginFormEmp = () => {
             }
           );
           if (!response) {
+          toast.error("Invalid Credentials");
             setError("Invalid Credentials Try Again");
             // toast.error("Login Failed");
 
             setisError(true);
           } else {
-            // toast.success("Login Successful");
+            toast.success("Login Successful");
             navigate("/employeedashboard");
             auth.login(response.user.id, "employee", response.token);
             setEmail("");
             setPassword("");
           }
         } else {
-          setError("Password Must be atleast 6 characters long");
-          // toast.error("Login Failed");
+          toast.warning("Password must be atleast 6 characters");
+          setError("Password must be atleast 6 characters");
           setisError(true);
         }
       } else {
+        toast.error("Invalid Email");
         setError("Invalid email");
         // toast.error("Login Failed");
         setisError(true);
       }
     } else if (email === "" || password === "") {
       setError("Please fill in all fields");
-      // toast.error("Login Failed");
+      toast.warning("Please fill in all fields");
       setisError(true);
     }
   };

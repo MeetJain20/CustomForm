@@ -9,6 +9,7 @@ import {
   sendformforresponse,
   formcreation,
 } from "../../assets/index";
+import { toast } from "sonner";
 import FeatureItem from "./components/FeatureItem/FeatureItem";
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -36,10 +37,12 @@ const LandingPage = () => {
   const gotoformHandler = ()=>{
     if(localStorage.getItem('role') === "admin")
     {
+      toast.info("Admin Dashboard");
       navigate('/admindashboard');
     }
     else if(localStorage.getItem('role') === "employee")
     {
+      toast.info("Employee Dashboard");
       navigate('/employeedashboard');
     }
   }

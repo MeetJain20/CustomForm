@@ -7,6 +7,7 @@ import {
   CheckboxTypeFields,
   DateTypeFields,
   TimeTypeFields,
+  FileTypeFields
 } from "./components";
 
 const FieldTypeAttributes = ({ type, fieldData }) => {
@@ -27,6 +28,7 @@ const FieldTypeAttributes = ({ type, fieldData }) => {
       {activeType === "dropdown" && <DropdownFields fieldData={fieldData} />}
       {activeType === "datetype" && <DateTypeFields fieldData={fieldData} />}
       {activeType === "timetype" && <TimeTypeFields fieldData={fieldData} />}
+      {activeType === "filetype" && <FileTypeFields fieldData={fieldData} />}
     </div>
   );
 };

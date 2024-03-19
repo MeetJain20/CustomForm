@@ -11,7 +11,7 @@ import debounce from "lodash.debounce";
 import FirstNewFields from "./components/FirstNewFields";
 import DisplayPreviewForm from "../DisplayForm/components/DisplayPreviewForm";
 import { FaRegEye } from "react-icons/fa";
-
+import { toast } from "sonner";
 
 const MakeForm = () => {
   const { formid } = useParams();
@@ -48,6 +48,7 @@ const MakeForm = () => {
       );
       // setFormtitle(responseData.formtitle);
     } catch (err) {
+      toast.error("Error saving Title"); 
       console.log(err);
     }
   }, 300);
@@ -76,6 +77,7 @@ const MakeForm = () => {
         }
       );
     } catch (err) {
+      toast.error("Error saving Description"); 
       console.log(err);
     }
   }, 300);
@@ -99,8 +101,11 @@ const MakeForm = () => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      toast.success("Form Saved Successfully");
       navigate("/admindashboard");
     } catch (err) {
+      toast.error("Error saving Form");
+
       console.log(err);
     }
   };
@@ -120,8 +125,10 @@ const MakeForm = () => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      toast.success("Template Saved Successfully");
       navigate("/admindashboard");
     } catch (err) {
+      toast.error("Error saving Template");
       console.log(err);
     }
   };
@@ -142,6 +149,7 @@ const MakeForm = () => {
             Authorization: `Bearer ${Cookies.get("token")}`,
           }
         );
+        // toast.success("Form details fetched successfully")
         // console.log(responseData);
         if (responseData) {
           setFormtitle(responseData[0].formtitle);
@@ -155,6 +163,7 @@ const MakeForm = () => {
           setIsSaved(responseData[0].isComplete);
         }
       } catch (err) {
+        toast.error("Error fetching Form Details");
         console.log(err);
       }
     };

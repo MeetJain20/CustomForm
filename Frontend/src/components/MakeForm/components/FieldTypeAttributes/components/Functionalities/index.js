@@ -6,6 +6,7 @@ import { useRequest } from "../../../../../../context/request-hook";
 import { MAIN_LINK } from "../../../../../../urls/urls";
 import Cookies from "js-cookie";
 import { v4 as uuidv4 } from "uuid";
+import { toast } from "sonner";
 
 const Functionalities = ({ onSave, fieldState }) => {
   const { formid } = useParams();
@@ -38,10 +39,12 @@ const Functionalities = ({ onSave, fieldState }) => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      toast.success("Details saved successfully");
       dispatch({ type: "SAVE_FIELD" });
 
       // setFormtitle(responseData.formtitle);
     } catch (err) {
+      toast.error("Error saving details");
       console.log(err);
     }
   };
@@ -62,15 +65,16 @@ const Functionalities = ({ onSave, fieldState }) => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      toast.success("Field deleted successfully");
       dispatch({ type: "DELETE_FIELD" });
       dispatch({
         type: "DELETE_FIELD_ARRAY",
         payload: { fieldId: fieldState.fieldid },
       });
 
-      // window.location.reload();
-      // setFormtitle(responseData.formtitle);
     } catch (err) {
+        toast.error("Error deleting field");
+
       console.log(err);
     }
   };
@@ -100,6 +104,7 @@ const Functionalities = ({ onSave, fieldState }) => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      toast.success("Field copied successfully");
       dispatch({ type: "COPY_FIELD" });
     } catch (err) {
       console.log(err);
@@ -122,10 +127,14 @@ const Functionalities = ({ onSave, fieldState }) => {
             Authorization: `Bearer ${Cookies.get("token")}`,
           }
         );
+        toast.success("New field added successfully");
+
         dispatch({ type: "SAVE_FIELD" });
   
         // setFormtitle(responseData.formtitle);
       } catch (err) {
+        toast.error("Error adding new field");
+
         console.log(err);
       }
   }

@@ -56,7 +56,7 @@ const sendMail = async (recipients) => {
 const getresponses = async (req, res, next) => {
   const { formid } = req.params;
   try {
-    const responses = await ResponseModel.find({formId:formid});
+    const responses = await ResponseModel.find({ formId: formid });
     if (!responses) {
       return res.status(404).json({ message: "Form not found" });
     }
@@ -80,7 +80,7 @@ const getsubmittedforms = async (req, res, next) => {
     }
 
     // Extract formIds from the responses
-    const formIds = responses.map(response => response.formId);
+    const formIds = responses.map((response) => response.formId);
 
     // Find form details for each formId
     const formDetails = await FormModel.find({ _id: { $in: formIds } });
@@ -96,7 +96,6 @@ const getsubmittedforms = async (req, res, next) => {
     res.status(500).json({ message: "Failed to fetch submitted forms" });
   }
 };
-
 
 const getassignedforms = async (req, res, next) => {
   const { empid } = req.params;
@@ -128,6 +127,20 @@ const saveresponse = async (req, res, next) => {
   const { formId, employeeId, adminId, responses } = req.body;
 
   try {
+    // Check if any object in the responses array has a FormData object in the response field
+    const hasFormData = responses.some((response) => {
+      return response.response instanceof FormData;
+    });
+
+    if (hasFormData) {
+      // Handle the case where FormData is present in responses
+      // This could mean that the client is attempting to send files
+      console.log("Files are included in responses.");
+      // You may want to handle this case differently, such as saving files separately
+      return res.status(400).json({ message: "File upload not supported in responses" });
+    }
+
+    // If FormData is not present, proceed with saving the response
     // Retrieve the employee's name from EmployeeModel
     const employee = await EmployeeModel.findById(employeeId);
     if (!employee) {

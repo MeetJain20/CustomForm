@@ -47,7 +47,7 @@ const DisplayMultipleChoice = ({ fieldData }) => {
           readOnly
         />
         <div className={classes.optionsarray}>
-          {fieldData.options.map((option, index) => (
+          {fieldData.options && fieldData.options.map((option, index) => (
             <div key={index} className={classes.optionContainer}>
               <input
                 type="radio"

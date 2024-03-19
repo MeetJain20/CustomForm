@@ -1,0 +1,31 @@
+.displayfilefieldcontainer{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.questionfield{
+    padding: 5px;
+    font-size: 1.25rem;
+    border:none;
+}
+
+.questionfield:focus{
+    outline:none;
+}
+
+.fileContainer{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-top: 0.3rem;
+}
+
+.filefield{
+    border:none;
+    border-bottom: 1px solid var(--divider-color);
+}
+.filefield:focus{
+    outline:none;
+}

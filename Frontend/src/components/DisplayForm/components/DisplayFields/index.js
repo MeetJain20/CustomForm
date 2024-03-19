@@ -8,6 +8,7 @@ import {
     DisplayCheckbox,
     DisplayDate,
     DisplayTime,
+    DisplayFile
   } from "./components";
 
 const DisplayFields = ({ activeType, fieldData }) => {
@@ -29,6 +30,7 @@ const DisplayFields = ({ activeType, fieldData }) => {
         {activeType === "Dropdown" && <DisplayDropdown fieldData={fieldData} />}
         {activeType === "Date Type" && <DisplayDate fieldData={fieldData} />}
         {activeType === "Time Type" && <DisplayTime fieldData={fieldData} />}
+        {activeType === "File Type" && <DisplayFile fieldData={fieldData} />}
       </div>
     </div>
   );

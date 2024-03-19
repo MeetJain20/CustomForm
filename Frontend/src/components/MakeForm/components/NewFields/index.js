@@ -20,6 +20,7 @@ const NewFields = ({ fieldData={} }) => {
     { value: "dropdown", label: "Dropdown" },
     { value: "datetype", label: "Date Type" },
     { value: "timetype", label: "Time Type" },
+    { value: "filetype", label: "File Type" },
   ];
   const [selectedOptions, setSelectedOptions] = useState({value: fieldData.type.replace(/\s+/g, "").toLowerCase(), label: fieldData.type});
 

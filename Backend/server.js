@@ -6,6 +6,7 @@ const adminRoutes = require("./routes/admin");
 const formRoutes = require("./routes/form");
 const empformRoutes = require("./routes/empform");
 const employeeRoutes = require("./routes/employee");
+const fileRoutes = require("./routes/file");
 var fs = require("fs");
 const cors = require("cors");
 var path = require("path");
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
 app.use("/admin", adminRoutes);
 app.use("/employee", employeeRoutes);
 app.use("/form", formRoutes);
+app.use("/file", fileRoutes);
 app.use("/empform", empformRoutes);
 // app.use("/merchant", merchantRoutes);
 // app.use("/item", itemRoutes);

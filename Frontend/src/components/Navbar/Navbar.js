@@ -7,6 +7,7 @@ import { useRequest } from "../../context/request-hook";
 import classes from "./Navbar.module.css";
 import { LuLogOut } from "react-icons/lu";
 import { CgProfile } from "react-icons/cg";
+import { toast } from "sonner";
 
 const Navbar = () => {
   const auth = useContext(AuthContext);
@@ -23,6 +24,7 @@ const Navbar = () => {
 
   function handleSelect(data) {
     setSelectedOptions(data);
+    toast.info(`${data.label} Login`)
     navigate(`/login?role=${data.value}`);
   }
 
@@ -31,6 +33,7 @@ const Navbar = () => {
       auth.logout();
       localStorage.removeItem("userid");
       localStorage.removeItem("role");
+      toast.success("Logged Out Successfully")
       navigate("/");
     }
   };

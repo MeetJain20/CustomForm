@@ -30,6 +30,7 @@
     "react-select": "^5.8.0",
     "react-toastify": "^10.0.4",
     "redux": "^5.0.1",
+    "sonner": "^1.4.3",
     "uninstall": "^0.0.0",
     "uuid": "^9.0.1",
     "web-vitals": "^2.1.4",

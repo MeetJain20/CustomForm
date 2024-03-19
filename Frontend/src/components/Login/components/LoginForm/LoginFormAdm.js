@@ -7,6 +7,7 @@ import { MDBCol, MDBInput } from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
 import classes from "./LoginForm.module.css";
 import { MAIN_LINK } from "../../../../urls/urls";
+import { toast } from 'sonner';
 
 const LoginFormAdm = () => {
   const auth = useContext(AuthContext);
@@ -48,23 +49,28 @@ const LoginFormAdm = () => {
             }
           );
           if (!response) {
+          toast.error("Invalid Credentials");
             setError("Invalid Credentials Try Again");
             setisError(true);
           } else {
+            toast.success('Login Successful');
             navigate("/admindashboard");
             auth.login(response.user.id, "admin", response.token);
             setEmail("");
             setPassword("");
           }
         } else {
-          setError("Password Must be atleast 6 characters long");
+          toast.warning("Password must be atleast 6 characters");
+          setError("Password must be atleast 6 characters");
           setisError(true);
         }
       } else {
+        toast.error("Invalid Email");
         setError("Invalid email");
         setisError(true);
       }
     } else if (email === "" || password === "") {
+      toast.warning("Please fill in all fields");
       setError("Please fill in all fields");
       setisError(true);
     }
@@ -130,6 +136,7 @@ const LoginFormAdm = () => {
           <p className={`${classes.termscondition}`}>Terms And Conditions*</p>
         </Link>
       </div>
+      
     </MDBCol>
   );
 };
