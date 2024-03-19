@@ -68,6 +68,36 @@ const getresponses = async (req, res, next) => {
   }
 };
 
+const getsubmittedforms = async (req, res, next) => {
+  const { empid } = req.params;
+
+  try {
+    // Find all responses associated with the empId
+    const responses = await ResponseModel.find({ employeeId: empid });
+
+    if (!responses || responses.length === 0) {
+      return res.status(404).json({ message: "No submitted forms found" });
+    }
+
+    // Extract formIds from the responses
+    const formIds = responses.map(response => response.formId);
+
+    // Find form details for each formId
+    const formDetails = await FormModel.find({ _id: { $in: formIds } });
+
+    if (!formDetails || formDetails.length === 0) {
+      return res.status(404).json({ message: "Form details not found" });
+    }
+
+    // Send the aggregated form details
+    res.json(formDetails);
+  } catch (error) {
+    console.error("Error fetching submitted forms:", error);
+    res.status(500).json({ message: "Failed to fetch submitted forms" });
+  }
+};
+
+
 const getassignedforms = async (req, res, next) => {
   const { empid } = req.params;
   try {
@@ -95,13 +125,24 @@ const getassignedforms = async (req, res, next) => {
 };
 
 const saveresponse = async (req, res, next) => {
-  const { formId, employeeId, adminId, responses } = req.body; // Assuming the data is sent in the request body
+  const { formId, employeeId, adminId, responses } = req.body;
 
   try {
+    // Retrieve the employee's name from EmployeeModel
+    const employee = await EmployeeModel.findById(employeeId);
+    if (!employee) {
+      return res.status(404).json({ message: "Employee not found" });
+    }
+
+    // Extract the employee's name
+    const empName = employee.empName; // Adjust this based on your EmployeeModel schema
+
+    // Include the employee's name in the response data
     const newResponse = new ResponseModel({
       formId,
       employeeId,
       adminId,
+      empName, // Include empName in the response
       responses,
     });
     await newResponse.save();
@@ -115,6 +156,7 @@ const saveresponse = async (req, res, next) => {
 
 exports.getresponses = getresponses;
 exports.getassignedforms = getassignedforms;
+exports.getsubmittedforms = getsubmittedforms;
 exports.saveresponse = saveresponse;
 
 // exports.login = login;

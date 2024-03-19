@@ -1,4 +1,5 @@
 
 import AssignedForm from "./AssignedForm";
+import SubmittedForm from "./SubmittedForm";
 
-export { AssignedForm };
+export { AssignedForm,SubmittedForm };

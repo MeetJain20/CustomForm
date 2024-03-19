@@ -14,6 +14,11 @@ router.get(
   check_Authentication,
   empformController.getassignedforms
 );
+router.get(
+  "/getsubmittedforms/:empid",
+  check_Authentication,
+  empformController.getsubmittedforms
+);
 router.post(
   "/saveresponse",
   check_Authentication,

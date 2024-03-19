@@ -14,6 +14,8 @@ body {
   --dark-divider: #adadad;
   --hover-color: #dad9d9;
   --light-cyan: #D9F5F9;
+  --approve-color: #039487;
+  --reject-color: #ff0000;
   --newform-hover:  rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
   --featureimage-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px,
   rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;

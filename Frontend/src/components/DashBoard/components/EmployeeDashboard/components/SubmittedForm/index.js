@@ -5,7 +5,7 @@ import { MAIN_LINK } from "../../../../../../urls/urls";
 import Cookies from "js-cookie";
 import { FormsListContainer } from "../../../AdminDashboard/components";
 
-const AssignedForm = () => {
+const SubmittedForm = () => {
   const { sendRequest } = useRequest();
   const [filteredForms, setFilteredForms] = useState([]);
   const searchvalue = useSelector(
@@ -15,7 +15,7 @@ const AssignedForm = () => {
     const fetchItems = async () => {
       try {
         const responseData = await sendRequest(
-          `${MAIN_LINK}/empform/getassignedforms/${localStorage.getItem('userid')}`,
+          `${MAIN_LINK}/empform/getsubmittedforms/${localStorage.getItem('userid')}`,
           "GET",
           null,
           {
@@ -41,8 +41,8 @@ const AssignedForm = () => {
   }, [sendRequest,searchvalue]);
 
   return (
-    <FormsListContainer forms={filteredForms} formtitle={"Assigned Forms"} />
+    <FormsListContainer forms={filteredForms} formtitle={"Submitted Forms"} />
   );
 };
 
-export default AssignedForm;
+export default SubmittedForm;

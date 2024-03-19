@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import classes from "./EmployeeDashboard.module.css";
 import { Navbar, Footer } from "../../../index";
 import { FaPlus } from "react-icons/fa";
-import { AssignedForm } from "./components/index";
+import { AssignedForm,SubmittedForm } from "./components/index";
 import { useNavigate } from "react-router-dom";
 import { MAIN_LINK } from "../../../../urls/urls";
 import Cookies from "js-cookie";
@@ -37,6 +37,7 @@ const EmployeeDashboard = () => {
       <div className={classes.employeedashboardcontainer}>
         <div className={classes.allformscontainer}>
           <AssignedForm />
+          <SubmittedForm/>
           {/* <TemplateForms />
           <MyForms /> */}
         </div>

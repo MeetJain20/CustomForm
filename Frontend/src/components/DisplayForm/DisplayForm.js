@@ -20,6 +20,7 @@ const DisplayForm = () => {
   const [isTemplate, setIsTemplate] = useState("");
   const [totalResponse, setTotalResponse] = useState(0);
   const [totalResponseData, setTotalResponseData] = useState([]);
+  const [alreadySubmitted, setAlreadySubmitted] = useState(false);
   const fields = useSelector((state) => state.formData.fields);
   const dispatch = useDispatch();
 
@@ -137,8 +138,13 @@ const DisplayForm = () => {
         );
         // console.log(responseData);
         if (responseData) {
-            setTotalResponseData(responseData);
+          setTotalResponseData(responseData);
           setTotalResponse(responseData.length);
+          const submittedByUser = responseData.some(response => response.formId === formid && response.empId === localStorage.getItem("userid"));
+          if(submittedByUser)
+          {
+            setAlreadySubmitted(true);
+          }
         }
       } catch (err) {
         console.log(err);
@@ -186,7 +192,11 @@ const DisplayForm = () => {
           <div className={classes.viewresponsediv}>
             <button
               className={classes.viewresponsebutton}
+              disabled={totalResponse === 0}
               onClick={viewResponseHandler}
+              style={{
+                cursor: totalResponse === 0 ? "not-allowed" : "pointer",
+              }}
             >
               {totalResponse === 0
                 ? "No Response Yet"

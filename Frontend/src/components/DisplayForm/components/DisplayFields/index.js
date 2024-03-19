@@ -11,7 +11,6 @@ import {
   } from "./components";
 
 const DisplayFields = ({ activeType, fieldData }) => {
-  
   return (
     <div className={`${classes.displayfieldcontainer}`}>
       <div>

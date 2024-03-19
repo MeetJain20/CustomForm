@@ -17,7 +17,11 @@ const navigate = useNavigate();
     {
       navigate(`/displayform/${formid}`);
     }
-    if(formtitle === 'Assigned Forms')
+    else if(formtitle === 'Assigned Forms')
+    {
+      navigate(`/displayform/${formid}`);
+    }
+    else if(formtitle === 'Submitted Forms')
     {
       navigate(`/displayform/${formid}`);
     }

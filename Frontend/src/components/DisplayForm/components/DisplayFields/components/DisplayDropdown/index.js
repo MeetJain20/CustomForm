@@ -32,7 +32,7 @@ const[selectedOption,setSelectedOption] = useState(null);
     } catch (err) {
       console.log(err);
     }
-  }, 300);
+  }, 100);
 
   useEffect(() => {
     debouncedResponseHandler(responseData);
