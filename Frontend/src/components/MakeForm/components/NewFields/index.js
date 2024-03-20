@@ -33,13 +33,6 @@ const NewFields = ({ fieldData={} }) => {
     });
   };
 
-  // const addfieldHandler = () => {
-  //   dispatch({
-  //     type: "ADD_FIELD",
-  //     payload: true,
-  //   });
-  // };
-
   const containerRef = useRef(null);
   const insideClickHandler = () => {
     setCurrentDiv(true);
@@ -47,12 +40,6 @@ const NewFields = ({ fieldData={} }) => {
   useOutsideClick(containerRef, () => {
     setCurrentDiv(false);
   });
-  // useState(() => {
-  //   if (fieldData.type) {
-  //     const transformedType = fieldData.type.replace(/\s+/g, "").toLowerCase();
-  //     setSelectedOptions({ value: transformedType, label: fieldData.type });
-  //   }
-  // }, [fieldData]);
 
 
   return (

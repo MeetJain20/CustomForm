@@ -4,20 +4,22 @@ import { useSelector } from "react-redux";
 import { useRequest } from "../../../../../../context/request-hook";
 import { MAIN_LINK } from "../../../../../../urls/urls";
 import Cookies from "js-cookie";
+import { toast } from "sonner";
+import Loader from "../../../../../Loader";
 
 const CurrentForms = () => {
   const { sendRequest } = useRequest();
   const [filteredForms, setFilteredForms] = useState([]);
-  const searchvalue = useSelector(
-    (state) => state.searchtext.searchText
-  );
+  const [isloading, setIsloading] = useState(false);
+  const searchvalue = useSelector((state) => state.searchtext.searchText);
   const deleteform = useSelector((state) => state.funcfield.deleteform);
 
   useEffect(() => {
     const fetchItems = async () => {
       try {
+        setIsloading(true);
         const responseData = await sendRequest(
-          `${MAIN_LINK}/form/getactiveforms/${localStorage.getItem('userid')}`,
+          `${MAIN_LINK}/form/getactiveforms/${localStorage.getItem("userid")}`,
           "GET",
           null,
           {
@@ -27,6 +29,8 @@ const CurrentForms = () => {
         );
         // console.log(responseData);
         if (responseData) {
+          setIsloading(false);
+          // toast.success("Active forms fetched successfully");
           const filtered = responseData.filter((form) =>
             form.formtitle
               .toLowerCase()
@@ -36,15 +40,17 @@ const CurrentForms = () => {
           setFilteredForms(filtered);
         }
       } catch (err) {
+        setIsloading(false);
+        toast.error("Error fetching active forms");
         console.log(err);
       }
     };
     fetchItems();
-  }, [sendRequest,searchvalue,deleteform]);
+  }, [sendRequest, searchvalue, deleteform]);
 
-  return (
+  return (<>{isloading && <Loader/>}
     <FormsListContainer forms={filteredForms} formtitle={"Active Forms"} />
-  );
+  </>);
 };
 
 export default CurrentForms;

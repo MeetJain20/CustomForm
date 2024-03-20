@@ -10,8 +10,8 @@ import Cookies from "js-cookie";
 import debounce from "lodash.debounce";
 import FirstNewFields from "./components/FirstNewFields";
 import DisplayPreviewForm from "../DisplayForm/components/DisplayPreviewForm";
-import { FaRegEye } from "react-icons/fa";
 import { toast } from "sonner";
+import Loader from "../Loader";
 
 const MakeForm = () => {
   const { formid } = useParams();
@@ -24,6 +24,7 @@ const MakeForm = () => {
   const [formdesc, setFormdesc] = useState("");
   const [isSaved, setIsSaved] = useState("");
   const [isTemplate, setIsTemplate] = useState("");
+  const [isloading, setIsloading] = useState(false);
   const fields = useSelector((state) => state.formData.fields);
   const dispatch = useDispatch();
 
@@ -48,7 +49,7 @@ const MakeForm = () => {
       );
       // setFormtitle(responseData.formtitle);
     } catch (err) {
-      toast.error("Error saving Title"); 
+      toast.error("Error saving Title");
       console.log(err);
     }
   }, 300);
@@ -77,7 +78,7 @@ const MakeForm = () => {
         }
       );
     } catch (err) {
-      toast.error("Error saving Description"); 
+      toast.error("Error saving Description");
       console.log(err);
     }
   }, 300);
@@ -90,6 +91,7 @@ const MakeForm = () => {
 
   const saveFormHandler = async () => {
     try {
+      setIsloading(true);
       const responseData = await sendRequest(
         `${MAIN_LINK}/form/updateformstatus`,
         "PUT",
@@ -101,11 +103,12 @@ const MakeForm = () => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      setIsloading(false);
       toast.success("Form Saved Successfully");
       navigate("/admindashboard");
     } catch (err) {
+      setIsloading(false);
       toast.error("Error saving Form");
-
       console.log(err);
     }
   };
@@ -114,6 +117,7 @@ const MakeForm = () => {
 
   const saveFormTemplateHandler = async () => {
     try {
+      setIsloading(true);
       const responseData = await sendRequest(
         `${MAIN_LINK}/form/updatetemplatestatus`,
         "PUT",
@@ -125,9 +129,11 @@ const MakeForm = () => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      setIsloading(false);
       toast.success("Template Saved Successfully");
       navigate("/admindashboard");
     } catch (err) {
+      setIsloading(false);
       toast.error("Error saving Template");
       console.log(err);
     }
@@ -138,6 +144,7 @@ const MakeForm = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
+        setIsloading(true);
         const responseData = await sendRequest(
           `${MAIN_LINK}/form/getcurrentform`,
           "POST",
@@ -152,6 +159,8 @@ const MakeForm = () => {
         // toast.success("Form details fetched successfully")
         // console.log(responseData);
         if (responseData) {
+          setIsloading(false);
+
           setFormtitle(responseData[0].formtitle);
           setFormdesc(responseData[0].formdesc);
           // setFields(responseData[0].fields);
@@ -163,6 +172,8 @@ const MakeForm = () => {
           setIsSaved(responseData[0].isComplete);
         }
       } catch (err) {
+        setIsloading(false);
+
         toast.error("Error fetching Form Details");
         console.log(err);
       }
@@ -181,6 +192,7 @@ const MakeForm = () => {
 
   return (
     <>
+    {isloading && <Loader/>}
       <Navbar />
       <div className={classes.createformcontainer}>
         <div className={classes.customcontainer}>
@@ -212,7 +224,7 @@ const MakeForm = () => {
             )}
           </div>
         </div>
-       
+
         {fields.length > 0 && (
           <div className={classes.submitformbuttoncontainer}>
             {localStorage.getItem("role") === "admin" && !isTemplate && (
@@ -235,9 +247,9 @@ const MakeForm = () => {
         )}
       </div>
       <div className={classes.formpreview} onScroll={handleScroll}>
-        <h5 style={{"textAlign": "center"}}>Form Preview</h5>
-            <DisplayPreviewForm/>
-        </div>
+        <h5 style={{ textAlign: "center" }}>Form Preview</h5>
+        <DisplayPreviewForm />
+      </div>
       <Footer />
     </>
   );

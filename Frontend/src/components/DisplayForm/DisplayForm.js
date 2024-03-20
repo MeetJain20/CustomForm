@@ -8,6 +8,7 @@ import { MAIN_LINK } from "../../urls/urls";
 import Cookies from "js-cookie";
 import DisplayFields from "./components/DisplayFields";
 import { toast } from "sonner";
+import Loader from "../Loader";
 
 const DisplayForm = () => {
   const { formid } = useParams();
@@ -22,6 +23,8 @@ const DisplayForm = () => {
   const [totalResponse, setTotalResponse] = useState(0);
   const [totalResponseData, setTotalResponseData] = useState([]);
   const [alreadySubmitted, setAlreadySubmitted] = useState(false);
+  const [isloading, setIsloading] = useState(false);
+
   const fields = useSelector((state) => state.formData.fields);
   const dispatch = useDispatch();
 
@@ -29,6 +32,7 @@ const DisplayForm = () => {
 
   const saveFormTemplateHandler = async () => {
     try {
+      setIsloading(true);
       const responseData = await sendRequest(
         `${MAIN_LINK}/form/updatetemplatestatus`,
         "PUT",
@@ -40,9 +44,11 @@ const DisplayForm = () => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      setIsloading(false);
       toast.success("Template saved successfully");
       navigate("/admindashboard");
     } catch (err) {
+      setIsloading(false);
       toast.error("Error saving template");
       console.log(err);
     }
@@ -52,6 +58,7 @@ const DisplayForm = () => {
 
   const editFormHandler = async () => {
     try {
+      setIsloading(true);
       const responseData = await sendRequest(
         `${MAIN_LINK}/form/updateeditstatus`,
         "PUT",
@@ -63,11 +70,12 @@ const DisplayForm = () => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      setIsloading(false);
       toast.info("You can edit this form now");
       navigate(`/createform/${formid}`);
     } catch (err) {
+      setIsloading(false);
       toast.error("Error making the form editable");
-
       console.log(err);
     }
   };
@@ -76,6 +84,7 @@ const DisplayForm = () => {
 
   const useTemplateHandler = async () => {
     try {
+      setIsloading(true);
       const responseData = await sendRequest(
         `${MAIN_LINK}/form/createFromTemplate`,
         "POST",
@@ -88,11 +97,43 @@ const DisplayForm = () => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      setIsloading(false);
       toast.success("Template copied successfully");
       navigate(`/createform/${responseData._id}`);
     } catch (err) {
+      setIsloading(false);
       toast.error("Error using template");
       console.log(err);
+    }
+  };
+
+  // Submit Response
+
+  const submitResponseHandler = async () => {
+    try {
+      setIsloading(true);
+      const responseData = await sendRequest(
+        `${MAIN_LINK}/empform/saveresponse`,
+        "POST",
+        JSON.stringify({
+          formId: formid,
+          adminId: adminid,
+          employeeId: localStorage.getItem("userid"),
+          responses: fieldResponse,
+        }),
+        {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        }
+      );
+      setIsloading(false);
+      toast.success("Response submitted successfully");
+      // console.log("Response Saved");
+      navigate("/employeedashboard");
+    } catch (err) {
+      setIsloading(false);
+      toast.success("Error submitting your response");
+      console.log("Error Saving Response: ", err);
     }
   };
 
@@ -101,6 +142,7 @@ const DisplayForm = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
+        setIsloading(true);
         const responseData = await sendRequest(
           `${MAIN_LINK}/form/getcurrentform`,
           "POST",
@@ -114,6 +156,7 @@ const DisplayForm = () => {
         );
         // console.log(responseData);
         if (responseData) {
+          setIsloading(false);
           setFormtitle(responseData[0].formtitle);
           setFormdesc(responseData[0].formdesc);
           // setFields(responseData[0].fields);
@@ -126,11 +169,15 @@ const DisplayForm = () => {
           setIsTemplate(responseData[0].isTemplate);
         }
       } catch (err) {
+        setIsloading(false);
+        toast.error("Error fetching form details");
         console.log(err);
       }
     };
     fetchItems();
   }, [sendRequest]);
+
+  // Get Form Responses
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -148,14 +195,6 @@ const DisplayForm = () => {
         if (responseData) {
           setTotalResponseData(responseData);
           setTotalResponse(responseData.length);
-          const submittedByUser = responseData.some(
-            (response) =>
-              response.formId === formid &&
-              response.empId === localStorage.getItem("userid")
-          );
-          if (submittedByUser) {
-            setAlreadySubmitted(true);
-          }
         }
       } catch (err) {
         console.log(err);
@@ -164,41 +203,18 @@ const DisplayForm = () => {
     fetchItems();
   }, [sendRequest]);
 
-  // Submit Form Response
-
-  const submitResponseHandler = async () => {
-    try {
-      const responseData = await sendRequest(
-        `${MAIN_LINK}/empform/saveresponse`,
-        "POST",
-        JSON.stringify({
-          formId: formid,
-          adminId: adminid,
-          employeeId: localStorage.getItem("userid"),
-          responses: fieldResponse,
-        }),
-        {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${Cookies.get("token")}`,
-        }
-      );
-      toast.success("Response submitted successfully");
-      // console.log("Response Saved");
-      navigate("/employeedashboard");
-    } catch (err) {
-      toast.success("Error submitting your response");
-      console.log("Error Saving Response: ", err);
-    }
-  };
   // View Form Responses
 
   const viewResponseHandler = () => {
     toast.info("See all the responses here");
+    setIsloading(true);
     navigate(`/viewresponse/${formid}`, { state: { totalResponseData } });
+    setIsloading(false);
   };
 
   return (
     <>
+      {isloading && <Loader />}
       <Navbar />
       <div className={classes.displayformcontainer}>
         {localStorage.getItem("role") === "admin" &&
@@ -258,7 +274,7 @@ const DisplayForm = () => {
           isSaved &&
           localStorage.getItem("userid") === adminid &&
           isTemplate ? (
-             <>
+            <>
               <button
                 className={classes.submitformbutton}
                 onClick={useTemplateHandler}
@@ -272,14 +288,25 @@ const DisplayForm = () => {
                 Edit Form
               </button>
             </>
-          ) : localStorage.getItem("role") === "admin" ? (
+          ) : localStorage.getItem("role") === "admin" &&
+            localStorage.getItem("userid") !== adminid ? (
             <button
-            className={classes.submitformbutton}
-            onClick={editFormHandler}
-          >
-            Use Template
-          </button>
+              className={classes.submitformbutton}
+              onClick={useTemplateHandler}
+            >
+              Use Template
+            </button>
           ) : (
+            localStorage.getItem("role") === "admin" && (
+              <button
+                className={classes.submitformbutton}
+                onClick={editFormHandler}
+              >
+                Edit Form
+              </button>
+            )
+          )}
+          {localStorage.getItem("role") === "employee" && (
             <button
               className={classes.submitformbutton}
               onClick={submitResponseHandler}

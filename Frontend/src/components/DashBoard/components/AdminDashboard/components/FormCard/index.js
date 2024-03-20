@@ -7,11 +7,14 @@ import { MAIN_LINK } from "../../../../../../urls/urls";
 import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "../../../../../Loader";
 
 const FormCard = ({ formid, img, title, formtitle }) => {
   const navigate = useNavigate();
   const {sendRequest} = useRequest();
   const dispatch = useDispatch();
+  const [isloading,setIsloading] = useState(false);
+
   const gotoformHandler = () => {
     const titleToRouteMap = {
       "Active Forms": `/createform/${formid}`,
@@ -31,6 +34,7 @@ const FormCard = ({ formid, img, title, formtitle }) => {
 
   const deleteFormHandler = async () => {
     try {
+      setIsloading(true);
       const response = await sendRequest(
         `${MAIN_LINK}/form/deleteform`,
         'DELETE',
@@ -42,18 +46,21 @@ const FormCard = ({ formid, img, title, formtitle }) => {
       );
   
       if (!response) {
+        setIsloading(false);
         toast.error("Error deleting form");
         throw new Error('Failed to delete form');
       }
+      setIsloading(false);
       toast.success("Form deleted successfully");
       dispatch({ type: "DELETE_FORM" });      // console.log('Form deleted successfully');
     } catch (error) {
+      setIsloading(false);
       toast.error("Error deleting form");
       console.error('Error deleting form:', error);
     }
   };
 
-  return (
+  return (<>{isloading && <Loader/>}
     <div
       className={`card ${classes.cardcontainer}`}
       style={{
@@ -83,7 +90,7 @@ const FormCard = ({ formid, img, title, formtitle }) => {
             </div>
           )}
       </div>
-    </div>
+    </div></>
   );
 };
 

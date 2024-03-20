@@ -4,11 +4,14 @@ import { useSelector } from "react-redux";
 import { useRequest } from "../../../../../../context/request-hook";
 import { MAIN_LINK } from "../../../../../../urls/urls";
 import Cookies from "js-cookie";
+import { toast } from "sonner";
+import Loader from "../../../../../Loader";
 
 const MyForms = () => {
 
   const { sendRequest } = useRequest();
   const [filteredForms, setFilteredForms] = useState([]);
+  const [isloading, setIsloading] = useState(false);
   const searchvalue = useSelector(
     (state) => state.searchtext.searchText
   );
@@ -17,6 +20,7 @@ const MyForms = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
+        setIsloading(true);
         const responseData = await sendRequest(
           `${MAIN_LINK}/form/getcompletedforms/${localStorage.getItem('userid')}`,
           "GET",
@@ -28,6 +32,9 @@ const MyForms = () => {
         );
         // console.log(responseData);
         if (responseData) {
+          setIsloading(false);
+          // toast.success("Saved forms fetched successfully");
+
           const filtered = responseData.filter((form) =>
             form.formtitle
               .toLowerCase()
@@ -37,6 +44,8 @@ const MyForms = () => {
           setFilteredForms(filtered);
         }
       } catch (err) {
+        setIsloading(false);
+        toast.error("Error fetching saved forms");
         console.log(err);
       }
     };
@@ -44,7 +53,7 @@ const MyForms = () => {
   }, [sendRequest,searchvalue,deleteform]);
 
 
-  return <FormsListContainer forms={filteredForms} formtitle={"My Forms"} />;
+  return (<>{isloading && <Loader/>}<FormsListContainer forms={filteredForms} formtitle={"My Forms"} /></>);
 };
 
 export default MyForms;

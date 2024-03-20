@@ -7,7 +7,8 @@ import { MDBCol, MDBInput } from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
 import classes from "./LoginForm.module.css";
 import { MAIN_LINK } from "../../../../urls/urls";
-import { toast } from 'sonner';
+import { toast } from "sonner";
+import Loader from "../../../Loader";
 
 const LoginFormEmp = () => {
   const auth = useContext(AuthContext);
@@ -16,6 +17,7 @@ const LoginFormEmp = () => {
   const [password, setPassword] = useState("");
   const [isError, setisError] = useState(false);
   const [error, setError] = useState("");
+  const [isloading, setIsloading] = useState(false);
   const navigate = useNavigate();
   const validateEmail = (email) => {
     const re =
@@ -35,37 +37,40 @@ const LoginFormEmp = () => {
       if (validateEmail(email)) {
         if (validatePass(password)) {
           e.preventDefault();
-          const response = await sendRequest(
-            `${MAIN_LINK}/employee/login`,
-            "POST",
-            JSON.stringify({
-              email: email,
-              password: password,
-              role: "employee",
-            }),
-            {
-              "Content-Type": "application/json",
-            }
-          );
-          if (!response) {
-          toast.error("Invalid Credentials");
-            setError("Invalid Credentials Try Again");
-            // toast.error("Login Failed");
-
-            setisError(true);
-          } else {
+          setIsloading(true);
+          try {
+            const response = await sendRequest(
+              `${MAIN_LINK}/employee/login`,
+              "POST",
+              JSON.stringify({
+                email: email,
+                password: password,
+                role: "employee",
+              }),
+              {
+                "Content-Type": "application/json",
+              }
+            );
+            setIsloading(false);
             toast.success("Login Successful");
             navigate("/employeedashboard");
             auth.login(response.user.id, "employee", response.token);
             setEmail("");
             setPassword("");
+          } catch (err) {
+            setIsloading(false);
+            toast.error("Invalid Credentials");
+            setError("Invalid Credentials Try Again");
+            setisError(true);
           }
         } else {
+          setIsloading(false);
           toast.warning("Password must be atleast 6 characters");
           setError("Password must be atleast 6 characters");
           setisError(true);
         }
       } else {
+        setIsloading(false);
         toast.error("Invalid Email");
         setError("Invalid email");
         // toast.error("Login Failed");
@@ -79,6 +84,7 @@ const LoginFormEmp = () => {
   };
   return (
     <>
+      {isloading && <Loader />}
       <MDBCol col="4" md="6" className={classes.logindiv}>
         <div className="d-flex flex-row align-items-center justify-content-center">
           <p className="lead fw-normal mb-0 me-3">Sign In As Employee</p>

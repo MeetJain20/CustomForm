@@ -11,9 +11,11 @@ import { toast } from "sonner";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  const [isloading,setIsloading] = useState(false);
   const { sendRequest } = useRequest();
   const createFormHandler = async () => {
     if (localStorage.getItem("role") === "admin") {
+      setIsloading(true);
       const response = await sendRequest(
         `${MAIN_LINK}/form/createforms`,
         "POST",
@@ -25,9 +27,11 @@ const AdminDashboard = () => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      setIsloading(false);
       toast.success("New form created successfully");
       navigate(`/createform/${response.form.id}`);
     } else {
+      setIsloading(false);
       toast.error("Error creating new form");
       navigate("/landingpage");
     }

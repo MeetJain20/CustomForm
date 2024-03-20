@@ -7,7 +7,8 @@ import { MDBCol, MDBInput } from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
 import classes from "./LoginForm.module.css";
 import { MAIN_LINK } from "../../../../urls/urls";
-import { toast } from 'sonner';
+import { toast } from "sonner";
+import Loader from "../../../Loader";
 
 const LoginFormAdm = () => {
   const auth = useContext(AuthContext);
@@ -17,6 +18,7 @@ const LoginFormAdm = () => {
   const [isError, setisError] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [isloading, setIsloading] = useState(false);
 
   const validateEmail = (email) => {
     const re =
@@ -36,6 +38,8 @@ const LoginFormAdm = () => {
       if (validateEmail(email)) {
         if (validatePass(password)) {
           e.preventDefault();
+          setIsloading(true);
+          try{
           const response = await sendRequest(
             `${MAIN_LINK}/employee/login`,
             "POST",
@@ -45,26 +49,32 @@ const LoginFormAdm = () => {
               role: "admin",
             }),
             {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
             }
           );
-          if (!response) {
-          toast.error("Invalid Credentials");
-            setError("Invalid Credentials Try Again");
-            setisError(true);
-          } else {
-            toast.success('Login Successful');
+        
+            setIsloading(false);
+            toast.success("Login Successful");
             navigate("/admindashboard");
             auth.login(response.user.id, "admin", response.token);
             setEmail("");
             setPassword("");
+          
+          }catch(err){
+            setIsloading(false);
+            toast.error("Invalid Credentials");
+            setError("Invalid Credentials Try Again");
+            setisError(true);
           }
+          
         } else {
+          setIsloading(false);
           toast.warning("Password must be atleast 6 characters");
           setError("Password must be atleast 6 characters");
           setisError(true);
         }
       } else {
+        setIsloading(false);
         toast.error("Invalid Email");
         setError("Invalid email");
         setisError(true);
@@ -76,68 +86,70 @@ const LoginFormAdm = () => {
     }
   };
   return (
-    <MDBCol col="4" md="6" className={classes.logindiv}>
-      <div className="d-flex flex-row align-items-center justify-content-center">
-        <p className="lead fw-normal mb-0 me-3">Sign In As Admin</p>
-      </div>
+    <>
+      {isloading && <Loader />}
+      <MDBCol col="4" md="6" className={classes.logindiv}>
+        <div className="d-flex flex-row align-items-center justify-content-center">
+          <p className="lead fw-normal mb-0 me-3">Sign In As Admin</p>
+        </div>
 
-      <div className={`d-flex align-items-center my-4`}>
-        <p className="text-center fw-bold mx-3 mb-0"></p>
-      </div>
+        <div className={`d-flex align-items-center my-4`}>
+          <p className="text-center fw-bold mx-3 mb-0"></p>
+        </div>
 
-      <MDBInput
-        wrapperClass="mb-4"
-        placeholder="Email"
-        id="formControllemail"
-        type="email"
-        size="lg"
-        onChange={(e) => {
-          setEmail(e.target.value);
-          setError("");
-        }}
-      />
-      <MDBInput
-        wrapperClass="mb-4"
-        placeholder="Password"
-        id="formControllpassword"
-        type="password"
-        size="lg"
-        onChange={(e) => {
-          setPassword(e.target.value);
-          setError("");
-        }}
-      />
-      <div className="container my-3">
-        {isError && (
-          <span className="loginError" style={{ color: "red" }}>
-            {error}
-          </span>
-        )}
-      </div>
-
-      <div className="text-center text-md-start mt-4 pt-2">
-        <button
-          className={`mb-3 px-5 btn btn-outline-info`}
+        <MDBInput
+          wrapperClass="mb-4"
+          placeholder="Email"
+          id="formControllemail"
+          type="email"
           size="lg"
-          onClick={handleClick}
-        >
-          Login
-        </button>
-        <p className="fw-bold">
-          Don't have an account?{" "}
-          <Link
-            to="/signup?role=admin" // Pass role as a query parameter without quotation marks
-            className="link-info"
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setError("");
+          }}
+        />
+        <MDBInput
+          wrapperClass="mb-4"
+          placeholder="Password"
+          id="formControllpassword"
+          type="password"
+          size="lg"
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setError("");
+          }}
+        />
+        <div className="container my-3">
+          {isError && (
+            <span className="loginError" style={{ color: "red" }}>
+              {error}
+            </span>
+          )}
+        </div>
+
+        <div className="text-center text-md-start mt-4 pt-2">
+          <button
+            className={`mb-3 px-5 btn btn-outline-info`}
+            size="lg"
+            onClick={handleClick}
           >
-            Register
+            Login
+          </button>
+          <p className="fw-bold">
+            Don't have an account?{" "}
+            <Link
+              to="/signup?role=admin" // Pass role as a query parameter without quotation marks
+              className="link-info"
+            >
+              Register
+            </Link>
+          </p>
+          <Link to="/termsandcondition">
+            <p className={`${classes.termscondition}`}>Terms And Conditions*</p>
           </Link>
-        </p>
-        <Link to="/termsandcondition">
-          <p className={`${classes.termscondition}`}>Terms And Conditions*</p>
-        </Link>
-      </div>
-      
-    </MDBCol>
+        </div>
+      </MDBCol>
+    </>
   );
 };
 

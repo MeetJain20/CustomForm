@@ -4,10 +4,13 @@ import { useRequest } from "../../../../../../context/request-hook";
 import { MAIN_LINK } from "../../../../../../urls/urls";
 import Cookies from "js-cookie";
 import { FormsListContainer } from "../../../AdminDashboard/components";
+import Loader from "../../../../../Loader";
+import { toast } from "sonner";
 
 const AssignedForm = () => {
   const { sendRequest } = useRequest();
   const [filteredForms, setFilteredForms] = useState([]);
+  const [isloading, setIsloading] = useState(false);
   const searchvalue = useSelector(
     (state) => state.searchtext.searchText
   );
@@ -15,6 +18,7 @@ const AssignedForm = () => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
+        setIsloading(true);
         const responseData = await sendRequest(
           `${MAIN_LINK}/empform/getassignedforms/${localStorage.getItem('userid')}`,
           "GET",
@@ -24,8 +28,10 @@ const AssignedForm = () => {
             Authorization: `Bearer ${Cookies.get("token")}`,
           }
         );
-        // console.log(responseData);
         if (responseData) {
+            setIsloading(false);
+            // toast.success("Assigned forms fetched successfully");
+
           const filtered = responseData.filter((form) =>
             form.formtitle
               .toLowerCase()
@@ -35,14 +41,16 @@ const AssignedForm = () => {
           setFilteredForms(filtered);
         }
       } catch (err) {
+        setIsloading(false);
+        toast.error("Error fetching Assigned Forms");
         console.log(err);
       }
     };
     fetchItems();
   }, [sendRequest,searchvalue,deleteform]);
 
-  return (
-    <FormsListContainer forms={filteredForms} formtitle={"Assigned Forms"} />
+  return (<>{isloading && <Loader/>}
+    <FormsListContainer forms={filteredForms} formtitle={"Assigned Forms"} /></>
   );
 };
 

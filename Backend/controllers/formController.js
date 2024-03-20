@@ -213,7 +213,9 @@ const updateformstatus = async (req, res, next) => {
     // Extract email addresses from the employees
     const recipients = employees.map((employee) => employee.email);
     // Send email to all recipients
-    sendMail(recipients);
+    if (recipients.length > 0) {
+      sendMail(recipients);
+    }
     // Update form status
     const formstatus = await FormModel.findByIdAndUpdate(
       formid,
@@ -233,14 +235,21 @@ const updateformstatus = async (req, res, next) => {
 const updateeditstatus = async (req, res, next) => {
   try {
     const { formid } = req.body;
+
+    // Update the edit status of the form
     const editstatus = await FormModel.findByIdAndUpdate(
       formid,
       { isComplete: false },
       { new: true }
     );
+
     if (!editstatus) {
       throw new HttpError("Form not found", 404);
     }
+
+    // Delete all responses for the corresponding formid
+    await ResponseModel.deleteMany({ formId: formid });
+
     res.json(editstatus);
   } catch (error) {
     console.error("Error Making it Editable: ", error);

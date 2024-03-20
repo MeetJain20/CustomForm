@@ -6,6 +6,7 @@ import classes from "./SignUpForm.module.css";
 import Select from "react-select";
 import { MAIN_LINK } from "../../../../urls/urls";
 import { toast } from "sonner";
+import Loader from "../../../Loader";
 const SignUpFormEmp = () => {
   const { sendRequest } = useRequest();
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const SignUpFormEmp = () => {
   const [isError, setisError] = useState(false);
   const [error, setError] = useState("");
   const [isChecked, setIsChecked] = useState(false);
+  const [isloading, setIsloading] = useState(false);
   const handleCheckboxChange = (event) => {
     setIsChecked(event.target.checked);
   };
@@ -60,7 +62,8 @@ const SignUpFormEmp = () => {
               setError("");
               setisError(false);
               e.preventDefault();
-
+              setIsloading(true);
+              try{
               const response = await sendRequest(
                 `${MAIN_LINK}/employee/signupemp`,
                 "POST",
@@ -73,6 +76,7 @@ const SignUpFormEmp = () => {
                 }),
                 { "Content-Type": "application/json" }
               );
+              setIsloading(false);
               toast.success("Sign Up Successful");
               navigate("/login?role=employee");
               setEmpName("");
@@ -80,6 +84,14 @@ const SignUpFormEmp = () => {
               setPassword("");
               setMobile(0);
               setTeamName("");
+              }
+              catch(err)
+              {
+                setIsloading(false);
+                toast.error("Error while signing up");
+                console.log("Error while signing up",err);
+              }
+            
             } else {
               toast.warning("Invalid Mobile Number");
               setError("Invalid Mobile Number");
@@ -145,103 +157,106 @@ const SignUpFormEmp = () => {
   }, [sendRequest]);
 
   return (
-    <MDBCol col="4" md="6" className={classes.signupdiv}>
-      <div className="d-flex flex-row align-items-center justify-content-center">
-        <p className="lead fw-normal mb-0 me-3">Sign Up as Employee</p>
-      </div>
+    <>
+      {isloading && <Loader />}
+      <MDBCol col="4" md="6" className={classes.signupdiv}>
+        <div className="d-flex flex-row align-items-center justify-content-center">
+          <p className="lead fw-normal mb-0 me-3">Sign Up as Employee</p>
+        </div>
 
-      <div className="divider d-flex align-items-center my-4">
-        <p className="text-center fw-bold mx-3 mb-0"></p>
-      </div>
-      <MDBInput
-        wrapperClass="mb-4"
-        // label="Email team"
-        placeholder="Enter Name"
-        id="formControlLg"
-        type="text"
-        size="lg"
-        onChange={(e) => {
-          setEmpName(e.target.value);
-          setError("");
-        }}
-      />
-      <MDBInput
-        wrapperClass="mb-4"
-        placeholder="Enter Mobile Number"
-        id="formControlLg"
-        type="number"
-        size="lg"
-        onChange={(e) => {
-          setMobile(e.target.value);
-          setError("");
-        }}
-      />
-      <Select
-        options={optionList}
-        placeholder="Select Team"
-        value={selectedOptions}
-        onChange={handleSelect}
-        isSearchable={true}
-        className="my-4"
-      />
-      <MDBInput
-        wrapperClass="mb-4"
-        placeholder="Email"
-        id="formControlLg"
-        type="email"
-        size="lg"
-        onChange={(e) => {
-          setEmail(e.target.value);
-          setError("");
-        }}
-      />
-      <MDBInput
-        wrapperClass="mb-4"
-        placeholder="Password"
-        id="formControlLg"
-        type="password"
-        size="lg"
-        onChange={(e) => {
-          setPassword(e.target.value);
-          setError("");
-        }}
-      />
-      <MDBCheckbox
-        name="flexCheck"
-        value=""
-        id="flexCheckDefault"
-        style={{ color: "red" }}
-        label="Accept all Terms and Conditions*"
-        checked={isChecked}
-        onChange={handleCheckboxChange}
-      />
-      <div className="contain my-3">
-        {isError && (
-          <span className="signError" style={{ color: "red" }}>
-            {error}
-          </span>
-        )}
-      </div>
-      <div className="text-center text-md-start mt-4 pt-2">
-        <button
-          className="mb-0 px-5 btn btn-outline-info"
+        <div className="divider d-flex align-items-center my-4">
+          <p className="text-center fw-bold mx-3 mb-0"></p>
+        </div>
+        <MDBInput
+          wrapperClass="mb-4"
+          // label="Email team"
+          placeholder="Enter Name"
+          id="formControlLg"
+          type="text"
           size="lg"
-          onClick={signupHandler}
-        >
-          Register
-        </button>
-        <button
-          className="mx-3 mb-0 px-5 btn btn-outline-success"
+          onChange={(e) => {
+            setEmpName(e.target.value);
+            setError("");
+          }}
+        />
+        <MDBInput
+          wrapperClass="mb-4"
+          placeholder="Enter Mobile Number"
+          id="formControlLg"
+          type="number"
           size="lg"
-          onClick={loginredirectHandler}
-        >
-          Have an account
-        </button>
-      </div>
-      <Link to="/termsandcondition">
-        <p className={classes.termscondition}>Terms And Conditions*</p>
-      </Link>
-    </MDBCol>
+          onChange={(e) => {
+            setMobile(e.target.value);
+            setError("");
+          }}
+        />
+        <Select
+          options={optionList}
+          placeholder="Select Team"
+          value={selectedOptions}
+          onChange={handleSelect}
+          isSearchable={true}
+          className="my-4"
+        />
+        <MDBInput
+          wrapperClass="mb-4"
+          placeholder="Email"
+          id="formControlLg"
+          type="email"
+          size="lg"
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setError("");
+          }}
+        />
+        <MDBInput
+          wrapperClass="mb-4"
+          placeholder="Password"
+          id="formControlLg"
+          type="password"
+          size="lg"
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setError("");
+          }}
+        />
+        <MDBCheckbox
+          name="flexCheck"
+          value=""
+          id="flexCheckDefault"
+          style={{ color: "red" }}
+          label="Accept all Terms and Conditions*"
+          checked={isChecked}
+          onChange={handleCheckboxChange}
+        />
+        <div className="contain my-3">
+          {isError && (
+            <span className="signError" style={{ color: "red" }}>
+              {error}
+            </span>
+          )}
+        </div>
+        <div className="text-center text-md-start mt-4 pt-2">
+          <button
+            className="mb-0 px-5 btn btn-outline-info"
+            size="lg"
+            onClick={signupHandler}
+          >
+            Register
+          </button>
+          <button
+            className="mx-3 mb-0 px-5 btn btn-outline-success"
+            size="lg"
+            onClick={loginredirectHandler}
+          >
+            Have an account
+          </button>
+        </div>
+        <Link to="/termsandcondition">
+          <p className={classes.termscondition}>Terms And Conditions*</p>
+        </Link>
+      </MDBCol>
+    </>
   );
 };
 
