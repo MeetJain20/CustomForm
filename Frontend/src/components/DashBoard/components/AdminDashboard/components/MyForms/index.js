@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-import classes from "./MyForms.module.css";
-
-import { form } from "../../../../../../assets/index";
 import { FormsListContainer } from "../index";
 import { useSelector } from "react-redux";
 import { useRequest } from "../../../../../../context/request-hook";
@@ -15,6 +12,8 @@ const MyForms = () => {
   const searchvalue = useSelector(
     (state) => state.searchtext.searchText
   );
+  const deleteform = useSelector((state) => state.funcfield.deleteform);
+
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -42,7 +41,7 @@ const MyForms = () => {
       }
     };
     fetchItems();
-  }, [sendRequest,searchvalue]);
+  }, [sendRequest,searchvalue,deleteform]);
 
 
   return <FormsListContainer forms={filteredForms} formtitle={"My Forms"} />;

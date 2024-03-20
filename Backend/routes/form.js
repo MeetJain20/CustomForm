@@ -65,5 +65,6 @@ router.put(
   formController.addnewfield
 );
 router.delete("/deletefield", check_Authentication, formController.deletefield);
+router.delete("/deleteform", check_Authentication, formController.deleteform);
 
 module.exports = router;

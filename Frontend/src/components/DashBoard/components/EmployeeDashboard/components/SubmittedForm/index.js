@@ -11,6 +11,8 @@ const SubmittedForm = () => {
   const searchvalue = useSelector(
     (state) => state.searchtext.searchText
   );
+  const deleteform = useSelector((state) => state.funcfield.deleteform);
+
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -38,7 +40,7 @@ const SubmittedForm = () => {
       }
     };
     fetchItems();
-  }, [sendRequest,searchvalue]);
+  }, [sendRequest,searchvalue,deleteform]);
 
   return (
     <FormsListContainer forms={filteredForms} formtitle={"Submitted Forms"} />

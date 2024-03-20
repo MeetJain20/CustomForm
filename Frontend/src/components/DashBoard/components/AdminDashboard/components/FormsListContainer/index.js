@@ -13,7 +13,6 @@ const FormsListContainer = ({ forms, formtitle }) => {
   const [searchvalue, setSearchValue] = useState(
     useSelector((state) => state.searchtext.searchText)
   );
-
   const [showAllForms, setShowAllForms] = useState(false);
   const showallformsHandler = () => {
     setShowAllForms((prev) => !prev);

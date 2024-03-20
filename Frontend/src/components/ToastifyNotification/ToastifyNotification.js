@@ -6,7 +6,7 @@ const ToastifyNotification = () => {
   return (
     <Toaster
       position="top-right"
-      duration={2500}
+      duration={1750}
       richColors
       closeButton
       toastOptions={{

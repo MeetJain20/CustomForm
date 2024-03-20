@@ -40,10 +40,10 @@ const DisplayForm = () => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
-      toast.success("Template saved successfully")
+      toast.success("Template saved successfully");
       navigate("/admindashboard");
     } catch (err) {
-      toast.error("Error saving template")
+      toast.error("Error saving template");
       console.log(err);
     }
   };
@@ -66,7 +66,7 @@ const DisplayForm = () => {
       toast.info("You can edit this form now");
       navigate(`/createform/${formid}`);
     } catch (err) {
-        toast.error("Error making the form editable");
+      toast.error("Error making the form editable");
 
       console.log(err);
     }
@@ -91,7 +91,7 @@ const DisplayForm = () => {
       toast.success("Template copied successfully");
       navigate(`/createform/${responseData._id}`);
     } catch (err) {
-        toast.error("Error using template");
+      toast.error("Error using template");
       console.log(err);
     }
   };
@@ -148,9 +148,12 @@ const DisplayForm = () => {
         if (responseData) {
           setTotalResponseData(responseData);
           setTotalResponse(responseData.length);
-          const submittedByUser = responseData.some(response => response.formId === formid && response.empId === localStorage.getItem("userid"));
-          if(submittedByUser)
-          {
+          const submittedByUser = responseData.some(
+            (response) =>
+              response.formId === formid &&
+              response.empId === localStorage.getItem("userid")
+          );
+          if (submittedByUser) {
             setAlreadySubmitted(true);
           }
         }
@@ -198,22 +201,23 @@ const DisplayForm = () => {
     <>
       <Navbar />
       <div className={classes.displayformcontainer}>
-        {localStorage.getItem("role") === "admin" && (
-          <div className={classes.viewresponsediv}>
-            <button
-              className={classes.viewresponsebutton}
-              disabled={totalResponse === 0}
-              onClick={viewResponseHandler}
-              style={{
-                cursor: totalResponse === 0 ? "not-allowed" : "pointer",
-              }}
-            >
-              {totalResponse === 0
-                ? "No Response Yet"
-                : `View ${totalResponse} Response`}
-            </button>
-          </div>
-        )}
+        {localStorage.getItem("role") === "admin" &&
+          adminid === localStorage.getItem("userid") && (
+            <div className={classes.viewresponsediv}>
+              <button
+                className={classes.viewresponsebutton}
+                disabled={totalResponse === 0}
+                onClick={viewResponseHandler}
+                style={{
+                  cursor: totalResponse === 0 ? "not-allowed" : "pointer",
+                }}
+              >
+                {totalResponse === 0
+                  ? "No Response Yet"
+                  : `View ${totalResponse} Response`}
+              </button>
+            </div>
+          )}
         <div className={classes.customcontainer}>
           <div className={classes.displayformheader}>
             <input
@@ -252,20 +256,29 @@ const DisplayForm = () => {
           )}
           {localStorage.getItem("role") === "admin" &&
           isSaved &&
-          localStorage.getItem("userid") === adminid ? (
-            <button
-              className={classes.submitformbutton}
-              onClick={editFormHandler}
-            >
-              Edit Form
-            </button>
+          localStorage.getItem("userid") === adminid &&
+          isTemplate ? (
+             <>
+              <button
+                className={classes.submitformbutton}
+                onClick={useTemplateHandler}
+              >
+                Use Template
+              </button>
+              <button
+                className={classes.submitformbutton}
+                onClick={editFormHandler}
+              >
+                Edit Form
+              </button>
+            </>
           ) : localStorage.getItem("role") === "admin" ? (
             <button
-              className={classes.submitformbutton}
-              onClick={useTemplateHandler}
-            >
-              Use Template
-            </button>
+            className={classes.submitformbutton}
+            onClick={editFormHandler}
+          >
+            Use Template
+          </button>
           ) : (
             <button
               className={classes.submitformbutton}

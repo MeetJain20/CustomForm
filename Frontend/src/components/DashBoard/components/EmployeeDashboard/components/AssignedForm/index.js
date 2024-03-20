@@ -11,6 +11,7 @@ const AssignedForm = () => {
   const searchvalue = useSelector(
     (state) => state.searchtext.searchText
   );
+  const deleteform = useSelector((state) => state.funcfield.deleteform);
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -38,7 +39,7 @@ const AssignedForm = () => {
       }
     };
     fetchItems();
-  }, [sendRequest,searchvalue]);
+  }, [sendRequest,searchvalue,deleteform]);
 
   return (
     <FormsListContainer forms={filteredForms} formtitle={"Assigned Forms"} />

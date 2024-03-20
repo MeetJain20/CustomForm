@@ -2,6 +2,7 @@ const initialState = {
   copyField: false,
   deleteField: false,
   saveChanges: false,
+  deleteform:false
 };
 
 const functionalityReducer = (state = initialState, action) => {
@@ -20,6 +21,11 @@ const functionalityReducer = (state = initialState, action) => {
       return {
         ...state,
         saveChanges: !state.saveChanges,
+      };
+    case 'DELETE_FORM':
+      return {
+        ...state,
+        deleteform: !state.deleteform,
       };
     default:
       return state;

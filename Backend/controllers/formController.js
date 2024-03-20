@@ -4,6 +4,7 @@ const FormModel = require("../models/FormModel");
 const EmployeeModel = require("../models/EmployeeModel");
 
 const nodemailer = require("nodemailer");
+const ResponseModel = require("../models/ResponseModel");
 
 const sendMail = async (recipients) => {
   try {
@@ -401,6 +402,32 @@ const deletefield = async (req, res, next) => {
   }
 };
 
+const deleteform = async (req, res, next) => {
+  const { formid } = req.body;
+
+  try {
+    // Step 1: Delete the form by its ID
+    const deletedForm = await FormModel.findByIdAndDelete(formid);
+
+    if (!deletedForm) {
+      return res.status(404).send("Form not found");
+    }
+
+    // Step 2: Check if the form is complete
+    if (deletedForm.isComplete) {
+      // Step 3: Delete associated documents in the ResponseModel
+      await ResponseModel.deleteMany({ formId: formid });
+    }
+
+    res.json({ deletedForm });
+  } catch (error) {
+    console.error("Error deleting form:", error);
+    const statusCode = error.statusCode || 500;
+    const message = error.message || "Failed to delete form";
+    res.status(statusCode).json({ message });
+  }
+};
+
 exports.getactiveforms = getactiveforms;
 exports.getcompletedforms = getcompletedforms;
 exports.gettemplateforms = gettemplateforms;
@@ -416,5 +443,6 @@ exports.updatetemplatestatus = updatetemplatestatus;
 exports.updateformfields = updateformfields;
 exports.addnewfield = addnewfield;
 exports.deletefield = deletefield;
+exports.deleteform = deleteform;
 
 // exports.login = login;

@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-import classes from "./TemplateForms.module.css";
-import debounce from "lodash.debounce";
-import { form } from "../../../../../../assets/index";
 import { FormsListContainer } from "../index";
 import { useSelector } from "react-redux";
 import { useRequest } from "../../../../../../context/request-hook";
@@ -12,6 +9,7 @@ const TemplateForms = () => {
   const { sendRequest } = useRequest();
   const [filteredForms, setFilteredForms] = useState([]);
   const searchvalue = useSelector((state) => state.searchtext.searchText);
+  const deleteform = useSelector((state) => state.funcfield.deleteform);
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -39,7 +37,7 @@ const TemplateForms = () => {
       }
     };
     fetchItems();
-  }, [sendRequest, searchvalue]);
+  }, [sendRequest, searchvalue],deleteform);
 
   return (
     <FormsListContainer forms={filteredForms} formtitle={"Template Forms"} />
