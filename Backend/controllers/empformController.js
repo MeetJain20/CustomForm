@@ -76,7 +76,7 @@ const getsubmittedforms = async (req, res, next) => {
     const responses = await ResponseModel.find({ employeeId: empid });
 
     if (!responses || responses.length === 0) {
-      return res.status(404).json({ message: "No submitted forms found" });
+      return res.status(404).json({ message: "No forms found" });
     }
 
     // Extract formIds from the responses
@@ -114,8 +114,13 @@ const getassignedforms = async (req, res, next) => {
       _id: {
         $nin: await ResponseModel.distinct("formId", { employeeId: empid }),
       }, // Exclude forms with formId present in the ResponseModel for the given empId
-    });
 
+      
+    });
+    if (!assignedForms || assignedForms.length === 0) {
+      return res.status(404).json({ message: "No forms found" });
+    }
+    
     res.json(assignedForms);
   } catch (error) {
     console.error("Error fetching assigned forms:", error);

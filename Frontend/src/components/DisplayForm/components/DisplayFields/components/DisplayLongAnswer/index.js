@@ -8,6 +8,7 @@ const DisplayLongAnswer = ({ fieldData }) => {
   const [responseData, setResponseData] = useState({
     fieldid: fieldData.fieldid,
     question: fieldData.question,
+    type: fieldData.type,
     response: "",
   });
 

@@ -45,8 +45,13 @@ const MyForms = () => {
         }
       } catch (err) {
         setIsloading(false);
-        toast.error("Error fetching saved forms");
-        console.log(err);
+        if(err.message === "No forms found")
+        {
+        toast.info("No Saved Forms");
+        }
+        else{
+          toast.error("Error fetching Saved forms");
+        }
       }
     };
     fetchItems();

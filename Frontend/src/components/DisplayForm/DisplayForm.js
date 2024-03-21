@@ -24,7 +24,7 @@ const DisplayForm = () => {
   const [totalResponseData, setTotalResponseData] = useState([]);
   const [alreadySubmitted, setAlreadySubmitted] = useState(false);
   const [isloading, setIsloading] = useState(false);
-
+  
   const fields = useSelector((state) => state.formData.fields);
   const dispatch = useDispatch();
 

@@ -35,18 +35,23 @@ const MakeForm = () => {
 
   const debouncedFormtitleHandler = debounce(async (value) => {
     try {
-      const responseData = await sendRequest(
-        `${MAIN_LINK}/form/updateformtitle`,
-        "PUT",
-        JSON.stringify({
-          formid: formid,
-          formtitle: value,
-        }),
-        {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${Cookies.get("token")}`,
-        }
-      );
+      if (value) {
+        const responseData = await sendRequest(
+          `${MAIN_LINK}/form/updateformtitle`,
+          "PUT",
+          JSON.stringify({
+            formid: formid,
+            formtitle: value,
+          }),
+          {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          }
+        );
+        dispatch({
+          type: "UPDATE_TITLE"
+        });
+      }
       // setFormtitle(responseData.formtitle);
     } catch (err) {
       toast.error("Error saving Title");
@@ -65,18 +70,23 @@ const MakeForm = () => {
 
   const debouncedFormDescHandler = debounce(async (value) => {
     try {
-      const responseData = await sendRequest(
-        `${MAIN_LINK}/form/updateformdesc`,
-        "PUT",
-        JSON.stringify({
-          formid: formid,
-          formdesc: value,
-        }),
-        {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${Cookies.get("token")}`,
-        }
-      );
+      if (value) {
+        const responseData = await sendRequest(
+          `${MAIN_LINK}/form/updateformdesc`,
+          "PUT",
+          JSON.stringify({
+            formid: formid,
+            formdesc: value,
+          }),
+          {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          }
+        );
+        dispatch({
+          type: "UPDATE_DESC"
+        });
+      }
     } catch (err) {
       toast.error("Error saving Description");
       console.log(err);
@@ -192,7 +202,7 @@ const MakeForm = () => {
 
   return (
     <>
-    {isloading && <Loader/>}
+      {isloading && <Loader />}
       <Navbar />
       <div className={classes.createformcontainer}>
         <div className={classes.customcontainer}>

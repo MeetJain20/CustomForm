@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import debounce from "lodash.debounce";
 import { MAIN_LINK } from "../../../../../../urls/urls";
 import Cookies from "js-cookie";
+import Loader from "../../../../../Loader";
+import { toast } from "sonner";
 
 const DisplayFile = ({ fieldData }) => {
   const dispatch = useDispatch();
   const fieldResponse = useSelector((state) => state.response.fieldResponse);
-
+const [isloading, setIsloading] = useState(false);
   const fileRef = useRef(null);
   // let formData = new FormData();
   // const [responseData, setResponseData] = useState({
@@ -19,6 +21,8 @@ const DisplayFile = ({ fieldData }) => {
 
   const responseHandler = async () => {
     if (fileRef.current.files[0]) {
+      toast.info("Adding File");
+      setIsloading(true);
       const file = fileRef.current.files[0];
       const newFormData = new FormData(); // Create a new FormData object
       newFormData.append("file", file);
@@ -39,10 +43,15 @@ const DisplayFile = ({ fieldData }) => {
           responseData: {
             fieldid: fieldData.fieldid,
             question: fieldData.question,
+            type: fieldData.type,
             response: link,
           },
         },
       });
+      setIsloading(false);
+      toast.success("File Added");
+
+      // fileRef.current.value = null;
     }
   };
 
@@ -52,6 +61,8 @@ const DisplayFile = ({ fieldData }) => {
   }, []);
   // console.log(fieldResponse);
   return (
+    <>
+    {isloading && <Loader/>}
     <div className={classes.displayfilefieldcontainer}>
       <input
         type="text"
@@ -69,7 +80,7 @@ const DisplayFile = ({ fieldData }) => {
           onChange={responseHandler}
         />
       </div>
-    </div>
+    </div></>
   );
 };
 

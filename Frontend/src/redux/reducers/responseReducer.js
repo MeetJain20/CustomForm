@@ -26,6 +26,7 @@ const responseReducer = (state = initialState, action) => {
                         {
                             fieldid: responseData.fieldid,
                             question: responseData.question,
+                            type: responseData.type,
                             response: responseData.response
                         }
                     ]

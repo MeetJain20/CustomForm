@@ -42,8 +42,13 @@ const TemplateForms = () => {
           }
         } catch (err) {
           setIsloading(false);
-          toast.error("Error fetching templates");
-          console.log(err);
+          if(err.message === "No forms found")
+          {
+          toast.info("No Template Forms");
+          }
+          else{
+            toast.error("Error fetching Template forms");
+          }
         }
       };
       fetchItems();

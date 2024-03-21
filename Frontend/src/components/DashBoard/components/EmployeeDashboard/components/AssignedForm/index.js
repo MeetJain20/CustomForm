@@ -42,8 +42,13 @@ const AssignedForm = () => {
         }
       } catch (err) {
         setIsloading(false);
-        toast.error("Error fetching Assigned Forms");
-        console.log(err);
+        if(err.message === "No forms found")
+        {
+        toast.info("No Assigned Forms");
+        }
+        else{
+          toast.error("Error fetching Assigned forms");
+        }
       }
     };
     fetchItems();

@@ -12,6 +12,8 @@ const DisplayPreviewForm = () => {
   const { sendRequest } = useRequest();
   const [formtitle, setFormtitle] = useState("");
   const [formdesc, setFormdesc] = useState("");
+  const updatetitle = useSelector((state) => state.funcfield.updatetitle);
+  const updatedesc = useSelector((state) => state.funcfield.updatedesc);
 
   const fields = useSelector((state) => state.formData.fields);
   const dispatch = useDispatch();
@@ -47,8 +49,8 @@ const DisplayPreviewForm = () => {
       }
     };
     fetchItems();
-  }, [sendRequest]);
-  
+  }, [sendRequest, updatedesc, updatetitle]);
+
   return (
     <>
       <div className={classes.displaypreviewformcontainer}>
@@ -80,7 +82,6 @@ const DisplayPreviewForm = () => {
           </div>
         </div>
       </div>
-
     </>
   );
 };

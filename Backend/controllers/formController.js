@@ -59,7 +59,7 @@ const gettemplateforms = async (req, res, next) => {
   if (templateForms) {
     res.json(templateForms);
   } else {
-    res.json(null);
+    return res.status(404).json({ message: "No forms found" });
   }
 };
 
@@ -74,7 +74,7 @@ const getactiveforms = async (req, res, next) => {
   if (activeForms) {
     res.json(activeForms);
   } else {
-    res.json(null);
+    return res.status(404).json({ message: "No forms found" });
   }
 };
 
@@ -89,7 +89,7 @@ const getcompletedforms = async (req, res, next) => {
   if (completedForms) {
     res.json(completedForms);
   } else {
-    res.json(null);
+    return res.status(404).json({ message: "No forms found" });
   }
 };
 

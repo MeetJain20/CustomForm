@@ -41,8 +41,13 @@ const CurrentForms = () => {
         }
       } catch (err) {
         setIsloading(false);
-        toast.error("Error fetching active forms");
-        console.log(err);
+        if(err.message === "No forms found")
+        {
+        toast.info("No Active Forms");
+        }
+        else{
+          toast.error("Error fetching Active forms");
+        }
       }
     };
     fetchItems();

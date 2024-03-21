@@ -44,8 +44,14 @@ const SubmittedForm = () => {
         }
       } catch (err) {
         setIsloading(false);
-        toast.error("Error fetching submitted form");
-        console.log(err);
+        if(err.message === "No forms found")
+        {
+        toast.info("No Submitted Forms");
+        }
+        else{
+          toast.error("Error fetching Submitted forms");
+        }
+        // console.log(err);
       }
     };
     fetchItems();

@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./DisplayResponse.module.css";
 import { Navbar, Footer } from "../../../index";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const DisplayResponse = () => {
   const location = useLocation();
@@ -48,21 +48,24 @@ const DisplayResponse = () => {
                   {response.responses.map((element, index) => {
                     let displayData;
 
-                    if (
-                      typeof element.response === "object" &&
-                      "label" in element.response
-                    ) {
+                    if (element.type === "Dropdown") {
                       // If the response is an object with a "label" field, use the label
-                      displayData = [element.response.label];
+                      displayData = [element.response.label].toString();
+                    } else if (element.type === "File Type") {
+                      displayData = (
+                        <a href={element.response} target="_blank" rel="noopener noreferrer">
+                        View File
+                     </a>
+                      );
                     } else {
                       // If the response is not an object with a "label" field, use the response itself
-                      displayData = element.response;
+                      displayData = element.response.toString();
                     }
 
                     // Generate <td> elements for each element in displayData
                     return (
                       <td key={index} title={response.empName}>
-                        {displayData.toString()}
+                        {displayData}
                       </td>
                     );
                   })}

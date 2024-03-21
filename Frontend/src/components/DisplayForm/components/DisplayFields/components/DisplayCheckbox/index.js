@@ -9,6 +9,7 @@ const DisplayCheckbox = ({ fieldData }) => {
   const [responseData, setResponseData] = useState({
     fieldid: fieldData.fieldid,
     question: fieldData.question,
+    type: fieldData.type,
     response: [], // Store selected options as an array
   });
 
