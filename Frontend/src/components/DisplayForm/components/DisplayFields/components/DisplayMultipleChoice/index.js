@@ -39,13 +39,13 @@ const DisplayMultipleChoice = ({ fieldData }) => {
   return (
     <>
       <div className={classes.displaymultiplefieldcontainer}>
-        <input
-          type="text"
-          className={classes.questionfield}
-          placeholder="Question"
-          value={fieldData.question}
-          readOnly
-        />
+      <div
+        className={`${classes.questionfield} ${
+          fieldData.isrequired ? classes.required : ""
+        }`}
+      >
+        {fieldData.question}
+      </div>
         <div className={classes.optionsarray}>
           {fieldData.options &&
             fieldData.options.map((option, index) => (
@@ -58,6 +58,8 @@ const DisplayMultipleChoice = ({ fieldData }) => {
                   value={option}
                   checked={option === responseData.response}
                   onChange={responseHandler}
+                  required={fieldData.isrequired}
+
                 />
                 <input
                   type="text"

@@ -39,19 +39,21 @@ const DisplayDate = ({ fieldData }) => {
   }, [responseData]);
   return (
     <div className={classes.displaydatefieldcontainer}>
-      <input
-        type="text"
-        className={classes.questionfield}
-        placeholder="Question"
-        value={fieldData.question}
-        readOnly
-      />
+       <div
+        className={`${classes.questionfield} ${
+          fieldData.isrequired ? classes.required : ""
+        }`}
+      >
+        {fieldData.question}
+      </div>
       <div className={classes.dateContainer}>
         <input
           type="date"
           className={classes.datefield}
           disabled={localStorage.getItem("role") === "admin" ? true : false}
           onChange={responseHandler}
+          required={fieldData.isrequired}
+
         />
         {localStorage.getItem("role") === "admin" && (
           <IoCalendarOutline className={classes.calendarIcon} />

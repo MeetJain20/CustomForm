@@ -14,7 +14,10 @@ const DisplayShortAnswer = ({ fieldData }) => {
 
   const responseHandler = (e) => {
     e.preventDefault();
-    setResponseData(prevState => ({ ...prevState, response: e.target.value }));
+    setResponseData((prevState) => ({
+      ...prevState,
+      response: e.target.value,
+    }));
   };
 
   const debouncedResponseHandler = debounce(async (responseData) => {
@@ -29,25 +32,26 @@ const DisplayShortAnswer = ({ fieldData }) => {
     }
   }, 100);
 
+  const req = `{<span style={{color: 'red';}}>*</span>}`;
+
   useEffect(() => {
-    
     debouncedResponseHandler(responseData);
   }, [responseData]);
-
   return (
     <div className={classes.displayshortanswercontainer}>
-      <input
-        type="text"
-        className={classes.questionfield}
-        placeholder="Question"
-        value={fieldData.question}
-        readOnly
-      />
+      <div
+        className={`${classes.questionfield} ${
+          fieldData.isrequired ? classes.required : ""
+        }`}
+      >
+        {fieldData.question}
+      </div>
       <input
         type="text"
         className={classes.answerfield}
         placeholder={fieldData.placeholder}
         readOnly={localStorage.getItem("role") === "admin"}
+        required={fieldData.isrequired}
         onChange={responseHandler}
       />
     </div>

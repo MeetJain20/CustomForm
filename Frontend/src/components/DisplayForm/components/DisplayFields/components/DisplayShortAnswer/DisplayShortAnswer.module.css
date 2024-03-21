@@ -1,26 +1,32 @@
-.displayshortanswercontainer{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+.displayshortanswercontainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.questionfield{
-    padding: 5px;
-    font-size: 1.25rem;
-    border:none;
+.questionfield {
+  padding: 5px;
+  font-size: 1.25rem;
+  border: none;
 }
 
-.answerfield{
-    padding: 5px;
-    border: none;
-    border-bottom: 1px solid var(--divider-color);
-    transition: border-bottom 0.3s ease-in-out;
+.answerfield {
+  padding: 5px;
+  border: none;
+  border-bottom: 1px solid var(--divider-color);
+  transition: border-bottom 0.3s ease-in-out;
 }
 
-.answerfield:focus{
-    outline:none;
-    border-bottom: 1px solid var(--dark-divider);
+.answerfield:focus {
+  outline: none;
+  border-bottom: 1px solid var(--dark-divider);
 }
-.questionfield:focus{
-    outline: none;
+.questionfield:focus {
+  outline: none;
+}
+
+.questionfield.required::after {
+    content: "*";
+    color: red;
+    margin-left: 5px;
 }

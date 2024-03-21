@@ -53,8 +53,8 @@ const TemplateForms = () => {
       };
       fetchItems();
     },
-    [sendRequest, searchvalue],
-    deleteform
+    [sendRequest, searchvalue,deleteform]
+    
   );
 
   return (

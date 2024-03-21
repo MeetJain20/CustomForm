@@ -8,6 +8,7 @@ const TimeTypeFields = ({fieldData}) => {
     fieldid: fieldData.fieldid,
     type: fieldData.type || "Short Answer",
     question: fieldData.question || "",
+    isrequired:fieldData.isrequired || false,
   });
 
   const handleQuestionChange = (e) => {

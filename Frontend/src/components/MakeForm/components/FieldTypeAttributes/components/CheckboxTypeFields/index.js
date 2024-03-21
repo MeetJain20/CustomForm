@@ -11,6 +11,7 @@ const CheckboxTypeFields = ({ fieldData }) => {
     fieldid: fieldData.fieldid,
     type: fieldData.type || "Checkbox Type",
     question: fieldData.question || "",
+    isrequired:fieldData.isrequired || false,
     options: fieldData.options || [""],
   });
   const [errorMessage, setErrorMessage] = useState("");

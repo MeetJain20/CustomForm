@@ -12,17 +12,18 @@ const Functionalities = ({ onSave, fieldState }) => {
   const { formid } = useParams();
   const dispatch = useDispatch();
   const { sendRequest } = useRequest();
-  const [newFieldData,setNewFieldData] = useState({
+  const [newFieldData, setNewFieldData] = useState({
     fieldid: uuidv4(),
     type: "Short Answer",
-    question:"",
-    placeholder:"Enter the text you want the user to see here ...",
-  })
-
+    question: "",
+    placeholder: "Enter the text you want the user to see here ...",
+  });
+  const [isRequired, setIsRequired] = useState(fieldState.isrequired); // State to track whether the field is required or not
   // Save Changes
 
   const updatefieldHandler = async () => {
     // console.log(fieldState);
+    fieldState.isrequired = isRequired;
     if (fieldState.type === "Multiple Choice") {
       onSave();
     }
@@ -71,9 +72,8 @@ const Functionalities = ({ onSave, fieldState }) => {
         type: "DELETE_FIELD_ARRAY",
         payload: { fieldId: fieldState.fieldid },
       });
-
     } catch (err) {
-        toast.error("Error deleting field");
+      toast.error("Error deleting field");
 
       console.log(err);
     }
@@ -113,50 +113,66 @@ const Functionalities = ({ onSave, fieldState }) => {
 
   // Add New Field
 
-  const addnewfieldHandler = async()=>{
-      try {
-        const responseData = await sendRequest(
-          `${MAIN_LINK}/form/addnewfield`,
-          "PUT",
-          JSON.stringify({
-            formid: formid,
-            newFieldData: newFieldData
-          }),
-          {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          }
-        );
-        toast.success("New field added successfully");
+  const addnewfieldHandler = async () => {
+    try {
+      const responseData = await sendRequest(
+        `${MAIN_LINK}/form/addnewfield`,
+        "PUT",
+        JSON.stringify({
+          formid: formid,
+          newFieldData: newFieldData,
+        }),
+        {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        }
+      );
+      toast.success("New field added successfully");
 
-        dispatch({ type: "SAVE_FIELD" });
-  
-        // setFormtitle(responseData.formtitle);
-      } catch (err) {
-        toast.error("Error adding new field");
+      dispatch({ type: "SAVE_FIELD" });
 
-        console.log(err);
-      }
-  }
+      // setFormtitle(responseData.formtitle);
+    } catch (err) {
+      toast.error("Error adding new field");
+
+      console.log(err);
+    }
+  };
 
   return (
-    <div className={classes.functionalities}>
-      <button className={classes.copyfieldbutton} onClick={copyFieldHandler}>
-        Copy Field
-      </button>
-      <button
-        className={classes.deletefieldbutton}
-        onClick={deletefieldHandler}
-      >
-        Delete Field
-      </button>
-      <button className={classes.savechangebutton} onClick={updatefieldHandler}>
-        Save Changes
-      </button>
-      <button className={classes.addfieldbutton} onClick={addnewfieldHandler}>
-        Add New Field
-      </button>
-    </div>
+    <>
+      <div className={`${classes.isrequiredfield}`}>
+        <label className={classes.requiredcontainer}>
+          <input
+            type="checkbox"
+            className={classes.requiredcheckbox}
+            checked={isRequired}
+            onChange={(e) => setIsRequired(e.target.checked)}
+          />
+         Field Required
+        </label>
+      </div>
+      <div className={classes.functionalities}>
+        <button className={classes.copyfieldbutton} onClick={copyFieldHandler}>
+          Copy Field
+        </button>
+        <button
+          className={classes.deletefieldbutton}
+          onClick={deletefieldHandler}
+        >
+          Delete Field
+        </button>
+        <button
+          className={classes.savechangebutton}
+          onClick={updatefieldHandler}
+        >
+          Save Changes
+        </button>
+        <button className={classes.addfieldbutton} onClick={addnewfieldHandler}>
+          Add New Field
+        </button>
+      </div>
+    </>
   );
 };
 

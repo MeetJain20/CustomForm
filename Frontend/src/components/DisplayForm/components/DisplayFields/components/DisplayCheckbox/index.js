@@ -48,13 +48,13 @@ const DisplayCheckbox = ({ fieldData }) => {
   }, [responseData]);
   return (
     <div className={classes.displaycheckboxcontainer}>
-      <input
-        type="text"
-        className={classes.questionfield}
-        placeholder="Question"
-        value={fieldData.question}
-        readOnly
-      />
+     <div
+        className={`${classes.questionfield} ${
+          fieldData.isrequired ? classes.required : ""
+        }`}
+      >
+        {fieldData.question}
+      </div>
       <div className={classes.optionsarray}>
         {fieldData.options && fieldData.options.map((option, index) => (
           <div key={index} className={classes.optionContainer}>
@@ -65,6 +65,7 @@ const DisplayCheckbox = ({ fieldData }) => {
               className={classes.optionInput}
               value={option}
               checked={responseData.response.includes(option)}
+              required={fieldData.isrequired}
               onChange={responseHandler}
             />
             <input

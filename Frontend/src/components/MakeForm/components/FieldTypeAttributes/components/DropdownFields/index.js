@@ -11,6 +11,7 @@ const DropdownFields = ({ fieldData }) => {
     fieldid: fieldData.fieldid,
     type: fieldData.type || "Dropdown",
     question: fieldData.question || "",
+    isrequired:fieldData.isrequired || false,
     options: fieldData.options || [""],
   });
   const [errorMessage, setErrorMessage] = useState("");

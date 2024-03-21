@@ -42,19 +42,20 @@ const DisplayTime = ({ fieldData }) => {
 
   return (
     <div className={classes.displaytimecontainer}>
-      <input
-        type="text"
-        className={classes.questionfield}
-        placeholder="Question"
-        value={fieldData.question}
-        readOnly
-      />
+      <div
+        className={`${classes.questionfield} ${
+          fieldData.isrequired ? classes.required : ""
+        }`}
+      >
+        {fieldData.question}
+      </div>
       <div className={classes.timeContainer}>
         <input
           type="time"
           className={classes.timefield}
           disabled={localStorage.getItem("role") === "admin" ? true : false}
           onChange={responseHandler}
+          required={fieldData.isrequired}
         />
         {localStorage.getItem("role") === "admin" && (
           <BiTime className={classes.timeIcon} />

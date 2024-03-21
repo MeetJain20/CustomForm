@@ -11,6 +11,7 @@ const MultipleChoiceFields = ({ fieldData }) => {
     fieldid: fieldData.fieldid,
     type: fieldData.type || "Multiple Choice",
     question: fieldData.question || "",
+    isrequired:fieldData.isrequired || false,
     options: fieldData.options || [""],
   });
   const [errorMessage, setErrorMessage] = useState("");

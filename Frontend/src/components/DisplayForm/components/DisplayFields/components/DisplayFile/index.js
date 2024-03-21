@@ -64,13 +64,13 @@ const [isloading, setIsloading] = useState(false);
     <>
     {isloading && <Loader/>}
     <div className={classes.displayfilefieldcontainer}>
-      <input
-        type="text"
-        className={classes.questionfield}
-        placeholder="Question"
-        value={fieldData.question}
-        readOnly
-      />
+    <div
+        className={`${classes.questionfield} ${
+          fieldData.isrequired ? classes.required : ""
+        }`}
+      >
+        {fieldData.question}
+      </div>
       <div className={classes.fileContainer}>
         <input
           type="file"
@@ -78,6 +78,8 @@ const [isloading, setIsloading] = useState(false);
           className={classes.filefield}
           disabled={localStorage.getItem("role") === "admin" ? true : false}
           onChange={responseHandler}
+          required={fieldData.isrequired}
+
         />
       </div>
     </div></>

@@ -15,3 +15,19 @@
   border: none;
   cursor: pointer;
 }
+
+
+.requiredcheckbox {
+  margin-right: 0.75rem;
+  
+}
+
+.requiredcontainer {
+  color: var(--navbar-blue);
+  font-size: 0.75rem;
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  margin-top:1rem;
+  line-height: 1;
+}

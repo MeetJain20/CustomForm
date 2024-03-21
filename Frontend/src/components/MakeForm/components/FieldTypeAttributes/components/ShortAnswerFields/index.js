@@ -7,6 +7,7 @@ const ShortAnswerFields = ({ fieldData }) => {
   const [fieldState, setFieldState] = useState({
     fieldid: fieldData.fieldid,
     type: fieldData.type || "Short Answer",
+    isrequired:fieldData.isrequired || false,
     question: fieldData.question || "",
     placeholder:
       fieldData.placeholder ||

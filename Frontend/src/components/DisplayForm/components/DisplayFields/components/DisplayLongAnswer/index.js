@@ -39,13 +39,13 @@ const DisplayLongAnswer = ({ fieldData }) => {
   return (
     <>
       <div className={classes.displaylonganswercontainer}>
-        <input
-          type="text"
-          className={classes.questionfield}
-          placeholder="Question"
-          value={fieldData.question}
-          readOnly
-        />
+      <div
+        className={`${classes.questionfield} ${
+          fieldData.isrequired ? classes.required : ""
+        }`}
+      >
+        {fieldData.question}
+      </div>
         <textarea
           name="answer"
           id="answer"
@@ -55,6 +55,8 @@ const DisplayLongAnswer = ({ fieldData }) => {
           className={`${classes.answerfield}`}
           readOnly={localStorage.getItem("role") === "admin" ? true : false}
           onChange={responseHandler}
+          required={fieldData.isrequired}
+
         ></textarea>
       </div>
     </>

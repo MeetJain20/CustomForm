@@ -29,3 +29,9 @@
 .timefield:focus{
     outline:none;
 }
+
+.questionfield.required::after {
+    content: "*";
+    color: red;
+    margin-left: 5px;
+}

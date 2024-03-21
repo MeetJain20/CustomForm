@@ -50,13 +50,13 @@ const DisplayDropdown = ({ fieldData }) => {
 
   return (
     <div className={classes.dropdownfieldcontainer}>
-      <input
-        type="text"
-        className={classes.questionfield}
-        placeholder="Question"
-        value={fieldData.question}
-        readOnly
-      />
+     <div
+        className={`${classes.questionfield} ${
+          fieldData.isrequired ? classes.required : ""
+        }`}
+      >
+        {fieldData.question}
+      </div>
       <div className={classes.optionsarray}>
         <Select
           options={optionList}

@@ -6,6 +6,7 @@ const LongAnswerFields = ({ fieldData }) => {
   const [fieldState, setFieldState] = useState({
     fieldid: fieldData.fieldid,
     type: fieldData.type || "Long Answer",
+    isrequired:fieldData.isrequired || false,
     question: fieldData.question || "",
     placeholder:
       fieldData.placeholder ||
