@@ -10,8 +10,9 @@ import { toast } from "sonner";
 const DisplayFile = ({ fieldData }) => {
   const dispatch = useDispatch();
   const fieldResponse = useSelector((state) => state.response.fieldResponse);
-const [isloading, setIsloading] = useState(false);
+  const [isloading, setIsloading] = useState(false);
   const fileRef = useRef(null);
+  const [isInitialRender, setIsInitialRender] = useState(true);
 
   const responseHandler = async () => {
     if (fileRef.current.files[0]) {
@@ -49,34 +50,55 @@ const [isloading, setIsloading] = useState(false);
     }
   };
 
+  // useEffect(() => {
+  //   // No need for debounce, directly call responseHandler
+  //   responseHandler();
+  // }, []);
+
   useEffect(() => {
-    // No need for debounce, directly call responseHandler
-    responseHandler();
-  }, []);
+    if (isInitialRender) {
+      setIsInitialRender(false);
+      // Dispatch initial response with null value
+      dispatch({
+        type: "UPDATE_RESPONSE",
+        payload: {
+          responseData: {
+            fieldid: fieldData.fieldid,
+            question: fieldData.question,
+            type: fieldData.type,
+            response: "",
+          },
+        },
+      });
+    } else {
+      // Call responseHandler to handle file upload if a file is already present
+      responseHandler();
+    }
+  }, [isInitialRender]);
   // console.log(fieldResponse);
   return (
     <>
-    {isloading && <Loader/>}
-    <div className={classes.displayfilefieldcontainer}>
-    <div
-        className={`${classes.questionfield} ${
-          fieldData.isrequired ? classes.required : ""
-        }`}
-      >
-        {fieldData.question}
+      {isloading && <Loader />}
+      <div className={classes.displayfilefieldcontainer}>
+        <div
+          className={`${classes.questionfield} ${
+            fieldData.isrequired ? classes.required : ""
+          }`}
+        >
+          {fieldData.question}
+        </div>
+        <div className={classes.fileContainer}>
+          <input
+            type="file"
+            ref={fileRef}
+            className={classes.filefield}
+            disabled={localStorage.getItem("role") === "admin" ? true : false}
+            onChange={responseHandler}
+            required={fieldData.isrequired}
+          />
+        </div>
       </div>
-      <div className={classes.fileContainer}>
-        <input
-          type="file"
-          ref={fileRef}
-          className={classes.filefield}
-          disabled={localStorage.getItem("role") === "admin" ? true : false}
-          onChange={responseHandler}
-          required={fieldData.isrequired}
-
-        />
-      </div>
-    </div></>
+    </>
   );
 };
 

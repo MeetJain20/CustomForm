@@ -11,7 +11,7 @@ const DisplayDropdown = ({ fieldData }) => {
     fieldid: fieldData.fieldid,
     question: fieldData.question,
     type: fieldData.type,
-    response: null, // Initialize with null since no option is selected initially
+    response: "", // Initialize with null since no option is selected initially
   });
 
   // Handler function for option change

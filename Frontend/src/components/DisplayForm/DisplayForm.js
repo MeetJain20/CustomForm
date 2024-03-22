@@ -111,12 +111,13 @@ const DisplayForm = () => {
 
   const validateForm = () => {
     for (const field of fields) {
-      if (field.isrequired && fieldResponse.some(res => res.fieldid === field.fieldid && !res.response.toString())) {
+      if (field.isrequired && fieldResponse.some(res => res.fieldid === field.fieldid && !(res.response ?? "").toString())) {
         return { status: false, message: `Please fill in the '${field.question}' field` };
       }
     }
     return { status: true, message: "All required fields are filled" };
   };
+  
 
   const submitResponseHandler = async () => {
     if(validateForm().status)
