@@ -12,12 +12,6 @@ const DisplayFile = ({ fieldData }) => {
   const fieldResponse = useSelector((state) => state.response.fieldResponse);
 const [isloading, setIsloading] = useState(false);
   const fileRef = useRef(null);
-  // let formData = new FormData();
-  // const [responseData, setResponseData] = useState({
-  //   fieldid: fieldData.fieldid,
-  //   question: fieldData.question,
-  //   response: "",
-  // });
 
   const responseHandler = async () => {
     if (fileRef.current.files[0]) {

@@ -18,7 +18,6 @@ const LoginFormAdm = () => {
   const [isError, setisError] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const [isloading, setIsloading] = useState(false);
 
   const validateEmail = (email) => {
     const re =
@@ -38,7 +37,6 @@ const LoginFormAdm = () => {
       if (validateEmail(email)) {
         if (validatePass(password)) {
           e.preventDefault();
-          setIsloading(true);
           try{
           const response = await sendRequest(
             `${MAIN_LINK}/employee/login`,
@@ -53,7 +51,6 @@ const LoginFormAdm = () => {
             }
           );
         
-            setIsloading(false);
             toast.success("Login Successful");
             navigate("/admindashboard");
             auth.login(response.user.id, "admin", response.token);
@@ -61,20 +58,18 @@ const LoginFormAdm = () => {
             setPassword("");
           
           }catch(err){
-            setIsloading(false);
             toast.error("Invalid Credentials");
+            navigate('/login?role=admin')
             setError("Invalid Credentials Try Again");
             setisError(true);
           }
           
         } else {
-          setIsloading(false);
           toast.warning("Password must be atleast 6 characters");
           setError("Password must be atleast 6 characters");
           setisError(true);
         }
       } else {
-        setIsloading(false);
         toast.error("Invalid Email");
         setError("Invalid email");
         setisError(true);
@@ -87,7 +82,6 @@ const LoginFormAdm = () => {
   };
   return (
     <>
-      {isloading && <Loader />}
       <MDBCol col="4" md="6" className={classes.logindiv}>
         <div className="d-flex flex-row align-items-center justify-content-center">
           <p className="lead fw-normal mb-0 me-3">Sign In As Admin</p>

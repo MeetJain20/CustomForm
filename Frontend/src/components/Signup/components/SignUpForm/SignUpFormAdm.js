@@ -90,6 +90,7 @@ const SignUpFormAdm = () => {
               } catch (err) {
                 setIsloading(false);
                 toast.error("Error while signing up");
+                navigate('/signup?role=admin');
                 console.log("Error signing up", err);
               }
             } else {

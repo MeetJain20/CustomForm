@@ -109,32 +109,48 @@ const DisplayForm = () => {
 
   // Submit Response
 
-  const submitResponseHandler = async () => {
-    try {
-      setIsloading(true);
-      const responseData = await sendRequest(
-        `${MAIN_LINK}/empform/saveresponse`,
-        "POST",
-        JSON.stringify({
-          formId: formid,
-          adminId: adminid,
-          employeeId: localStorage.getItem("userid"),
-          responses: fieldResponse,
-        }),
-        {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${Cookies.get("token")}`,
-        }
-      );
-      setIsloading(false);
-      toast.success("Response submitted successfully");
-      // console.log("Response Saved");
-      navigate("/employeedashboard");
-    } catch (err) {
-      setIsloading(false);
-      toast.success("Error submitting your response");
-      console.log("Error Saving Response: ", err);
+  const validateForm = () => {
+    for (const field of fields) {
+      if (field.isrequired && fieldResponse.some(res => res.fieldid === field.fieldid && !res.response.toString())) {
+        return { status: false, message: `Please fill in the '${field.question}' field` };
+      }
     }
+    return { status: true, message: "All required fields are filled" };
+  };
+
+  const submitResponseHandler = async () => {
+    if(validateForm().status)
+    {
+      try {
+        setIsloading(true);
+        const responseData = await sendRequest(
+          `${MAIN_LINK}/empform/saveresponse`,
+          "POST",
+          JSON.stringify({
+            formId: formid,
+            adminId: adminid,
+            employeeId: localStorage.getItem("userid"),
+            responses: fieldResponse,
+          }),
+          {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          }
+        );
+        setIsloading(false);
+        toast.success("Response submitted successfully");
+        // console.log("Response Saved");
+        navigate("/employeedashboard");
+      } catch (err) {
+        setIsloading(false);
+        toast.success("Error submitting your response");
+        console.log("Error Saving Response: ", err);
+      }
+    }
+    else{
+      toast.warning(validateForm().message);
+    }
+    
   };
 
   // Get FormData

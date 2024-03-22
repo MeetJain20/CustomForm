@@ -13,9 +13,7 @@ import DisplayResponse from "./components/DisplayForm/components/DisplayResponse
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [LoggedIn, setLoggedIn] = useState(false);
   const [userId, setuserId] = useState("");
-  // const [userNumber, setuserNumber] = useState(0);
 
   const login = useCallback((uid, role, token) => {
     localStorage.setItem("userid", uid);
@@ -43,9 +41,9 @@ function App() {
     routes = (
       <Router>
         <Routes>
-          {/* {localStorage.getItem("role") == "customer" ? (<Route path="/" element={<Homepage />} />) : (<Route path="/" element={<Homepagem />} />)}  */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LandingPage />} />
+          <Route path="/signup" element={<LandingPage />} />
           <Route path="/landingpage" element={<LandingPage />} />
           <Route path="/createform/:formid" element={<MakeForm />} />
           <Route path="/displayform/:formid" element={<DisplayForm />} />
@@ -61,12 +59,11 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          {/* <Route path="/landingpage" element={<Login />} /> */}
+          <Route path="/landingpage" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/admindashboard" element={<Login />} />
           <Route path="/employeedashboard" element={<Login />} />
-          {/* <Route path="/login" element={<><Navbar /><Login /></>} /> */}
         </Routes>
       </Router>
     );
