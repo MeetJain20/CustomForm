@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "sonner";
 
-const Functionalities = ({ onSave, fieldState }) => {
+const Functionalities = ({ onSave, fieldState, hasChanged=false,setHasChanged }) => {
   const { formid } = useParams();
   const dispatch = useDispatch();
   const { sendRequest } = useRequest();
@@ -22,7 +22,6 @@ const Functionalities = ({ onSave, fieldState }) => {
   // Save Changes
 
   const updatefieldHandler = async () => {
-    // console.log(fieldState);
     fieldState.isrequired = isRequired;
     if (fieldState.type === "Multiple Choice") {
       onSave();
@@ -147,28 +146,33 @@ const Functionalities = ({ onSave, fieldState }) => {
             type="checkbox"
             className={classes.requiredcheckbox}
             checked={isRequired}
-            onChange={(e) => setIsRequired(e.target.checked)}
+            onChange={(e) => {
+              setIsRequired(e.target.checked);
+              setHasChanged(true);
+            }}
           />
          Field Required
         </label>
       </div>
       <div className={classes.functionalities}>
-        <button className={classes.copyfieldbutton} onClick={copyFieldHandler}>
+        <button className={`${classes.copyfieldbutton}`} onClick={copyFieldHandler}>
           Copy Field
         </button>
         <button
-          className={classes.deletefieldbutton}
+          className={`${classes.deletefieldbutton}`}
           onClick={deletefieldHandler}
         >
           Delete Field
         </button>
         <button
-          className={classes.savechangebutton}
+           className={`${classes.savechangebutton} ${hasChanged ? classes.changed : ""}`}
           onClick={updatefieldHandler}
+          style={{ cursor: hasChanged ? "pointer" : "not-allowed" }}
+          disabled={hasChanged?false:true}
         >
           Save Changes
         </button>
-        <button className={classes.addfieldbutton} onClick={addnewfieldHandler}>
+        <button className={`${classes.addfieldbutton}`} onClick={addnewfieldHandler}>
           Add New Field
         </button>
       </div>

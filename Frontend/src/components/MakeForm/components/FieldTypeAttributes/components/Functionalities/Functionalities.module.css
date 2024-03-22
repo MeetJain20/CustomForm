@@ -9,17 +9,19 @@
 
 .copyfieldbutton,
 .deletefieldbutton,
-.savechangebutton,
 .addfieldbutton {
   padding: 10px 15px;
   border: none;
-  cursor: pointer;
+  cursor: pointer;  
+}
+
+.savechangebutton{
+  border:none;
 }
 
 
 .requiredcheckbox {
-  margin-right: 0.75rem;
-  
+  margin-right: 0.75rem; 
 }
 
 .requiredcontainer {

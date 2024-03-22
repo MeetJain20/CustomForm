@@ -11,31 +11,34 @@ const CheckboxTypeFields = ({ fieldData }) => {
     fieldid: fieldData.fieldid,
     type: fieldData.type || "Checkbox Type",
     question: fieldData.question || "",
-    isrequired:fieldData.isrequired || false,
+    isrequired: fieldData.isrequired || false,
     options: fieldData.options || [""],
   });
+  const [hasChanged, setHasChanged] = useState(false); // State to track changes
   const [errorMessage, setErrorMessage] = useState("");
   const containerRef = useRef(null);
 
   const handleQuestionChange = (e) => {
     setFieldState({ ...fieldState, question: e.target.value });
+    setHasChanged(true); // Set flag when question changes
   };
 
   const handleOptionChange = (index, value) => {
     const newOptions = [...fieldState.options];
     newOptions[index] = value;
     setFieldState({ ...fieldState, options: newOptions });
-    setErrorMessage("");
+    setHasChanged(true); // Set flag when option changes
+    setErrorMessage(""); // Clear error message
   };
 
   const handleAddOption = () => {
-    // Check if the last option is not empty before adding a new one
     if (fieldState.options[fieldState.options.length - 1].trim() !== "") {
       const newOptions = [...fieldState.options, ""];
       setFieldState({ ...fieldState, options: newOptions });
-      setErrorMessage("");
+      setHasChanged(true); // Set flag when option added
+      setErrorMessage(""); // Clear error message
     } else {
-      toast.warning("Please enter a value for the option")
+      toast.warning("Please enter a value for the option");
       setErrorMessage("Please enter a value for the option");
     }
   };
@@ -43,8 +46,14 @@ const CheckboxTypeFields = ({ fieldData }) => {
   const handleDeleteOption = (index) => {
     const newOptions = fieldState.options.filter((_, i) => i !== index);
     setFieldState({ ...fieldState, options: newOptions });
-    setErrorMessage("");
+    setHasChanged(true); // Set flag when option deleted
+    setErrorMessage(""); // Clear error message
   };
+
+  useEffect(() => {
+    // Reset flag when fieldData changes
+    setHasChanged(false);
+  }, [fieldData]);
 
   useOutsideClick(containerRef, () => {
     // Remove empty options
@@ -58,6 +67,7 @@ const CheckboxTypeFields = ({ fieldData }) => {
       setFieldState({ ...fieldState, options: nonEmptyOptions });
     }
   });
+
   return (
     <>
       <div className={classes.checkboxfieldcontainer} ref={containerRef}>
@@ -87,21 +97,22 @@ const CheckboxTypeFields = ({ fieldData }) => {
                 onChange={(e) => handleOptionChange(index, e.target.value)}
               />
               {index === fieldState.options.length - 1 && (
-                // Render add icon only for the last option
-                <div className={classes.addOptiondiv}  onClick={(e) => {
-                  e.stopPropagation();
-                  handleAddOption()
-                }}>
+                <div
+                  className={classes.addOptiondiv}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAddOption();
+                  }}
+                >
                   <IoMdAddCircleOutline />
                 </div>
               )}
               {index !== 0 && (
-                // Render delete icon for all options except the first one
                 <div
                   className={classes.deleteOptiondiv}
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleDeleteOption(index)
+                    handleDeleteOption(index);
                   }}
                 >
                   <RxCross1 />
@@ -110,10 +121,14 @@ const CheckboxTypeFields = ({ fieldData }) => {
             </div>
           ))}
         </div>
-        {errorMessage && <p className={classes.errorMessage}>{errorMessage}</p>}
+        {errorMessage && (
+          <p className={classes.errorMessage}>{errorMessage}</p>
+        )}
       </div>
       <Functionalities
         fieldState={fieldState}
+        hasChanged={hasChanged}
+        setHasChanged={setHasChanged}
         onSave={() => {
           const nonEmptyOptions = fieldState.options.filter(
             (option) => option.trim() !== ""

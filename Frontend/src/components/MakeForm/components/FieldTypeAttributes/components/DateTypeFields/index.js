@@ -7,13 +7,21 @@ const DateTypeFields = ({ fieldData }) => {
   const [fieldState, setFieldState] = useState({
     fieldid: fieldData.fieldid,
     type: fieldData.type || "Short Answer",
-    isrequired:fieldData.isrequired || false,
+    isrequired: fieldData.isrequired || false,
     question: fieldData.question || "",
   });
 
+  const [hasChanged, setHasChanged] = useState(false);
+
   const handleQuestionChange = (e) => {
     setFieldState({ ...fieldState, question: e.target.value });
+    setHasChanged(true); // Set flag when question changes
   };
+
+  useEffect(() => {
+    // Reset flag when fieldData changes
+    setHasChanged(false);
+  }, [fieldData]);
 
   return (
     <>
@@ -29,12 +37,12 @@ const DateTypeFields = ({ fieldData }) => {
           <input
             type="date"
             className={classes.datefield}
-            disabled // Make the input disabled
+            disabled
           />
           <IoCalendarOutline className={classes.calendarIcon} />
         </div>
       </div>
-      <Functionalities fieldState={fieldState} />
+      <Functionalities fieldState={fieldState} hasChanged={hasChanged} setHasChanged={setHasChanged} />
     </>
   );
 };

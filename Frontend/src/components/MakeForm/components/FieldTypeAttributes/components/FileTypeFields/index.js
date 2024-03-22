@@ -7,12 +7,19 @@ const FileTypeFields = ({ fieldData }) => {
     fieldid: fieldData.fieldid,
     type: fieldData.type || "Short Answer",
     question: fieldData.question || "",
-    isrequired:fieldData.isrequired || false,
+    isrequired: fieldData.isrequired || false,
   });
+  const [hasChanged, setHasChanged] = useState(false); // State to track changes
 
   const handleQuestionChange = (e) => {
     setFieldState({ ...fieldState, question: e.target.value });
+    setHasChanged(true); // Set flag when question changes
   };
+
+  useEffect(() => {
+    // Reset flag when fieldData changes
+    setHasChanged(false);
+  }, [fieldData]);
 
   return (
     <>
@@ -32,7 +39,7 @@ const FileTypeFields = ({ fieldData }) => {
           />
         </div>
       </div>
-      <Functionalities fieldState={fieldState} />
+      <Functionalities fieldState={fieldState} hasChanged={hasChanged} setHasChanged={setHasChanged} />
     </>
   );
 };

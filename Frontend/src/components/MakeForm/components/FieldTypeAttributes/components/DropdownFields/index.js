@@ -14,11 +14,14 @@ const DropdownFields = ({ fieldData }) => {
     isrequired:fieldData.isrequired || false,
     options: fieldData.options || [""],
   });
+
   const [errorMessage, setErrorMessage] = useState("");
   const containerRef = useRef(null);
+  const [hasChanged, setHasChanged] = useState(false); // State to track changes
 
   const handleQuestionChange = (e) => {
     setFieldState({ ...fieldState, question: e.target.value });
+    setHasChanged(true);
   };
 
   const handleOptionChange = (index, value) => {
@@ -26,6 +29,7 @@ const DropdownFields = ({ fieldData }) => {
     newOptions[index] = value;
     setFieldState({ ...fieldState, options: newOptions });
     setErrorMessage("");
+    setHasChanged(true);
   };
 
   const handleAddOption = () => {
@@ -34,6 +38,7 @@ const DropdownFields = ({ fieldData }) => {
       const newOptions = [...fieldState.options, ""];
       setFieldState({ ...fieldState, options: newOptions });
       setErrorMessage("");
+      setHasChanged(true);
     } else {
       toast.warning("Please enter a value for the option")
       setErrorMessage("Please enter a value for the option");
@@ -44,7 +49,13 @@ const DropdownFields = ({ fieldData }) => {
     const newOptions = fieldState.options.filter((_, i) => i !== index);
     setFieldState({ ...fieldState, options: newOptions });
     setErrorMessage("");
+    setHasChanged(true);
   };
+
+  useEffect(() => {
+    // Reset flag when fieldData changes
+    setHasChanged(false);
+  }, [fieldData]);
 
   useOutsideClick(containerRef, () => {
     // Remove empty options
@@ -105,6 +116,8 @@ const DropdownFields = ({ fieldData }) => {
       </div>
       <Functionalities
         fieldState={fieldState}
+        hasChanged={hasChanged}
+        setHasChanged={setHasChanged} 
         onSave={() => {
           const nonEmptyOptions = fieldState.options.filter(
             (option) => option.trim() !== ""

@@ -11,14 +11,21 @@ const MultipleChoiceFields = ({ fieldData }) => {
     fieldid: fieldData.fieldid,
     type: fieldData.type || "Multiple Choice",
     question: fieldData.question || "",
-    isrequired:fieldData.isrequired || false,
+    isrequired: fieldData.isrequired || false,
     options: fieldData.options || [""],
   });
   const [errorMessage, setErrorMessage] = useState("");
   const containerRef = useRef(null);
+  const [hasChanged, setHasChanged] = useState(false); // State to track changes
+
+  useEffect(() => {
+    // Reset hasChanged flag when fieldData changes
+    setHasChanged(false);
+  }, [fieldData]);
 
   const handleQuestionChange = (e) => {
     setFieldState({ ...fieldState, question: e.target.value });
+    setHasChanged(true); // Set flag when question changes
   };
 
   const handleOptionChange = (index, value) => {
@@ -26,6 +33,7 @@ const MultipleChoiceFields = ({ fieldData }) => {
     newOptions[index] = value;
     setFieldState({ ...fieldState, options: newOptions });
     setErrorMessage("");
+    setHasChanged(true); // Set flag when option changes
   };
 
   const handleAddOption = () => {
@@ -34,8 +42,9 @@ const MultipleChoiceFields = ({ fieldData }) => {
       const newOptions = [...fieldState.options, ""];
       setFieldState({ ...fieldState, options: newOptions });
       setErrorMessage("");
+      setHasChanged(true); // Set flag when option is added
     } else {
-      toast.warning("Please enter a value for the option")
+      toast.warning("Please enter a value for the option");
       setErrorMessage("Please enter a value for the option");
     }
   };
@@ -44,7 +53,14 @@ const MultipleChoiceFields = ({ fieldData }) => {
     const newOptions = fieldState.options.filter((_, i) => i !== index);
     setFieldState({ ...fieldState, options: newOptions });
     setErrorMessage("");
+    setHasChanged(true); // Set flag when option is deleted
   };
+
+
+  useEffect(() => {
+    // Reset flag when fieldData changes
+    setHasChanged(false);
+  }, [fieldData]);
 
   useOutsideClick(containerRef, () => {
     // Remove empty options
@@ -58,6 +74,7 @@ const MultipleChoiceFields = ({ fieldData }) => {
       setFieldState({ ...fieldState, options: nonEmptyOptions });
     }
   });
+
   return (
     <>
       <div className={classes.multiplefieldcontainer} ref={containerRef}>
@@ -88,10 +105,13 @@ const MultipleChoiceFields = ({ fieldData }) => {
               />
               {index === fieldState.options.length - 1 && (
                 // Render add icon only for the last option
-                <div className={classes.addOptiondiv}  onClick={(e) => {
-                  e.stopPropagation();
-                  handleAddOption()
-                }}>
+                <div
+                  className={classes.addOptiondiv}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAddOption();
+                  }}
+                >
                   <IoMdAddCircleOutline />
                 </div>
               )}
@@ -101,7 +121,7 @@ const MultipleChoiceFields = ({ fieldData }) => {
                   className={classes.deleteOptiondiv}
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleDeleteOption(index)
+                    handleDeleteOption(index);
                   }}
                 >
                   <RxCross1 />
@@ -110,7 +130,9 @@ const MultipleChoiceFields = ({ fieldData }) => {
             </div>
           ))}
         </div>
-        {errorMessage && <p className={classes.errorMessage}>{errorMessage}</p>}
+        {errorMessage && (
+          <p className={classes.errorMessage}>{errorMessage}</p>
+        )}
       </div>
       <Functionalities
         fieldState={fieldState}
@@ -120,6 +142,8 @@ const MultipleChoiceFields = ({ fieldData }) => {
           );
           setFieldState({ ...fieldState, options: nonEmptyOptions });
         }}
+        hasChanged={hasChanged}
+        setHasChanged={setHasChanged} // Pass setHasChanged as a prop
       />
     </>
   );
