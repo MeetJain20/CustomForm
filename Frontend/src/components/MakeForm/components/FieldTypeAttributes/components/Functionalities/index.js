@@ -22,6 +22,10 @@ const Functionalities = ({ onSave, fieldState, hasChanged=false,setHasChanged })
   // Save Changes
 
   const updatefieldHandler = async () => {
+    if (!fieldState.question.trim()) {
+      toast.warning("Question field cannot be empty");
+      return;
+    }
     fieldState.isrequired = isRequired;
     if (fieldState.type === "Multiple Choice") {
       onSave();

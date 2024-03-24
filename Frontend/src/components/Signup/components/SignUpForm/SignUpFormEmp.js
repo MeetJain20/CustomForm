@@ -63,37 +63,34 @@ const SignUpFormEmp = () => {
               setisError(false);
               e.preventDefault();
               setIsloading(true);
-              try{
-              const response = await sendRequest(
-                `${MAIN_LINK}/employee/signupemp`,
-                "POST",
-                JSON.stringify({
-                  empName: empName,
-                  mobile: mobile,
-                  teamName: teamName,
-                  email: email,
-                  password: password,
-                }),
-                { "Content-Type": "application/json" }
-              );
-              setIsloading(false);
-              toast.success("Sign Up Successful");
-              navigate("/login?role=employee");
-              setEmpName("");
-              setEmail("");
-              setPassword("");
-              setMobile(0);
-              setTeamName("");
-              }
-              catch(err)
-              {
+              try {
+                const response = await sendRequest(
+                  `${MAIN_LINK}/employee/signupemp`,
+                  "POST",
+                  JSON.stringify({
+                    empName: empName,
+                    mobile: mobile,
+                    teamName: teamName,
+                    email: email,
+                    password: password,
+                  }),
+                  { "Content-Type": "application/json" }
+                );
+                setIsloading(false);
+                toast.success("Sign Up Successful");
+                navigate("/login?role=employee");
+                setEmpName("");
+                setEmail("");
+                setPassword("");
+                setMobile(0);
+                setTeamName("");
+              } catch (err) {
                 setIsloading(false);
                 toast.error(`${err.message}`);
-                navigate('/signup?role=employee');
+                navigate("/signup?role=employee");
                 setError(`${err.message}`);
-            setisError(true);
+                setisError(true);
               }
-            
             } else {
               toast.warning("Invalid Mobile Number");
               setError("Invalid Mobile Number");
