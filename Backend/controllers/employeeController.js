@@ -22,9 +22,9 @@ const getteamnames = async (req, res) => {
 const signupemp = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return next(
-      new HttpError("Invalid inputs passed, please check your data.", 422)
-    );
+    return res.status(422).json({
+      message: "Invalid inputs passed, please check your data.",
+    });
   }
   const { empName, mobile, email, password, teamName } = req.body;
 
@@ -34,19 +34,16 @@ const signupemp = async (req, res, next) => {
   try {
     existingEmail = await EmployeeModel.findOne({ email: email });
   } catch (err) {
-    const error = new HttpError(
-      "Signing up failed, please try again later.",
-      500
-    );
-    return next(error);
+    return res.status(500).json({
+      message: "Signing up failed, please try again later.",
+    });
   }
 
   if (existingEmail) {
-    const error = new HttpError(
-      "User exists already, please login instead.",
-      422
-    );
-    return next(error);
+    return res.status(422).json({
+      message: "User exists already, please login instead.",
+    });
+
   }
 
   const createdUser = new EmployeeModel({
@@ -58,17 +55,12 @@ const signupemp = async (req, res, next) => {
     role: "employee",
     adminId: adminIds,
   });
-  // console.log(createdUser)
   try {
     const newuser = await createdUser.save();
-    // console.log(newuser,'no new user error')
   } catch (err) {
-    console.log("saving error");
-    const error = new HttpError(
-      "Signing up failed, please try again later.",
-      500
-    );
-    return next(error);
+    return res.status(500).json({
+      message: "Signing up failed, please try again later.",
+    });
   }
 
   res.status(201).json({ user: createdUser.toObject({ getters: true }) });
@@ -78,9 +70,9 @@ const login = async (req, res, next) => {
   const { email, password, role } = req.body;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return next(
-      new HttpError("Invalid inputs passed, please check your data.", 422)
-    );
+    return res.status(422).json({
+      message: "Invalid inputs passed, please check your data.",
+    });
   }
 
   let existingUser;
@@ -88,49 +80,37 @@ const login = async (req, res, next) => {
     try {
       existingUser = await AdminModel.findOne({ email: email });
     } catch (err) {
-      const error = new HttpError(
-        "Login failed, check your credentials or signup.",
-        500
-      );
-      return next(error);
+      return res.status(500).json({
+        message: "Login failed, check your credentials or signup.",
+      });
+
     }
   } else if (role === "employee") {
     try {
       existingUser = await EmployeeModel.findOne({ email: email });
     } catch (err) {
-      const error = new HttpError(
-        "Login failed, check your credentials or signup.",
-        500
-      );
-      return next(error);
+      return res.status(500).json({
+        message: "Login failed, check your credentials or signup.",
+      });
+
     }
   }
 
   if (!existingUser) {
-    const error = new HttpError(
-      "Invalid credentials, could not log you in.",
-      401
-    );
-    res.json(null);
-
-    return next(error);
+    return res.status(401).json({
+      message: "Invalid credentials, could not log you in.",
+    });
   } else {
     const pass = await bcrypt.compare(password, existingUser.password);
     if (role !== existingUser.role) {
-      const error = new HttpError(
-        "Invalid role as per entered while registering",
-        401
-      );
-      res.json(null);
-      return next(error);
+      return res.status(401).json({
+        message: "Invalid role as per entered while registering.",
+      });
     }
     if (!pass) {
-      const error = new HttpError(
-        "Invalid credentials, could not log you in.",
-        401
-      );
-      res.json(null);
-      return next(error);
+      return res.status(401).json({
+        message: "Invalid password, could not log you in.",
+      });
     }
     delete existingUser.password;
     let token;
@@ -144,16 +124,11 @@ const login = async (req, res, next) => {
         process.env.SUPERSECRET_KEY,
         { expiresIn: "1d" }
       );
-      // lo;
     } catch (err) {
-      const error = new HttpError(
-        "Logging in failed, please try again later.",
-        500
-      );
-      return next(error);
+      return res.status(500).json({
+        message: "Logging in failed, please try again later.",
+      });
     }
-    // console.log(existingUser.id + " " + "possible?");
-
     res.json({ user: existingUser.toObject({ getters: true }), token: token });
   }
 };

@@ -58,9 +58,9 @@ const LoginFormAdm = () => {
             setPassword("");
           
           }catch(err){
-            toast.error("Invalid Credentials");
+            toast.error(`${err.message}`);
             navigate('/login?role=admin')
-            setError("Invalid Credentials Try Again");
+            setError(`${err.message}`);
             setisError(true);
           }
           

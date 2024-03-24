@@ -88,8 +88,10 @@ const SignUpFormEmp = () => {
               catch(err)
               {
                 setIsloading(false);
-                toast.error("Error while signing up");
-                console.log("Error while signing up",err);
+                toast.error(`${err.message}`);
+                navigate('/signup?role=employee');
+                setError(`${err.message}`);
+            setisError(true);
               }
             
             } else {

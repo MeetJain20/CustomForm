@@ -1,33 +1,29 @@
 const { validationResult } = require("express-validator");
-const HttpError = require("../models/http-error");
 const AdminModel = require("../models/AdminModel");
 const EmployeeModel = require("../models/EmployeeModel");
-const bcrypt = require("bcrypt");
 
 const signupadm = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return next(
-      new HttpError("Invalid inputs passed, please check your data.", 422)
-    );
+    return res.status(422).json({
+      message: "Invalid inputs passed, please check your data.",
+    });
   }
+  
   const { empName, mobile, email, password, teamName } = req.body;
   let existingEmail;
   try {
     existingEmail = await AdminModel.findOne({ email: email });
   } catch (err) {
-    const error = new HttpError(
-      "Signing up failed, please try again later.",
-      500
-    );
-    return next(error);
+    return res.status(500).json({
+      message: "Signing up failed, please try again later.",
+    });
   }
+  
   if (existingEmail) {
-    const error = new HttpError(
-      "User exists already, please login instead.",
-      422
-    );
-    return next(error);
+    return res.status(422).json({
+      message: "User exists already, please login instead.",
+    });
   }
 
   const createdUser = new AdminModel({
@@ -38,24 +34,22 @@ const signupadm = async (req, res, next) => {
     teamName: teamName,
     role: "admin",
   });
+
   try {
     const newuser = await createdUser.save();
-
+    
     const employeesToUpdate = await EmployeeModel.find({ teamName });
     employeesToUpdate.forEach(async (employee) => {
       employee.adminId.push(newuser._id);
       await employee.save();
     });
+    
+    res.status(201).json({ user: createdUser.toObject({ getters: true }) });
   } catch (err) {
-    console.log("saving error");
-    const error = new HttpError(
-      "Signing up failed, please try again later.",
-      500
-    );
-    return next(error);
+    return res.status(500).json({
+      message: "Signing up failed, please try again later.",
+    });
   }
-
-  res.status(201).json({ user: createdUser.toObject({ getters: true }) });
 };
 
 

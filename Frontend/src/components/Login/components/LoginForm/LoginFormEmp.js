@@ -54,8 +54,8 @@ const LoginFormEmp = () => {
             setEmail("");
             setPassword("");
           } catch (err) {
-            toast.error("Invalid Credentials");
-            setError("Invalid Credentials Try Again");
+            toast.error(`${err.message}`);
+            setError(`${err.message}`);
             setisError(true);
           }
         } else {
