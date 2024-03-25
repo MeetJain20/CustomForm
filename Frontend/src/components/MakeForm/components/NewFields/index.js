@@ -71,21 +71,21 @@ const NewFields = ({ fieldData={} }) => {
           fieldData={fieldData}
         />
   
-        <div
+        {/* <div
           className={`${classes.saveandcopydiv} ${
             currentdiv ? classes.showSaveAndCopy : ""
           }`}
         >
-          {/* <div className={classes.addfieldbutton} onClick={addfieldHandler}>
+          <div className={classes.addfieldbutton}>
             <IoMdAddCircleOutline />
-          </div> */}
+          </div>
           <div className={classes.copyfieldbutton}>
             <MdOutlineContentCopy />
           </div>
           <div className={classes.deletefieldbutton}>
             <RiDeleteBin6Line />
           </div>
-        </div>
+        </div> */}
  
     </div>
   );
