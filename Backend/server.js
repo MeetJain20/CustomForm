@@ -67,3 +67,5 @@ mongoose
 //     res.send("Hello World! Its working");
 // }
 // );
+
+module.exports = app;

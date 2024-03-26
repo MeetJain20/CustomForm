@@ -203,7 +203,7 @@ const updateformstatus = async (req, res, next) => {
     // Get the adminId from the FormModel
     const form = await FormModel.findById(formid);
     if (!form) {
-      throw new HttpError("Form not found", 404);
+      return res.status(404).json({message:"Form not found"});
     }
     const adminId = form.adminId;
 
@@ -243,7 +243,7 @@ const updateeditstatus = async (req, res, next) => {
     );
 
     if (!editstatus) {
-      throw new HttpError("Form not found", 404);
+      return res.status(404).json({message:"Form not found"});
     }
 
     // Delete all responses for the corresponding formid
@@ -267,7 +267,7 @@ const updatetemplatestatus = async (req, res, next) => {
       { new: true }
     );
     if (!formstatus) {
-      throw new HttpError("Form not found", 404);
+      return res.status(404).json({message:"Form not found"});
     }
     res.json(formstatus);
   } catch (error) {
@@ -287,11 +287,10 @@ const updateformtitle = async (req, res, next) => {
       { new: true }
     );
     if (!updatetitle) {
-      throw new HttpError("Form not found", 404);
+      return res.status(404).json({message:"Form not found"});
     }
     res.json(updatetitle);
   } catch (error) {
-    console.error("Error updating form title:", error);
     const statusCode = error.statusCode || 500;
     const message = error.message || "Failed to update form title";
     res.status(statusCode).json({ message });
@@ -307,7 +306,7 @@ const updateformdesc = async (req, res, next) => {
       { new: true }
     );
     if (!updatedesc) {
-      throw new HttpError("Form not found", 404);
+      return res.status(404).json({message:"Form not found"});
     }
     res.json(updatedesc);
   } catch (error) {

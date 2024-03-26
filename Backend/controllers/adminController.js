@@ -21,7 +21,7 @@ const signupadm = async (req, res, next) => {
   }
   
   if (existingEmail) {
-    return res.status(422).json({
+    return res.status(409).json({
       message: "User exists already, please login instead.",
     });
   }
@@ -44,7 +44,7 @@ const signupadm = async (req, res, next) => {
       await employee.save();
     });
     
-    res.status(201).json({ user: createdUser.toObject({ getters: true }) });
+    return res.status(201).json({ user: createdUser.toObject({ getters: true }) });
   } catch (err) {
     return res.status(500).json({
       message: "Signing up failed, please try again later.",

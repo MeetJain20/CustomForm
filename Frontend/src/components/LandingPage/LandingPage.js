@@ -17,7 +17,7 @@ const LandingPage = () => {
     {
       title: "Create an online form as easily as creating a document",
       description:
-        "Select from multiple question types, drag-and-drop to reorder questions, and customize values as easily as pasting a list.",
+        "Select from multiple question types and customize values as easily as pasting a list.",
       image: formcreation,
     },
     {

@@ -50,7 +50,6 @@ const LoginFormAdm = () => {
               "Content-Type": "application/json",
             }
           );
-        
             toast.success("Login Successful");
             navigate("/admindashboard");
             auth.login(response.user.id, "admin", response.token);

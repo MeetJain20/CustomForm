@@ -55,7 +55,7 @@ const SignUpFormAdm = () => {
 
   const signupHandler = async (e) => {
     e.preventDefault();
-  
+
     if (empName && email && password && mobile && (teamName || teamName1)) {
       if (isChecked) {
         if (validateEmail(email)) {
@@ -78,50 +78,49 @@ const SignUpFormAdm = () => {
                   }),
                   { "Content-Type": "application/json" }
                 );
-                if (response.status === 201) {
-                  // Sign up successful
-                  navigate("/login?role=admin");
-                  setIsloading(false);
-                  toast.success("Sign Up Successful");
-                  setEmpName("");
-                  setEmail("");
-                  setPassword("");
-                  setMobile(0);
-                  setTeamName("");
-                  setTeamName1("");
-                } 
+
+                // Sign up successful
+                navigate("/login?role=admin");
+                setIsloading(false);
+                toast.success("Sign Up Successful");
+                setEmpName("");
+                setEmail("");
+                setPassword("");
+                setMobile(0);
+                setTeamName("");
+                setTeamName1("");
               } catch (err) {
                 // Error while signing up
                 setIsloading(false);
                 toast.error(`${err.message}`);
-                navigate('/signup?role=admin');
+                navigate("/signup?role=admin");
                 setError(`${err.message}`);
-            setisError(true);
+                setisError(true);
               }
             } else {
               setIsloading(false);
-  
+
               toast.warning("Invalid Mobile Number");
               setError("Invalid Mobile Number");
               setisError(true);
             }
           } else {
             setIsloading(false);
-  
+
             toast.warning("Password must be atleast 6 characters");
             setError("Password must be atleast 6 characters");
             setisError(true);
           }
         } else {
           setIsloading(false);
-  
+
           toast.error("Invalid Email");
           setError("Invalid Email");
           setisError(true);
         }
       } else if (!isChecked) {
         setIsloading(false);
-  
+
         toast.warning("Please accept Terms and Conditions");
         setError("Please accept Terms and Conditions");
         setisError(true);
@@ -142,7 +141,6 @@ const SignUpFormAdm = () => {
       setisError(true);
     }
   };
-  
 
   useEffect(() => {
     const fetchItems = async () => {
