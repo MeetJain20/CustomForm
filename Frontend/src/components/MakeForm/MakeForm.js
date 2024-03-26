@@ -100,6 +100,12 @@ const MakeForm = () => {
   // Save Form
 
   const saveFormHandler = async () => {
+    const hasEmptyQuestion = fields.some(field => field.question.trim() === "");
+
+    if (hasEmptyQuestion) {
+      toast.warning("Some fields have empty questions. Please fill them before saving.");
+      return;
+    }
     try {
       setIsloading(true);
       const responseData = await sendRequest(
@@ -126,6 +132,12 @@ const MakeForm = () => {
   // Save Form as a Template
 
   const saveFormTemplateHandler = async () => {
+    const hasEmptyQuestion = fields.some(field => field.question.trim() === "");
+
+    if (hasEmptyQuestion) {
+      toast.warning("Some fields have empty questions. Please fill them before saving.");
+      return;
+    }
     try {
       setIsloading(true);
       const responseData = await sendRequest(

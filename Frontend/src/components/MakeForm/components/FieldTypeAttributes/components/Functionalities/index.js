@@ -45,8 +45,7 @@ const Functionalities = ({ fieldState, hasChanged=false,setHasChanged }) => {
 
       // setFormtitle(responseData.formtitle);
     } catch (err) {
-      toast.error("Error saving details");
-      console.log(err);
+      toast.error(`${err.message}`);
     }
   };
 
@@ -67,15 +66,13 @@ const Functionalities = ({ fieldState, hasChanged=false,setHasChanged }) => {
         }
       );
       toast.success("Field deleted successfully");
-      dispatch({ type: "DELETE_FIELD" });
       dispatch({
         type: "DELETE_FIELD_ARRAY",
-        payload: { fieldId: fieldState.fieldid },
+        payload: { fieldid: fieldState.fieldid },
       });
+      dispatch({ type: "DELETE_FIELD" });
     } catch (err) {
-      toast.error("Error deleting field");
-
-      console.log(err);
+      toast.error(`${err.message}`);
     }
   };
 
@@ -107,7 +104,7 @@ const Functionalities = ({ fieldState, hasChanged=false,setHasChanged }) => {
       toast.success("Field copied successfully");
       dispatch({ type: "COPY_FIELD" });
     } catch (err) {
-      console.log(err);
+      toast.error(`${err.message}`);
     }
   };
 
@@ -133,9 +130,7 @@ const Functionalities = ({ fieldState, hasChanged=false,setHasChanged }) => {
 
       // setFormtitle(responseData.formtitle);
     } catch (err) {
-      toast.error("Error adding new field");
-
-      console.log(err);
+      toast.error(`${err.message}`);
     }
   };
 

@@ -118,14 +118,13 @@ const copyfield = async (req, res, next) => {
     const updatedForm = await form.save();
 
     if (!updatedForm) {
-      throw new HttpError("Form not found", 404);
+      return res.status(404).json({message:"Form not found"});
     }
     res.json(updatedForm);
   } catch (error) {
-    console.error("Error copying form field:", error);
     const statusCode = error.statusCode || 500;
     const message = error.message || "Failed to copy form field";
-    res.status(statusCode).json({ message });
+    return res.status(statusCode).json({ message });
   }
 };
 
@@ -340,14 +339,13 @@ const updateformfields = async (req, res, next) => {
     const updatedForm = await form.save();
 
     if (!updatedForm) {
-      throw new HttpError("Form not found", 404);
+      return res.status(404).json({message:"Form not found"});
     }
     res.json(updatedForm);
   } catch (error) {
-    console.error("Error updating form fields:", error);
     const statusCode = error.statusCode || 500;
     const message = error.message || "Failed to update form fields";
-    res.status(statusCode).json({ message });
+    return res.status(statusCode).json({ message });
   }
 };
 
@@ -363,15 +361,14 @@ const addnewfield = async (req, res, next) => {
     const updatedForm = await form.save();
 
     if (!updatedForm) {
-      throw new HttpError("Form not found", 404);
+      return res.status(404).json({message:"Form not found"});
     }
 
     res.json(updatedForm);
   } catch (error) {
-    console.error("Error updating form fields:", error);
     const statusCode = error.statusCode || 500;
     const message = error.message || "Failed to update form fields";
-    res.status(statusCode).json({ message });
+    return res.status(statusCode).json({ message });
   }
 };
 
@@ -390,7 +387,7 @@ const deletefield = async (req, res, next) => {
 
     if (fieldIndex === -1) {
       // Field not found
-      return res.status(404).send("Field not found");
+      return res.status(404).json({message:"Field not found"});
     }
 
     // Remove the field from the fields array
@@ -400,14 +397,13 @@ const deletefield = async (req, res, next) => {
     const updatedForm = await form.save();
 
     if (!updatedForm) {
-      throw new HttpError("Form not found", 404);
+      return res.status(404).json({message:"Form not found"});
     }
     res.json(updatedForm);
   } catch (error) {
-    console.error("Error deleting form field:", error);
     const statusCode = error.statusCode || 500;
     const message = error.message || "Failed to delete form field";
-    res.status(statusCode).json({ message });
+    return res.status(statusCode).json({ message });
   }
 };
 
@@ -419,7 +415,7 @@ const deleteform = async (req, res, next) => {
     const deletedForm = await FormModel.findByIdAndDelete(formid);
 
     if (!deletedForm) {
-      return res.status(404).send("Form not found");
+      return res.status(404).json({message:"Form not found"});
     }
 
     // Step 2: Check if the form is complete

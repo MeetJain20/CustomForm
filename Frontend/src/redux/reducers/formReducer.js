@@ -30,7 +30,7 @@ const formReducer = (state = initialState, action) => {
       return {
         ...state,
         fields: state.fields.filter(
-          (field) => field.fieldid !== action.payload.fieldId
+          (field) => field.fieldid !== action.payload.fieldid
         ),
       };
     default:
