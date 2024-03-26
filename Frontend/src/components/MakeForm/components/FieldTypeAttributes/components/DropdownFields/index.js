@@ -117,13 +117,7 @@ const DropdownFields = ({ fieldData }) => {
       <Functionalities
         fieldState={fieldState}
         hasChanged={hasChanged}
-        setHasChanged={setHasChanged} 
-        onSave={() => {
-          const nonEmptyOptions = fieldState.options.filter(
-            (option) => option.trim() !== ""
-          );
-          setFieldState({ ...fieldState, options: nonEmptyOptions });
-        }}
+        setHasChanged={setHasChanged}
       />
     </>
   );
