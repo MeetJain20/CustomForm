@@ -89,13 +89,13 @@ const Navbar = () => {
                   <LuLogOut />
                 </Link>
 
-                <Link
+                {/* <Link
                   className={`${classes.profile}`}
                   aria-current="page"
                   to="/profile"
                 >
                   <CgProfile />
-                </Link>
+                </Link> */}
               </div>
             ) : (
               <li className="nav-item">

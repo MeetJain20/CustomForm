@@ -56,7 +56,9 @@ const DisplayCheckbox = ({ fieldData }) => {
         {fieldData.question}
       </div>
       <div className={classes.optionsarray}>
-        {fieldData.options && fieldData.options.map((option, index) => (
+        {fieldData.options && fieldData.options
+        .filter((option) => option.trim() !== "")
+        .map((option, index) => (
           <div key={index} className={classes.optionContainer}>
             <input
               type="checkbox"

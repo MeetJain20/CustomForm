@@ -58,8 +58,7 @@ const CheckboxTypeFields = ({ fieldData }) => {
   useOutsideClick(containerRef, () => {
     // Remove empty options
     if (
-      fieldState.options.length > 1 ||
-      fieldState.options[0].trim() !== ""
+      fieldState.options.length > 1
     ) {
       const nonEmptyOptions = fieldState.options.filter(
         (option) => option.trim() !== ""
@@ -129,12 +128,6 @@ const CheckboxTypeFields = ({ fieldData }) => {
         fieldState={fieldState}
         hasChanged={hasChanged}
         setHasChanged={setHasChanged}
-        onSave={() => {
-          const nonEmptyOptions = fieldState.options.filter(
-            (option) => option.trim() !== ""
-          );
-          setFieldState({ ...fieldState, options: nonEmptyOptions });
-        }}
       />
     </>
   );

@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "sonner";
 
-const Functionalities = ({ onSave, fieldState, hasChanged=false,setHasChanged }) => {
+const Functionalities = ({ fieldState, hasChanged=false,setHasChanged }) => {
   const { formid } = useParams();
   const dispatch = useDispatch();
   const { sendRequest } = useRequest();
@@ -27,9 +27,6 @@ const Functionalities = ({ onSave, fieldState, hasChanged=false,setHasChanged })
       return;
     }
     fieldState.isrequired = isRequired;
-    if (fieldState.type === "Multiple Choice") {
-      onSave();
-    }
     try {
       const responseData = await sendRequest(
         `${MAIN_LINK}/form/updateformfields`,

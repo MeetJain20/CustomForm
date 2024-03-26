@@ -56,7 +56,6 @@ const MultipleChoiceFields = ({ fieldData }) => {
     setHasChanged(true); // Set flag when option is deleted
   };
 
-
   useEffect(() => {
     // Reset flag when fieldData changes
     setHasChanged(false);
@@ -64,10 +63,7 @@ const MultipleChoiceFields = ({ fieldData }) => {
 
   useOutsideClick(containerRef, () => {
     // Remove empty options
-    if (
-      fieldState.options.length > 1 ||
-      fieldState.options[0].trim() !== ""
-    ) {
+    if (fieldState.options.length > 1) {
       const nonEmptyOptions = fieldState.options.filter(
         (option) => option.trim() !== ""
       );
@@ -130,18 +126,10 @@ const MultipleChoiceFields = ({ fieldData }) => {
             </div>
           ))}
         </div>
-        {errorMessage && (
-          <p className={classes.errorMessage}>{errorMessage}</p>
-        )}
+        {errorMessage && <p className={classes.errorMessage}>{errorMessage}</p>}
       </div>
       <Functionalities
         fieldState={fieldState}
-        onSave={() => {
-          const nonEmptyOptions = fieldState.options.filter(
-            (option) => option.trim() !== ""
-          );
-          setFieldState({ ...fieldState, options: nonEmptyOptions });
-        }}
         hasChanged={hasChanged}
         setHasChanged={setHasChanged} // Pass setHasChanged as a prop
       />

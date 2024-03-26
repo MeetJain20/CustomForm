@@ -42,7 +42,7 @@ const DisplayDropdown = ({ fieldData }) => {
   // Map options to required format
   let optionList = [];
   if (fieldData.options) {
-    optionList = fieldData.options.map((option) => ({
+    optionList = fieldData.options.filter((option) => option.trim() !== "").map((option) => ({
       value: option.replace(/\s+/g, "").toLowerCase(),
       label: option,
     }));

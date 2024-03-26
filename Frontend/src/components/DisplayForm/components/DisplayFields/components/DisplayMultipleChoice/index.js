@@ -39,37 +39,38 @@ const DisplayMultipleChoice = ({ fieldData }) => {
   return (
     <>
       <div className={classes.displaymultiplefieldcontainer}>
-      <div
-        className={`${classes.questionfield} ${
-          fieldData.isrequired ? classes.required : ""
-        }`}
-      >
-        {fieldData.question}
-      </div>
+        <div
+          className={`${classes.questionfield} ${
+            fieldData.isrequired ? classes.required : ""
+          }`}
+        >
+          {fieldData.question}
+        </div>
         <div className={classes.optionsarray}>
           {fieldData.options &&
-            fieldData.options.map((option, index) => (
-              <div key={index} className={classes.optionContainer}>
-                <input
-                  type="radio"
-                  id={`option-${fieldData.fieldid}-${index}`}
-                  name={`options-${fieldData.fieldid}`} // Unique name attribute
-                  className={classes.optionInput}
-                  value={option}
-                  checked={option === responseData.response}
-                  onChange={responseHandler}
-                  required={fieldData.isrequired}
-
-                />
-                <input
-                  type="text"
-                  className={classes.optionField}
-                  placeholder="Option"
-                  value={option}
-                  readOnly
-                />
-              </div>
-            ))}
+            fieldData.options
+              .filter((option) => option.trim() !== "") // Filter out empty options
+              .map((option, index) => (
+                <div key={index} className={classes.optionContainer}>
+                  <input
+                    type="radio"
+                    id={`option-${fieldData.fieldid}-${index}`}
+                    name={`options-${fieldData.fieldid}`} // Unique name attribute
+                    className={classes.optionInput}
+                    value={option}
+                    checked={option === responseData.response}
+                    onChange={responseHandler}
+                    required={fieldData.isrequired}
+                  />
+                  <input
+                    type="text"
+                    className={classes.optionField}
+                    placeholder="Option"
+                    value={option}
+                    readOnly
+                  />
+                </div>
+              ))}
         </div>
       </div>
     </>
