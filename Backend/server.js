@@ -6,7 +6,9 @@ const adminRoutes = require("./routes/admin");
 const formRoutes = require("./routes/form");
 const empformRoutes = require("./routes/empform");
 const employeeRoutes = require("./routes/employee");
+const profileRoutes = require("./routes/profile");
 const fileRoutes = require("./routes/file");
+
 var fs = require("fs");
 const cors = require("cors");
 var path = require("path");
@@ -33,10 +35,8 @@ app.use("/employee", employeeRoutes);
 app.use("/form", formRoutes);
 app.use("/file", fileRoutes);
 app.use("/empform", empformRoutes);
-// app.use("/merchant", merchantRoutes);
-// app.use("/item", itemRoutes);
-// app.use("/gold", goldRoutes);
-// app.use("/admin", adminRoutes);
+app.use("/profile", profileRoutes);
+
 
 app.use((req, res, next) => {
   const error = new HttpError("Could not find this route.", 404);
@@ -62,10 +62,5 @@ mongoose
   .catch((err) => {
     console.log(err);
   });
-
-// app.get("/", (req, res) => {
-//     res.send("Hello World! Its working");
-// }
-// );
 
 module.exports = app;

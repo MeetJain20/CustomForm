@@ -1,0 +1,57 @@
+.editprofilecontainer {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+}
+
+.profileheader {
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--dark-divider);
+}
+
+.profilebody {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 1.75rem;
+}
+
+.individualdetail {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.inputname {
+  font-weight: 600;
+}
+
+.profiledets {
+  padding: 10px;
+  border: 1px solid var(--hover-color);
+  border-radius: 7px;
+}
+
+.profiledets:focus {
+  outline: none;
+}
+
+.profilefooter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 17px;
+}
+
+.closebutton,
+.editprofilebutton {
+  background-color: var(--navbar-blue);
+  border: none;
+  color: var(--white-color);
+  border-radius: 5px;
+  padding: 10px 20px;
+}

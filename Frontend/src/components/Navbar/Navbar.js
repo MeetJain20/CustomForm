@@ -1,4 +1,4 @@
-import { React, useState, useContext, useEffect } from "react";
+import { React, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import Select from "react-select";
@@ -8,14 +8,19 @@ import classes from "./Navbar.module.css";
 import { LuLogOut } from "react-icons/lu";
 import { CgProfile } from "react-icons/cg";
 import { toast } from "sonner";
+import Modal from "../Reusable/Modal";
+import EditProfile from "../Reusable/EditProfile";
 
 const Navbar = () => {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
-
+  const [modalOpen, setModalOpen] = useState(false);
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
   const role = localStorage.getItem("role");
-  const destination = role === "admin" ? "/admindashboard" : "/employeedashboard";
-  
+  const destination =
+    role === "admin" ? "/admindashboard" : "/employeedashboard";
+
   const [selectedOptions, setSelectedOptions] = useState();
   const optionList = [
     { value: "employee", label: "Employee" },
@@ -24,7 +29,7 @@ const Navbar = () => {
 
   function handleSelect(data) {
     setSelectedOptions(data);
-    toast.info(`${data.label} Login`)
+    toast.info(`${data.label} Login`);
     navigate(`/login?role=${data.value}`);
   }
 
@@ -33,10 +38,13 @@ const Navbar = () => {
       auth.logout();
       localStorage.removeItem("userid");
       localStorage.removeItem("role");
-      toast.success("Logged Out Successfully")
+      toast.success("Logged Out Successfully");
       navigate("/");
     }
   };
+
+  // const profileHandler = () => {};
+
   return (
     <nav
       className={`${classes.navbarr} navbar fixed-top navbar-expand-lg navbar-dark`}
@@ -74,7 +82,11 @@ const Navbar = () => {
               <Link className="nav-link active" aria-current="page" to="/">
                 Home
               </Link>
-              <Link className="nav-link active" aria-current="page" to={destination}>
+              <Link
+                className="nav-link active"
+                aria-current="page"
+                to={destination}
+              >
                 Forms
               </Link>
             </div>
@@ -89,13 +101,9 @@ const Navbar = () => {
                   <LuLogOut />
                 </Link>
 
-                {/* <Link
-                  className={`${classes.profile}`}
-                  aria-current="page"
-                  to="/profile"
-                >
-                  <CgProfile />
-                </Link> */}
+                <div className={classes.profileicon} onClick={()=> openModal()}>
+                  <CgProfile size={27}/>
+                </div>
               </div>
             ) : (
               <li className="nav-item">
@@ -114,6 +122,13 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
+      <Modal isOpen={modalOpen} onClose={closeModal}>
+        <EditProfile
+          id={localStorage.getItem('userid')}
+          role={localStorage.getItem('role')}
+          closeModal={closeModal}
+        />
+      </Modal>
     </nav>
   );
 };

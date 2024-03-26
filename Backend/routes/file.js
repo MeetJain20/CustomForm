@@ -4,10 +4,8 @@ const multer = require("multer");
  
 const router = express.Router();
  
-// const sendMail = require("../controllers/nodeMailer.js");
 const fileController = require("../controllers/fileController");
  
-// router.post("/sendMail", sendMail);
  
 // upload image to aws
 const storage = multer.memoryStorage({});

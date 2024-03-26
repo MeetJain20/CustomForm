@@ -18,9 +18,14 @@
 }
 .rightnavbar{
   gap:20px;
-  padding-right: 1.5rem;
+  padding-right: 1rem;
 }
-.logoutbutton,.profile{
+.profileicon{
+  font-size: 1.5rem;
+  color: var(--white-color);
+  cursor: pointer;
+}
+.logoutbutton{
   font-size: 1.5rem;
   color: var(--white-color);
   cursor: pointer;
