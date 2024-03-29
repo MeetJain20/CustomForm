@@ -1,49 +1,46 @@
-const { validationResult } = require("express-validator");
-const HttpError = require("../models/http-error");
 const EmployeeModel = require("../models/EmployeeModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const AdminModel = require("../models/AdminModel");
 
 const getteamnames = async (req, res) => {
-  const uniqueTeamNames = await AdminModel.distinct("teamName");
-
-  // by using find()
-  // const docs = await AdminModel.find({});
-  // const uniqueTeamNames = [...new Set(docs.map(doc => doc.teamName))];
-
-  if (uniqueTeamNames) {
-    res.json(uniqueTeamNames);
-  } else {
-    res.json(null);
+  try {
+    const uniqueTeamNames = await AdminModel.distinct("teamName");
+    if (uniqueTeamNames) {
+      res.status(200).json(uniqueTeamNames);
+    } else {
+      res.status(200).json(null);
+    }
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching existing teams" });
   }
 };
 
+// Signup
+
 const signupemp = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json({
-      message: "Invalid inputs passed, please check your data.",
+  const { empName, mobile, email, password, teamName } = req.body;
+  let adminIds;
+  try {
+    adminIds = await AdminModel.find({ teamName: teamName }).select("_id");
+  } catch (err) {
+    return res.status(500).json({
+      message: "Error fetching adminIds, please try again later.",
     });
   }
-  const { empName, mobile, email, password, teamName } = req.body;
-
-  const adminIds = await AdminModel.find({ teamName: teamName }).select("_id");
-
   let existingEmail;
   try {
     existingEmail = await EmployeeModel.findOne({ email: email });
   } catch (err) {
     return res.status(500).json({
-      message: "Signing up failed, please try again later.",
+      message: "Error while searching for existing Emails.",
     });
   }
 
   if (existingEmail) {
-    return res.status(422).json({
+    return res.status(409).json({
       message: "User exists already, please login instead.",
     });
-
   }
 
   const createdUser = new EmployeeModel({
@@ -57,23 +54,18 @@ const signupemp = async (req, res, next) => {
   });
   try {
     const newuser = await createdUser.save();
+    res.status(201).json({ user: createdUser.toObject({ getters: true }) });
   } catch (err) {
     return res.status(500).json({
-      message: "Signing up failed, please try again later.",
+      message: "Error saving details, please try again later.",
     });
   }
-
-  res.status(201).json({ user: createdUser.toObject({ getters: true }) });
 };
+
+// Login
 
 const login = async (req, res, next) => {
   const { email, password, role } = req.body;
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json({
-      message: "Invalid inputs passed, please check your data.",
-    });
-  }
 
   let existingUser;
   if (role === "admin") {
@@ -83,7 +75,6 @@ const login = async (req, res, next) => {
       return res.status(500).json({
         message: "Login failed, check your credentials or signup.",
       });
-
     }
   } else if (role === "employee") {
     try {
@@ -92,7 +83,6 @@ const login = async (req, res, next) => {
       return res.status(500).json({
         message: "Login failed, check your credentials or signup.",
       });
-
     }
   }
 
@@ -124,12 +114,14 @@ const login = async (req, res, next) => {
         process.env.SUPERSECRET_KEY,
         { expiresIn: "1d" }
       );
+      return res
+        .status(200)
+        .json({ id: existingUser._id, token: token });
     } catch (err) {
       return res.status(500).json({
-        message: "Logging in failed, please try again later.",
+        message: "Error while signing JWT Token.",
       });
     }
-    res.json({ user: existingUser.toObject({ getters: true }), token: token });
   }
 };
 

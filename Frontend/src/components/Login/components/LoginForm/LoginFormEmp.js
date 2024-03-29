@@ -50,7 +50,7 @@ const LoginFormEmp = () => {
             );
             toast.success("Login Successful");
             navigate("/employeedashboard");
-            auth.login(response.user.id, "employee", response.token);
+            auth.login(response.id, "employee", response.token);
             setEmail("");
             setPassword("");
           } catch (err) {

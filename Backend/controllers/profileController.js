@@ -7,7 +7,7 @@ const getadmprofiledetails = async (req, res, next) => {
     const getprofiledet = await AdminModel.find({ _id: userid });
     // console.log("prof: ", getprofiledet);
     if (!getprofiledet) {
-      return res.status(404).json("Profile with given Id not found");
+      return res.status(404).json({message: "Profile with given Id not found"});
     }
     return res.status(200).json(getprofiledet);
   } catch (err) {
@@ -19,7 +19,6 @@ const getempprofiledetails = async (req, res, next) => {
   const { userid } = req.params;
   try {
     const getprofiledet = await EmployeeModel.find({ _id: userid });
-    // console.log("prof: ", getprofiledet);
     if (!getprofiledet) {
       return res
         .status(404)

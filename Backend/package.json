@@ -7,7 +7,10 @@
     "start": "node server.js",
     "test": "mocha ./test/*.spec.js --timeout 10000 --exit",
     "test:watch": "mocha --watch ./test/*.spec.js",
-    "coverage": "nyc --reporter=text npm test"
+    "coverage": "nyc --reporter=lcov --reporter=text npm test"
+  },
+  "nyc": {
+    "include": "controllers"
   },
   "author": "",
   "license": "ISC",

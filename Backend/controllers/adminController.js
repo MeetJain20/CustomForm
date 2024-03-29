@@ -1,14 +1,8 @@
-const { validationResult } = require("express-validator");
 const AdminModel = require("../models/AdminModel");
 const EmployeeModel = require("../models/EmployeeModel");
 
 const signupadm = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json({
-      message: "Invalid inputs passed, please check your data.",
-    });
-  }
+
   
   const { empName, mobile, email, password, teamName } = req.body;
   let existingEmail;
@@ -16,7 +10,7 @@ const signupadm = async (req, res, next) => {
     existingEmail = await AdminModel.findOne({ email: email });
   } catch (err) {
     return res.status(500).json({
-      message: "Signing up failed, please try again later.",
+      message: "Error while searching for existing Emails.",
     });
   }
   

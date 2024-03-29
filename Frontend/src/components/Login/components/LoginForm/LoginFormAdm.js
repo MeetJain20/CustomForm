@@ -52,7 +52,7 @@ const LoginFormAdm = () => {
           );
             toast.success("Login Successful");
             navigate("/admindashboard");
-            auth.login(response.user.id, "admin", response.token);
+            auth.login(response.id, "admin", response.token);
             setEmail("");
             setPassword("");
           
