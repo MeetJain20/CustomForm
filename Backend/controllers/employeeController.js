@@ -76,8 +76,10 @@ const login = async (req, res, next) => {
         message: "Login failed, check your credentials or signup.",
       });
     }
-  } else if (role === "employee") {
+  } 
+  else {
     try {
+      // console.log("Hereeeeeeeeeeeeeeeeeeeeee");
       existingUser = await EmployeeModel.findOne({ email: email });
     } catch (err) {
       return res.status(500).json({

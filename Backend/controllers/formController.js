@@ -46,95 +46,103 @@ const sendMail = async (recipients) => {
 
     return "Mail sent successfully";
   } catch (error) {
-    console.error("Error sending email:", error);
-    throw new Error("Error sending email");
+    return res.status(500).json({ message: "Error sending email" });
   }
 };
 
 // GET Request
 
 const gettemplateforms = async (req, res, next) => {
-  const templateForms = await FormModel.find({ isTemplate: true });
+  try {
+    const templateForms = await FormModel.find({ isTemplate: true });
 
-  if (templateForms) {
-    res.json(templateForms);
-  } else {
-    return res.status(404).json({ message: "No forms found" });
+    if (templateForms) {
+      res.status(200).json(templateForms);
+    } else {
+      return res.status(404).json({ message: "No forms found" });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: "Error fetching forms" });
   }
 };
 
 const getactiveforms = async (req, res, next) => {
   const { adminid } = req.params;
+  try {
+    const activeForms = await FormModel.find({
+      adminId: adminid,
+      isComplete: false,
+    });
 
-  const activeForms = await FormModel.find({
-    adminId: adminid,
-    isComplete: false,
-  });
-
-  if (activeForms) {
-    res.json(activeForms);
-  } else {
-    return res.status(404).json({ message: "No forms found" });
+    if (activeForms) {
+      res.status(200).json(activeForms);
+    } else {
+      return res.status(404).json({ message: "No forms found" });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: "Error fetching forms" });
   }
 };
 
 const getcompletedforms = async (req, res, next) => {
   const { adminid } = req.params;
+  try {
+    const completedForms = await FormModel.find({
+      adminId: adminid,
+      isComplete: true,
+    });
 
-  const completedForms = await FormModel.find({
-    adminId: adminid,
-    isComplete: true,
-  });
+    if (completedForms) {
+      res.status(200).json(completedForms);
+    } else {
+      return res.status(404).json({ message: "No forms found" });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: "Error fetching forms" });
+  }
+};
 
-  if (completedForms) {
-    res.json(completedForms);
-  } else {
-    return res.status(404).json({ message: "No forms found" });
+const getcurrentform = async (req, res, next) => {
+  const { formid } = req.params;
+  try {
+    const currentForm = await FormModel.find({ _id: formid });
+
+    if (currentForm) {
+      return res.status(200).json(currentForm);
+    } else {
+      return res.status(404).json({ message: "No forms found" });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: "Error fetching forms" });
   }
 };
 
 // POST Request
 
-const getcurrentform = async (req, res, next) => {
-  const { formid } = req.body;
-  const currentForm = await FormModel.find({ _id: formid });
-
-  if (currentForm) {
-    res.json(currentForm);
-  } else {
-    res.json(null);
-  }
-};
-
 const copyfield = async (req, res, next) => {
   try {
     const { formid, fielddata } = req.body;
     const form = await FormModel.findById(formid);
-
+    if (!form) {
+      return res.status(404).json({ message: "Form not found" });
+    }
     // Push the new field data to the form fields array
     form.fields.push(fielddata);
 
     // Save the updated form
     const updatedForm = await form.save();
 
-    if (!updatedForm) {
-      return res.status(404).json({message:"Form not found"});
+    if (updatedForm) {
+      return res.status(200).json(updatedForm);
+    } else {
+      return res.status(404).json({ message: "Form not found" });
     }
-    res.json(updatedForm);
   } catch (error) {
-    const statusCode = error.statusCode || 500;
-    const message = error.message || "Failed to copy form field";
-    return res.status(statusCode).json({ message });
+    return res.status(500).json({ message: "Failed to copy form field" });
   }
 };
 
 const createforms = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(
-      new HttpError("Invalid inputs passed, please check your data.", 422)
-    );
-  }
   const { adminId } = req.body;
   const formData = new FormModel({
     adminId: adminId,
@@ -146,13 +154,10 @@ const createforms = async (req, res, next) => {
   });
   try {
     const newform = await formData.save();
-    // console.log(newuser,'no new user error')
+    res.status(200).json({ id: newform._id });
   } catch (err) {
-    console.log("saving error");
-    const error = new HttpError("Form Creation Failed", 500);
-    return next(error);
+    return res.status(500).json({ message: "Form Creation Failed" });
   }
-  res.json({ form: formData.toObject({ getters: true }) });
 };
 
 const createFromTemplate = async (req, res, next) => {
@@ -163,7 +168,7 @@ const createFromTemplate = async (req, res, next) => {
     const templateForm = await FormModel.findById(formid);
 
     if (!templateForm) {
-      throw new HttpError("Template form not found", 404);
+      return res.status(404).json({ message: "Template form not found" });
     }
 
     // Create a new form using template form data
@@ -180,19 +185,18 @@ const createFromTemplate = async (req, res, next) => {
     const savedForm = await newForm.save();
 
     if (!savedForm) {
-      throw new HttpError("Failed to create form from template", 500);
+      return res
+        .status(500)
+        .json({ message: "Error while saving the form to database" });
     }
 
     res.status(201).json(savedForm);
   } catch (error) {
-    console.error("Error creating form from template:", error);
-    const statusCode = error.statusCode || 500;
-    const message = error.message || "Failed to create form from template";
-    res.status(statusCode).json({ message });
+    return res
+      .status(500)
+      .json({ message: "Failed to create form from template" });
   }
 };
-
-exports.createFromTemplate = createFromTemplate;
 
 // PUT Request
 
@@ -200,34 +204,34 @@ const updateformstatus = async (req, res, next) => {
   try {
     const { formid } = req.body;
 
-    // Get the adminId from the FormModel
     const form = await FormModel.findById(formid);
     if (!form) {
-      return res.status(404).json({message:"Form not found"});
+      return res.status(404).json({ message: "Form not found" });
     }
     const adminId = form.adminId;
 
-    // Find all employees with the adminId in their adminId array
     const employees = await EmployeeModel.find({ adminId });
-    // Extract email addresses from the employees
     const recipients = employees.map((employee) => employee.email);
-    // Send email to all recipients
     if (recipients.length > 0) {
       sendMail(recipients);
-    }
-    // Update form status
-    const formstatus = await FormModel.findByIdAndUpdate(
-      formid,
-      { isComplete: true },
-      { new: true }
-    );
+      const formstatus = await FormModel.findByIdAndUpdate(
+        formid,
+        { isComplete: true },
+        { new: true }
+      );
 
-    res.json(formstatus);
+      return res.status(200).json(formstatus);
+    } else {
+      const formstatus = await FormModel.findByIdAndUpdate(
+        formid,
+        { isComplete: true },
+        { new: true }
+      );
+
+      return res.status(200).json(formstatus);
+    }
   } catch (error) {
-    console.error("Error Saving form : ", error);
-    const statusCode = error.statusCode || 500;
-    const message = error.message || "Failed to Save the form";
-    res.status(statusCode).json({ message });
+    return res.status(500).json({ message: "Failed to Save the form" });
   }
 };
 
@@ -238,23 +242,20 @@ const updateeditstatus = async (req, res, next) => {
     // Update the edit status of the form
     const editstatus = await FormModel.findByIdAndUpdate(
       formid,
-      { isComplete: false },
+      { isComplete: false, isTemplate: false },
       { new: true }
     );
 
     if (!editstatus) {
-      return res.status(404).json({message:"Form not found"});
+      return res.status(404).json({ message: "Form not found" });
     }
 
     // Delete all responses for the corresponding formid
     await ResponseModel.deleteMany({ formId: formid });
 
-    res.json(editstatus);
+    res.status(200).json(editstatus);
   } catch (error) {
-    console.error("Error Making it Editable: ", error);
-    const statusCode = error.statusCode || 500;
-    const message = error.message || "Failed to make the form Editable";
-    res.status(statusCode).json({ message });
+    res.status(500).json({ message: "Failed to make the form Editable" });
   }
 };
 
@@ -263,18 +264,15 @@ const updatetemplatestatus = async (req, res, next) => {
     const { formid } = req.body;
     const formstatus = await FormModel.findByIdAndUpdate(
       formid,
-      { isTemplate: true },
+      { isTemplate: true, isComplete: true },
       { new: true }
     );
     if (!formstatus) {
-      return res.status(404).json({message:"Form not found"});
+      return res.status(404).json({ message: "Form not found" });
     }
-    res.json(formstatus);
+    return res.status(200).json(formstatus);
   } catch (error) {
-    console.error("Error Saving form as Template: ", error);
-    const statusCode = error.statusCode || 500;
-    const message = error.message || "Failed to Save the form as Template";
-    res.status(statusCode).json({ message });
+    res.status(500).json({ message: "Failed to Save the form as Template" });
   }
 };
 
@@ -287,13 +285,11 @@ const updateformtitle = async (req, res, next) => {
       { new: true }
     );
     if (!updatetitle) {
-      return res.status(404).json({message:"Form not found"});
+      return res.status(404).json({ message: "Form not found" });
     }
-    res.json(updatetitle);
+    res.status(200).json(updatetitle);
   } catch (error) {
-    const statusCode = error.statusCode || 500;
-    const message = error.message || "Failed to update form title";
-    res.status(statusCode).json({ message });
+    res.status(500).json({ message: "Failed to update form title" });
   }
 };
 
@@ -306,14 +302,11 @@ const updateformdesc = async (req, res, next) => {
       { new: true }
     );
     if (!updatedesc) {
-      return res.status(404).json({message:"Form not found"});
+      return res.status(404).json({ message: "Form not found" });
     }
-    res.json(updatedesc);
+    res.status(200).json(updatedesc);
   } catch (error) {
-    console.error("Error updating form description:", error);
-    const statusCode = error.statusCode || 500;
-    const message = error.message || "Failed to update form description";
-    res.status(statusCode).json({ message });
+    res.status(500).json({ message: "Failed to update form description" });
   }
 };
 
@@ -322,6 +315,9 @@ const updateformfields = async (req, res, next) => {
     const { formid, fielddata } = req.body;
     const form = await FormModel.findById(formid);
 
+    if (!form) {
+      return res.status(404).json({ message: "Form not found" });
+    }
     // Check if field with the same fieldId exists
     const existingFieldIndex = form.fields.findIndex(
       (field) => field.fieldid === fielddata.fieldid
@@ -338,13 +334,11 @@ const updateformfields = async (req, res, next) => {
     const updatedForm = await form.save();
 
     if (!updatedForm) {
-      return res.status(404).json({message:"Form not found"});
+      return res.status(404).json({ message: "Form not found" });
     }
-    res.json(updatedForm);
+    return res.status(200).json(updatedForm);
   } catch (error) {
-    const statusCode = error.statusCode || 500;
-    const message = error.message || "Failed to update form fields";
-    return res.status(statusCode).json({ message });
+    return res.status(500).json({ message: "Failed to update form fields" });
   }
 };
 
@@ -352,7 +346,9 @@ const addnewfield = async (req, res, next) => {
   const { formid, newFieldData } = req.body;
   try {
     const form = await FormModel.findById(formid);
-
+    if (!form) {
+      return res.status(404).json({ message: "Form not found" });
+    }
     // Push the new field data
     form.fields.push(newFieldData);
 
@@ -360,14 +356,12 @@ const addnewfield = async (req, res, next) => {
     const updatedForm = await form.save();
 
     if (!updatedForm) {
-      return res.status(404).json({message:"Form not found"});
+      return res.status(404).json({ message: "Form not found" });
+    } else {
+      return res.status(200).json(updatedForm);
     }
-
-    res.json(updatedForm);
   } catch (error) {
-    const statusCode = error.statusCode || 500;
-    const message = error.message || "Failed to update form fields";
-    return res.status(statusCode).json({ message });
+    return res.status(500).json({ message: "Failed to add new field" });
   }
 };
 
@@ -378,15 +372,16 @@ const deletefield = async (req, res, next) => {
 
   try {
     const form = await FormModel.findById(formid);
-
+    if (!form) {
+      return res.status(404).json({ message: "Form not found" });
+    }
     // Find the index of the field with the specified fieldid
     const fieldIndex = form.fields.findIndex(
       (field) => field.fieldid === fieldid
     );
-
     if (fieldIndex === -1) {
       // Field not found
-      return res.status(404).json({message:"Field not found"});
+      return res.status(404).json({ message: "Field not found" });
     }
 
     // Remove the field from the fields array
@@ -395,14 +390,9 @@ const deletefield = async (req, res, next) => {
     // Save the updated form
     const updatedForm = await form.save();
 
-    if (!updatedForm) {
-      return res.status(404).json({message:"Form not found"});
-    }
-    res.json(updatedForm);
+    return res.status(200).json(updatedForm);
   } catch (error) {
-    const statusCode = error.statusCode || 500;
-    const message = error.message || "Failed to delete form field";
-    return res.status(statusCode).json({ message });
+    return res.status(500).json({ message: "Failed to delete form field" });
   }
 };
 
@@ -414,21 +404,19 @@ const deleteform = async (req, res, next) => {
     const deletedForm = await FormModel.findByIdAndDelete(formid);
 
     if (!deletedForm) {
-      return res.status(404).json({message:"Form not found"});
+      return res.status(404).json({ message: "Form not found" });
     }
 
     // Step 2: Check if the form is complete
     if (deletedForm.isComplete) {
       // Step 3: Delete associated documents in the ResponseModel
       await ResponseModel.deleteMany({ formId: formid });
+      return res.status(200).json({ deletedForm });
+    } else {
+      return res.status(200).json({ deletedForm });
     }
-
-    res.json({ deletedForm });
   } catch (error) {
-    console.error("Error deleting form:", error);
-    const statusCode = error.statusCode || 500;
-    const message = error.message || "Failed to delete form";
-    res.status(statusCode).json({ message });
+    res.status(500).json({ message: "Failed to delete form" });
   }
 };
 

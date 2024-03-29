@@ -168,11 +168,9 @@ const MakeForm = () => {
       try {
         setIsloading(true);
         const responseData = await sendRequest(
-          `${MAIN_LINK}/form/getcurrentform`,
-          "POST",
-          JSON.stringify({
-            formid: formid,
-          }),
+          `${MAIN_LINK}/form/getcurrentform/${formid}`,
+          "GET",
+          null,
           {
             "Content-Type": "application/json",
             Authorization: `Bearer ${Cookies.get("token")}`,

@@ -29,7 +29,7 @@ const AdminDashboard = () => {
       );
       setIsloading(false);
       toast.success("New form created successfully");
-      navigate(`/createform/${response.form.id}`);
+      navigate(`/createform/${response.id}`);
     } else {
       setIsloading(false);
       toast.error("Error creating new form");

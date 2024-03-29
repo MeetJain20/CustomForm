@@ -7,11 +7,13 @@ import { MAIN_LINK } from "../../../../../../urls/urls";
 import Cookies from "js-cookie";
 import { v4 as uuidv4 } from "uuid";
 import { toast } from "sonner";
+import Loader from "../../../../../Loader";
 
 const Functionalities = ({ fieldState, hasChanged=false,setHasChanged }) => {
   const { formid } = useParams();
   const dispatch = useDispatch();
   const { sendRequest } = useRequest();
+  const [isloading,setIsloading] = useState(false);
   const [newFieldData, setNewFieldData] = useState({
     fieldid: uuidv4(),
     type: "Short Answer",
@@ -28,6 +30,7 @@ const Functionalities = ({ fieldState, hasChanged=false,setHasChanged }) => {
     }
     fieldState.isrequired = isRequired;
     try {
+      setIsloading(true);
       const responseData = await sendRequest(
         `${MAIN_LINK}/form/updateformfields`,
         "PUT",
@@ -40,11 +43,13 @@ const Functionalities = ({ fieldState, hasChanged=false,setHasChanged }) => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      setIsloading(false);
       toast.success("Details saved successfully");
       dispatch({ type: "SAVE_FIELD" });
 
       // setFormtitle(responseData.formtitle);
     } catch (err) {
+      setIsloading(false);
       toast.error(`${err.message}`);
     }
   };
@@ -53,6 +58,7 @@ const Functionalities = ({ fieldState, hasChanged=false,setHasChanged }) => {
 
   const deletefieldHandler = async () => {
     try {
+      setIsloading(true);
       const responseData = await sendRequest(
         `${MAIN_LINK}/form/deletefield`,
         "DELETE",
@@ -65,6 +71,7 @@ const Functionalities = ({ fieldState, hasChanged=false,setHasChanged }) => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      setIsloading(false);
       toast.success("Field deleted successfully");
       dispatch({
         type: "DELETE_FIELD_ARRAY",
@@ -72,6 +79,7 @@ const Functionalities = ({ fieldState, hasChanged=false,setHasChanged }) => {
       });
       dispatch({ type: "DELETE_FIELD" });
     } catch (err) {
+      setIsloading(false);
       toast.error(`${err.message}`);
     }
   };
@@ -89,6 +97,7 @@ const Functionalities = ({ fieldState, hasChanged=false,setHasChanged }) => {
       fieldid: newFieldid,
     };
     try {
+      setIsloading(true);
       const responseData = await sendRequest(
         `${MAIN_LINK}/form/copyfield`,
         "POST",
@@ -101,9 +110,11 @@ const Functionalities = ({ fieldState, hasChanged=false,setHasChanged }) => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      setIsloading(false);
       toast.success("Field copied successfully");
       dispatch({ type: "COPY_FIELD" });
     } catch (err) {
+      setIsloading(false);
       toast.error(`${err.message}`);
     }
   };
@@ -112,6 +123,7 @@ const Functionalities = ({ fieldState, hasChanged=false,setHasChanged }) => {
 
   const addnewfieldHandler = async () => {
     try {
+      setIsloading(true);
       const responseData = await sendRequest(
         `${MAIN_LINK}/form/addnewfield`,
         "PUT",
@@ -124,18 +136,20 @@ const Functionalities = ({ fieldState, hasChanged=false,setHasChanged }) => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         }
       );
+      setIsloading(false);
       toast.success("New field added successfully");
-
       dispatch({ type: "SAVE_FIELD" });
 
       // setFormtitle(responseData.formtitle);
     } catch (err) {
+      setIsloading(false);
       toast.error(`${err.message}`);
     }
   };
 
   return (
     <>
+    {isloading && <Loader/>}
       <div className={`${classes.isrequiredfield}`}>
         <label className={classes.requiredcontainer}>
           <input

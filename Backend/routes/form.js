@@ -19,13 +19,17 @@ router.get(
   check_Authentication,
   formController.gettemplateforms
 );
-router.post(
-  "/getcurrentform",
+router.get(
+  "/getcurrentform/:formid",
   check_Authenticationemp,
   formController.getcurrentform
 );
 router.post("/createforms", check_Authentication, formController.createforms);
-router.post("/createFromTemplate", check_Authentication, formController.createFromTemplate);
+router.post(
+  "/createFromTemplate",
+  check_Authentication,
+  formController.createFromTemplate
+);
 router.post("/copyfield", check_Authentication, formController.copyfield);
 router.put(
   "/updateformstatus",
@@ -58,11 +62,7 @@ router.put(
   check_Authentication,
   formController.updateformfields
 );
-router.put(
-  "/addnewfield",
-  check_Authentication,
-  formController.addnewfield
-);
+router.put("/addnewfield", check_Authentication, formController.addnewfield);
 router.delete("/deletefield", check_Authentication, formController.deletefield);
 router.delete("/deleteform", check_Authentication, formController.deleteform);
 

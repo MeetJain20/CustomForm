@@ -16,7 +16,7 @@
 .addformbutton{
     /* display: flex; */
     align-items: center;
-    padding: 6.5rem 50px;
+    padding: 7.4rem 50px;
     text-align: center;
     border-right: 2px solid var(--divider-color);
 }
