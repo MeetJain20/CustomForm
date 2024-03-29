@@ -44,9 +44,9 @@ const sendMail = async (recipients) => {
 
     const info = await transporter.sendMail(message);
 
-    return "Mail sent successfully";
+    // return "Mail sent successfully";
   } catch (error) {
-    return res.status(500).json({ message: "Error sending email" });
+    // return res.status(500).json({ message: "Error sending email" });
   }
 };
 
