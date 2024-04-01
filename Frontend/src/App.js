@@ -10,6 +10,7 @@ import {
   EmployeeDashboard
 } from "./components/DashBoard/index";
 import DisplayResponse from "./components/DisplayForm/components/DisplayResponse";
+import Error from "./components/Reusable/Error.js";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -50,6 +51,7 @@ function App() {
           <Route path="/admindashboard" element={<AdminDashboard />} />
           <Route path="/employeedashboard" element={<EmployeeDashboard />} />
           <Route path="/viewresponse/:formid" element={<DisplayResponse />} />
+          <Route path="*" element={<Error />} />
 
         </Routes>
       </Router>
@@ -64,6 +66,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/admindashboard" element={<Login />} />
           <Route path="/employeedashboard" element={<Login />} />
+          <Route path="*" element={<Error />} />
         </Routes>
       </Router>
     );

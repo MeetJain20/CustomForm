@@ -1,0 +1,40 @@
+.errorcontainer{
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.errorbox{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.errorimagediv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.errorimage{
+    height: 400px;
+    width: 400px;
+    border-radius: 5px;
+}
+
+.errortexthead{
+    font-weight: 600;
+    font-size: 1.25rem;
+    text-align: center;
+}
+
+.buttonforhomepage{
+    border: none;
+    color: var(--white-color);
+    background-color: var(--navbar-blue);
+    padding: 10px 20px;
+    border-radius: 7px;
+}

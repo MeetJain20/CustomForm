@@ -10,7 +10,7 @@
     "coverage": "nyc --reporter=lcov --reporter=text npm test"
   },
   "nyc": {
-    "include": "controllers"
+    "exclude": ["models/AdminModel.js","models/EmployeeModel.js","test"]
   },
   "author": "",
   "license": "ISC",
@@ -41,5 +41,8 @@
     "sinon": "^17.0.1",
     "supertest": "^6.3.4",
     "uniqid": "^5.4.0"
+  },
+  "devDependencies": {
+    "webpack-cli": "^5.1.4"
   }
 }

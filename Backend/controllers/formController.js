@@ -1,5 +1,4 @@
 const { validationResult } = require("express-validator");
-const HttpError = require("../models/http-error");
 const FormModel = require("../models/FormModel");
 const EmployeeModel = require("../models/EmployeeModel");
 
@@ -45,7 +44,7 @@ const sendMail = async (recipients) => {
     const info = await transporter.sendMail(message);
 
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 
