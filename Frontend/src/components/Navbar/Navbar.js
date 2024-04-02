@@ -10,6 +10,7 @@ import { CgProfile } from "react-icons/cg";
 import { toast } from "sonner";
 import Modal from "../Reusable/Modal";
 import EditProfile from "../Reusable/EditProfile";
+import Cookies from "js-cookie";
 
 const Navbar = () => {
   const auth = useContext(AuthContext);
@@ -82,15 +83,16 @@ const Navbar = () => {
               <Link className="nav-link active" aria-current="page" to="/">
                 Home
               </Link>
-              <Link
+
+              {Cookies.get('token') && <Link
                 className="nav-link active"
                 aria-current="page"
                 to={destination}
               >
                 Forms
-              </Link>
+              </Link>}
             </div>
-            {localStorage.hasOwnProperty("userid") ? (
+            {localStorage.hasOwnProperty("userid") && Cookies.get('token') ? (
               <div className={classes.rightnavbar}>
                 <Link
                   className={`${classes.logoutbutton}`}

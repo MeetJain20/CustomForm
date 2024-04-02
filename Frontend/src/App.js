@@ -1,41 +1,60 @@
 import "./App.css";
 // import Navbar from "./components/Navbar/Navbar";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 import { useCallback, useState, useEffect } from "react";
 import { AuthContext } from "./context/authcontext";
-import { SignUp, Login, LandingPage,MakeForm,DisplayForm } from "./components/index";
+import {
+  SignUp,
+  Login,
+  LandingPage,
+  MakeForm,
+  DisplayForm,
+} from "./components/index";
 import Cookies from "js-cookie";
 import {
   AdminDashboard,
-  EmployeeDashboard
+  EmployeeDashboard,
 } from "./components/DashBoard/index";
 import DisplayResponse from "./components/DisplayForm/components/DisplayResponse";
 import Error from "./components/Reusable/Error.js";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userId, setuserId] = useState("");
+  const [userId, setUserId] = useState("");
 
   const login = useCallback((uid, role, token) => {
     localStorage.setItem("userid", uid);
     localStorage.setItem("role", role);
     Cookies.set("token", token, { expires: 1 });
+    // tokenid
     setIsLoggedIn(true);
-    setuserId(localStorage.getItem("userid"));
+    setUserId(localStorage.getItem("userid"));
   }, []);
 
   const logout = useCallback(() => {
     setIsLoggedIn(false);
-    setuserId(null);
+    setUserId(null);
     Cookies.remove("token");
   }, []);
 
   useEffect(() => {
     if (localStorage.hasOwnProperty("userid")) {
-      setuserId(localStorage.getItem("userid"));
+      setUserId(localStorage.getItem("userid"));
       setIsLoggedIn(true);
     }
-  }, []);
+    const token = Cookies.get("token");
+    console.log(isLoggedIn);
+    if (!token) {
+      localStorage.removeItem("userid");
+      localStorage.removeItem("role");
+      logout();
+    }
+  }, [isLoggedIn]);
 
   let routes;
   if (isLoggedIn) {
@@ -52,7 +71,6 @@ function App() {
           <Route path="/employeedashboard" element={<EmployeeDashboard />} />
           <Route path="/viewresponse/:formid" element={<DisplayResponse />} />
           <Route path="*" element={<Error />} />
-
         </Routes>
       </Router>
     );
@@ -66,6 +84,9 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/admindashboard" element={<Login />} />
           <Route path="/employeedashboard" element={<Login />} />
+          <Route path="/createform/:formid" element={<Login />} />
+          <Route path="/displayform/:formid" element={<Login />} />
+          <Route path="/viewresponse/:formid" element={<Login />} />
           <Route path="*" element={<Error />} />
         </Routes>
       </Router>
