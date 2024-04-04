@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import classes from "./LoginForm.module.css";
 import { MAIN_LINK } from "../../../../urls/urls";
 import { toast } from "sonner";
+import Loader from "../../../Loader";
 
 const LoginFormEmp = () => {
   const auth = useContext(AuthContext);
@@ -15,6 +16,7 @@ const LoginFormEmp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setisError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const validateEmail = (email) => {
@@ -36,6 +38,7 @@ const LoginFormEmp = () => {
         if (validatePass(password)) {
           e.preventDefault();
           try {
+            setLoading(true);
             const response = await sendRequest(
               `${MAIN_LINK}/employee/login`,
               "POST",
@@ -48,6 +51,7 @@ const LoginFormEmp = () => {
                 "Content-Type": "application/json",
               }
             );
+            setLoading(false);
             toast.success("Login Successful");
             navigate("/employeedashboard");
             auth.login(response.id, "employee", response.token);
@@ -59,11 +63,13 @@ const LoginFormEmp = () => {
             setisError(true);
           }
         } else {
+          setLoading(false);
           toast.warning("Password must be atleast 6 characters");
           setError("Password must be atleast 6 characters");
           setisError(true);
         }
       } else {
+        setLoading(false);
         toast.error("Invalid Email");
         setError("Invalid email");
         // toast.error("Login Failed");
@@ -77,6 +83,7 @@ const LoginFormEmp = () => {
   };
   return (
     <>
+    {loading && <Loader/>}
       <MDBCol col="4" md="6" className={classes.logindiv}>
         <div className="d-flex flex-row align-items-center justify-content-center">
           <p className="lead fw-normal mb-0 me-3">Sign In As Employee</p>

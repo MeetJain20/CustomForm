@@ -16,6 +16,7 @@ const LoginFormAdm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isError, setisError] = useState(false);
+  const [isloading, setIsloading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -38,6 +39,7 @@ const LoginFormAdm = () => {
         if (validatePass(password)) {
           e.preventDefault();
           try{
+            setIsloading(true);
           const response = await sendRequest(
             `${MAIN_LINK}/employee/login`,
             "POST",
@@ -50,6 +52,7 @@ const LoginFormAdm = () => {
               "Content-Type": "application/json",
             }
           );
+          setIsloading(false);
             toast.success("Login Successful");
             navigate("/admindashboard");
             auth.login(response.id, "admin", response.token);
@@ -57,6 +60,7 @@ const LoginFormAdm = () => {
             setPassword("");
           
           }catch(err){
+          setIsloading(false);
             toast.error(`${err.message}`);
             navigate('/login?role=admin')
             setError(`${err.message}`);
@@ -64,6 +68,7 @@ const LoginFormAdm = () => {
           }
           
         } else {
+          setIsloading(false);
           toast.warning("Password must be atleast 6 characters");
           setError("Password must be atleast 6 characters");
           setisError(true);
@@ -81,6 +86,7 @@ const LoginFormAdm = () => {
   };
   return (
     <>
+    {isloading && <Loader/>}
       <MDBCol col="4" md="6" className={classes.logindiv}>
         <div className="d-flex flex-row align-items-center justify-content-center">
           <p className="lead fw-normal mb-0 me-3">Sign In As Admin</p>
