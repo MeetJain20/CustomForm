@@ -38,7 +38,7 @@ const DisplayResponse = () => {
                     {element.question}
                   </th>
                 ))}
-                <th>Status</th>
+                {/* <th>Status</th> */}
               </tr>
             </thead>
             <tbody>
@@ -69,10 +69,10 @@ const DisplayResponse = () => {
                       </td>
                     );
                   })}
-                  <td>
+                  {/* <td>
                     <button className={classes.approveresponse}>Approve</button>{" "}
                     <button className={classes.rejectresponse}>Reject</button>
-                  </td>
+                  </td> */}
                 </tr>
               ))}
             </tbody>

@@ -48,7 +48,6 @@ function App() {
       setIsLoggedIn(true);
     }
     const token = Cookies.get("token");
-    console.log(isLoggedIn);
     if (!token) {
       localStorage.removeItem("userid");
       localStorage.removeItem("role");
