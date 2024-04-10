@@ -28,7 +28,7 @@ const sendMail = async (recipients,formid) => {
       <body>
         <div style="background-color: #f0f0f0; padding: 20px;">
           <h2 style="color: #333;">Please fill this form as soon as possible</h2>
-          <p style="color: #666;">Click <a href="https://customform.onrender.com/form/displayform/${formid}">here</a> to fill the form.</p>
+          <p style="color: #666;">Click <a href="https://customform.onrender.com/displayform/${formid}">here</a> to fill the form.</p>
           <p style="color: #666;">Best regards,<br>Darwinbox Team</p>
         </div>
       </body>
