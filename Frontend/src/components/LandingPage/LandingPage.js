@@ -34,18 +34,15 @@ const LandingPage = () => {
     },
   ];
 
-  const gotoformHandler = ()=>{
-    if(localStorage.getItem('role') === "admin")
-    {
+  const gotoformHandler = () => {
+    if (localStorage.getItem("role") === "admin") {
       toast.info("Admin Dashboard");
-      navigate('/admindashboard');
-    }
-    else if(localStorage.getItem('role') === "employee")
-    {
+      navigate("/admindashboard");
+    } else if (localStorage.getItem("role") === "employee") {
       toast.info("Employee Dashboard");
-      navigate('/employeedashboard');
+      navigate("/employeedashboard");
     }
-  }
+  };
 
   return (
     <>
@@ -61,41 +58,52 @@ const LandingPage = () => {
               responses in real-time.
             </div>
             <div className={classes.bodyformslink}>
-              <button className={classes.gotoformsbutton} onClick={gotoformHandler}>Go To Forms</button>
+              {localStorage.getItem("userid") && (
+                <button
+                  className={classes.gotoformsbutton}
+                  onClick={gotoformHandler}
+                >
+                  Go To Forms
+                </button>
+              )}
             </div>
-            {!localStorage.getItem("userid") && <div className={classes.gotosignup}>
-              <div className={classes.donthavetext}>Don't Have an account?</div>
-              <div className={classes.listofsignup}>
-                <div className="dropdown">
-                  <div
-                    className={`${classes.dropdownbutton} dropdown-toggle`}
-                    type="button"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Sign Up for free
+            {!localStorage.getItem("userid") && (
+              <div className={classes.gotosignup}>
+                <div className={classes.donthavetext}>
+                  Don't Have an account?
+                </div>
+                <div className={classes.listofsignup}>
+                  <div className="dropdown">
+                    <div
+                      className={`${classes.dropdownbutton} dropdown-toggle`}
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Sign Up for free
+                    </div>
+                    <ul className={`${classes.dropdownmenu} dropdown-menu`}>
+                      <li>
+                        <Link
+                          to={`/signup?role=admin`}
+                          className={classes.linktosignup}
+                        >
+                          As An Admin
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to={`/signup?role=employee`}
+                          className={classes.linktosignup}
+                        >
+                          As An Employee
+                        </Link>
+                      </li>
+                    </ul>
                   </div>
-                  <ul className={`${classes.dropdownmenu} dropdown-menu`}>
-                    <li>
-                      <Link
-                        to={`/signup?role=admin`}
-                        className={classes.linktosignup}
-                      >
-                        As An Admin
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to={`/signup?role=employee`}
-                        className={classes.linktosignup}
-                      >
-                        As An Employee
-                      </Link>
-                    </li>
-                  </ul>
                 </div>
               </div>
-            </div>}
+            )}
           </div>
           <div className={classes.mainbodyimage}>
             <img

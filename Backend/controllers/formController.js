@@ -5,7 +5,7 @@ const EmployeeModel = require("../models/EmployeeModel");
 const nodemailer = require("nodemailer");
 const ResponseModel = require("../models/ResponseModel");
 
-const sendMail = async (recipients) => {
+const sendMail = async (recipients,formid) => {
   try {
     let config = {
       service: "gmail",
@@ -28,6 +28,7 @@ const sendMail = async (recipients) => {
       <body>
         <div style="background-color: #f0f0f0; padding: 20px;">
           <h2 style="color: #333;">Please fill this form as soon as possible</h2>
+          <p style="color: #666;">Click <a href="https://customform.onrender.com/form/displayform/${formid}">here</a> to fill the form.</p>
           <p style="color: #666;">Best regards,<br>Darwinbox Team</p>
         </div>
       </body>
@@ -211,7 +212,7 @@ const updateformstatus = async (req, res, next) => {
     const employees = await EmployeeModel.find({ adminId });
     const recipients = employees.map((employee) => employee.email);
     if (recipients.length > 0) {
-      sendMail(recipients);
+      sendMail(recipients,formid);
       const formstatus = await FormModel.findByIdAndUpdate(
         formid,
         { isComplete: true },
