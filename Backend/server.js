@@ -58,7 +58,7 @@ mongoose
     app.listen(5000);
   })
   .catch((error) => {
-    console.log("Connection Error")
+    // console.log("Connection Error")
     // console.log("Connection error:", error);
   });
 
