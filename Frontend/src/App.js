@@ -5,6 +5,7 @@ import {
   Routes,
   Route,
   useNavigate,
+  Navigate
 } from "react-router-dom";
 import { useCallback, useState, useEffect } from "react";
 import { AuthContext } from "./context/authcontext";
@@ -64,11 +65,11 @@ function App() {
           <Route path="/login" element={<LandingPage />} />
           <Route path="/signup" element={<LandingPage />} />
           <Route path="/landingpage" element={<LandingPage />} />
-          <Route path="/createform/:formid" element={<MakeForm />} />
+          <Route path="/createform/:formid" element={localStorage.getItem('role')==='admin' ? <MakeForm /> : <Navigate to="/error" />} />
           <Route path="/displayform/:formid" element={<DisplayForm />} />
-          <Route path="/admindashboard" element={<AdminDashboard />} />
+          <Route path="/admindashboard" element={localStorage.getItem('role')==='admin' ? <AdminDashboard /> : <Navigate to="/error" />} />
           <Route path="/employeedashboard" element={<EmployeeDashboard />} />
-          <Route path="/viewresponse/:formid" element={<DisplayResponse />} />
+          <Route path="/viewresponse/:formid" element={localStorage.getItem('role')==='admin' ? <DisplayResponse /> : <Navigate to="/error" />} />
           <Route path="*" element={<Error />} />
         </Routes>
       </Router>
