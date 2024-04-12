@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../../Loader";
+import { template } from "../../../../../../assets";
 
 const FormCard = ({ formid, img, title, formtitle }) => {
   const navigate = useNavigate();
@@ -70,7 +71,7 @@ const FormCard = ({ formid, img, title, formtitle }) => {
       onClick={!isSubmittedForm ? gotoformHandler : undefined}
     >
       <img
-        src={img}
+        src={formtitle==='Template Forms'?template:img}
         className={`${classes.formcardimage} card-img-top`}
         alt="..."
       />

@@ -7,6 +7,7 @@ import loginvector from "./loginvector.png";
 import errorimg from "./errorimg.jpg";
 import logo from "./logo.png";
 import signupvector from "./signupvector.jpg";
+import template from "./template.jpeg";
 import loading from "./loading.gif";
 export {
   loading,
@@ -18,5 +19,6 @@ export {
   sendformforresponse,
   approveresponse,
   form,
-  errorimg
+  errorimg,
+  template,
 };
