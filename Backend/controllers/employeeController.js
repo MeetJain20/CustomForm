@@ -131,4 +131,3 @@ exports.signupemp = signupemp;
 exports.getteamnames = getteamnames;
 exports.login = login;
 
-// exports.login = login;
