@@ -68,7 +68,7 @@ describe("check_Authentication Middleware", () => {
       .get("/form/gettemplateforms")
       .set("Authorization", `Bearer ${adminToken}`)
       .end((err, res) => {
-        console.log(res.body);
+        // console.log(res.body);
         expect(res).to.have.status(200);
         done();
       });

@@ -118,7 +118,7 @@ const login = async (req, res, next) => {
       );
       return res
         .status(200)
-        .json({ id: existingUser._id, token: token });
+        .json({ id: existingUser._id, role:existingUser.role, token: token });
     } catch (err) {
       return res.status(500).json({
         message: "Error while signing JWT Token.",
